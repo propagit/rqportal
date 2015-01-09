@@ -1,2 +1,3 @@
 app/cache
 app/config/config.php
+.sass-cache
