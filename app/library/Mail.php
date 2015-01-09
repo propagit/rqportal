@@ -63,18 +63,18 @@ class Mail extends Component
             ->setSubject($subject)
             ->setTo($to)
             ->setFrom(array(
-                $mailSettings->fromEmail => $mailSettings->fromName
+                $mailSettings['fromEmail'] => $mailSettings['fromName']
             ))
             ->setBody($template, 'text/html');
 
         if (!$this->_transport) {
             $this->_transport = Swift_SmtpTransport::newInstance(
-                $mailSettings->smtp->server,
-                $mailSettings->smtp->port,
-                $mailSettings->smtp->security
+                $mailSettings['smtp']['server'],
+                $mailSettings['smtp']['port'],
+                $mailSettings['smtp']['security']
             )
-            ->setUsername($mailSettings->smtp->username)
-            ->setPassword($mailSettings->smtp->password);
+            ->setUsername($mailSettings['smtp']['username'])
+            ->setPassword($mailSettings['smtp']['password']);
         }
 
         # Create the Mailer using created Transport
