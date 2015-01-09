@@ -9,7 +9,7 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
   <tr>
     <td width="20" bgcolor="#FFFFFF">&nbsp;</td>
     <td width="710" bgcolor="#FFFFFF"><p><br>
-      Dear {{ name }}<br />
+      Dear {{ name }},<br />
       Congratualtions your member account has been approved!</p>
       <p>To start receiving jobs all you need to do is complete your member profile.<br />
         It is important you complete your profile accurately to ensure we send you the type<br>
@@ -31,7 +31,7 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
         <td>
             <img src="{{ imageUrl }}stepsEmail_01.jpg" width="140" height="101" alt=""></td>
         <td width="578" height="101" align="left" valign="middle" bgcolor="#dddddd">Click the link to set up your member profile<br>
-        <a style="color:#9c1d28" href="{{ publicUrl }}{{ activationUrl }}">{{ publicUrl }}{{ activationUrl }}</a></td>
+        <a style="color:#9c1d28" href="{{ publicUrl }}{{ activationUrl }}">Activation Link</a></td>
         <td>
             <img src="{{ imageUrl }}stepsEmail_03.jpg" width="32" height="101" alt=""></td>
     </tr>
@@ -95,10 +95,10 @@ style="font-family:Helvetica, Arial, sans-serif; color:#9c1d28; font-size:16px; 
   </tr>
   <tr valign="top">
     <td><img src="{{ imageUrl }}Email-footer_04.jpg" width="363" height="118" alt=""></td>
-    <td width="317" height="118" align="left" valign="top" bgcolor="#FFFFFF"><p><span style=" line-height: 14px">www.removalistquote.com.au</span></p>
-      <p style=" line-height: 10px">www.removalistquote.com.au/suppliers</p>
+    <td width="317" height="118" align="left" valign="top" bgcolor="#FFFFFF"><p><span style=" line-height: 14px"><a href="http://www.removalistquote.com.au" style="color:#9c1d28; text-decoration:none;">www.removalistquote.com.au</a></span></p>
+      <p style=" line-height: 10px"><a href="http://www.removalistquote.com.au/suppliers" style="color:#9c1d28; text-decoration:none;">www.removalistquote.com.au/suppliers</a></p>
       <p style=" line-height: 10px">1300 772 800</p>
-      <p style=" line-height: 10px">info@removalistquote.com.au</p></td>
+      <p style=" line-height: 10px"><a href="mailto:info@removalistquote.com.au" style="color:#9c1d28; text-decoration:none;">info@removalistquote.com.au</a></p></td>
     <td><img src="{{ imageUrl }}Email-footer_06.jpg" width="70" height="118" alt=""></td>
   </tr>
   <tr valign="top">
