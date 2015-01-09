@@ -49,8 +49,8 @@ class Mail extends Component
             'fromEmail' => 'propagate.au@gmail.com',
             'smtp'      => array(
                 'server'    => 'smtp.gmail.com',
-                'port'      => 465,
-                'security'  => 'ssl',
+                'port'      => 587,
+                'security'  => 'tls',
                 'username'  => 'propagate.au@gmail.com',
                 'password'  => 'm0r3m0n3Y'
             )
