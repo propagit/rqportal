@@ -64,12 +64,18 @@ class ProfileForm extends Form
         $this->add($suburb);
 
         $state = new Select('state', State::find(), array(
-            'using' => array('id', 'name'),
+            'using' => array('name', 'name'),
             'useEmpty'  => true,
             'emptyText' => 'Select State',
             'emptyValue' => ''
         ));
-        $state->setLabel("State");
+        $state->setLabel("State *");
+        $state->setFilters(array('striptags', 'string'));
+        $state->addValidators(array(
+            new PresenceOf(array(
+                'message' => 'State is required'
+            ))
+        ));
         $this->add($state);
 
         $postcode = new Text("postcode");
