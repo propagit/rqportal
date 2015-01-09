@@ -44,7 +44,17 @@ class Mail extends Component
     public function send($to, $subject, $name, $params)
     {
         # Settings
-        $mailSettings = $this->config->mail;
+        $mailSettings = array(
+            'fromName'  => 'Removalist Quote',
+            'fromEmail' => 'propagate.au@gmail.com',
+            'smtp'      => array(
+                'server'    => 'smtp.gmail.com',
+                'port'      => 465,
+                'security'  => 'ssl',
+                'username'  => 'propagate.au@gmail.com',
+                'password'  => 'm0r3m0n3Y'
+            )
+        );
 
         $template = $this->getTemplate($name, $params);
 
