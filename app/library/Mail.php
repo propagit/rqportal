@@ -24,6 +24,7 @@ class Mail extends Component
     {
         $parameters = array_merge(array(
             'publicUrl' => $this->config->application->publicUrl,
+            'imageUrl' => $this->config->application->publicUrl . '/img/email/'
         ), $params);
 
         return $this->view->getRender('emailTemplates', $name, $parameters, function($view){

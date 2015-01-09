@@ -39,7 +39,8 @@ class SupplierController extends ControllerBase
                 array($supplier->email => $supplier->name),
                 'Account Activation',
                 'activation',
-                array('activationUrl' =>
+                array('name' => $supplier->name,
+                    'activationUrl' =>
                     '/applicant/register/' . $supplier->id . '/' . $supplier->activation_key)
             );
         }
