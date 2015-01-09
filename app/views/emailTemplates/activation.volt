@@ -10,7 +10,7 @@
 
                 <br>
                 <br>
-                <a style="background:#E86537;color:#fff;padding:10px" href="http://{{ publicUrl }}{{ activationUrl }}">Activate</a>
+                <a style="background:#E86537;color:#fff;padding:10px" href="{{ publicUrl }}{{ activationUrl }}">Activate</a>
 
                 <br>
                 <br>
