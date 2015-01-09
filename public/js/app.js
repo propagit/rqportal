@@ -11,7 +11,7 @@ angular.module('rqportal', [
 })
 .config(function(uiGmapGoogleMapApiProvider){
     uiGmapGoogleMapApiProvider.configure({
-        key: 'AIzaSyBXS2w40hmb0AKyCIRTj8AaVHSFQ4cnYEQ',
+        key: 'AIzaSyCJLXHwzgv6qUZ8qtQhYvKm03173zJ2kyQ',
         v: '3.17',
         libraries: 'places,weather,geometry,visualization'
     });
