@@ -16,12 +16,7 @@ class SignupController extends \Phalcon\Mvc\Controller
             $applicant->business = $this->request->getPost('business');
             $applicant->address = $this->request->getPost('address');
             $applicant->suburb = $this->request->getPost('suburb');
-            $state_id = $this->request->getPost('state');
-            if ($state_id)
-            {
-                $applicant->state = State::findFirst("id = $state_id")->name;
-            }
-
+            $applicant->state = $this->request->getPost('state');
             $applicant->postcode = $this->request->getPost('postcode');
             $applicant->phone = $this->request->getPost('phone');
             $applicant->email = $this->request->getPost('email');

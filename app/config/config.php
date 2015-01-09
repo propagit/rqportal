@@ -20,6 +20,8 @@ return new \Phalcon\Config(array(
         'publicUrl'      => 'http://localhost/rqportal'
     ),
     'mail' => array(
+        'toName'    => 'Team',
+        'toEmail'   => 'team@propagate.com.au',
         'fromName'  => 'Removalist Quote',
         'fromEmail' => 'propagate.au@gmail.com',
         'smtp'      => array(
