@@ -16,15 +16,16 @@ return new \Phalcon\Config(array(
         'libraryDir'     => __DIR__ . '/../../app/library/',
         'formsDir'       => __DIR__ . '/../../app/forms/',
         'cacheDir'       => __DIR__ . '/../../app/cache/',
-        'baseUri'        => 'http://localhost/rqportal/',
+        'baseUri'        => '/rqportal/',
+        'publicUrl'      => 'http://localhost/rqportal'
     ),
     'mail' => array(
         'fromName'  => 'Removalist Quote',
         'fromEmail' => 'propagate.au@gmail.com',
         'smtp'      => array(
             'server'    => 'smtp.gmail.com',
-            'port'      => 465,
-            'security'  => 'ssl',
+            'port'      => 587,
+            'security'  => 'tls',
             'username'  => 'propagate.au@gmail.com',
             'password'  => 'm0r3m0n3Y'
         )

@@ -23,7 +23,7 @@ class Mail extends Component
     public function getTemplate($name, $params)
     {
         $parameters = array_merge(array(
-            // 'publicUrl' => $this->config->application->baseUri,
+            'publicUrl' => $this->config->application->publicUrl,
         ), $params);
 
         return $this->view->getRender('emailTemplates', $name, $parameters, function($view){
@@ -44,17 +44,7 @@ class Mail extends Component
     public function send($to, $subject, $name, $params)
     {
         # Settings
-        $mailSettings = array(
-            'fromName'  => 'Removalist Quote',
-            'fromEmail' => 'propagate.au@gmail.com',
-            'smtp'      => array(
-                'server'    => 'smtp.gmail.com',
-                'port'      => 587,
-                'security'  => 'tls',
-                'username'  => 'propagate.au@gmail.com',
-                'password'  => 'm0r3m0n3Y'
-            )
-        );
+        $mailSettings = $this->config->mail;
 
         $template = $this->getTemplate($name, $params);
 
@@ -63,18 +53,18 @@ class Mail extends Component
             ->setSubject($subject)
             ->setTo($to)
             ->setFrom(array(
-                $mailSettings['fromEmail'] => $mailSettings['fromName']
+                $mailSettings->fromEmail => $mailSettings->fromName
             ))
             ->setBody($template, 'text/html');
 
         if (!$this->_transport) {
             $this->_transport = Swift_SmtpTransport::newInstance(
-                $mailSettings['smtp']['server'],
-                $mailSettings['smtp']['port'],
-                $mailSettings['smtp']['security']
+                $mailSettings->smtp->server,
+                $mailSettings->smtp->port,
+                $mailSettings->smtp->security
             )
-            ->setUsername($mailSettings['smtp']['username'])
-            ->setPassword($mailSettings['smtp']['password']);
+            ->setUsername($mailSettings->smtp->username)
+            ->setPassword($mailSettings->smtp->password);
         }
 
         # Create the Mailer using created Transport

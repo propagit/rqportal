@@ -32,7 +32,17 @@ class SupplierController extends ControllerBase
         $supplier = Supplier::findFirst($supplierId);
         $supplier->status = Supplier::ACTIVATED;
         $supplier->activation_key = md5($supplierId . '4w3s0m3');
-        $supplier->save();
+        if ($supplier->save() == false) {
+
+        } else {
+             $this->getDI()->getMail()->send(
+                array($supplier->email => $supplier->name),
+                'Account Activation',
+                'activation',
+                array('activationUrl' =>
+                    '/applicant/register/' . $supplier->id . '/' . $supplier->activation_key)
+            );
+        }
         return $this->response->redirect('supplier/search');
     }
 }

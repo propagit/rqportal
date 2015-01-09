@@ -16,6 +16,10 @@ use Phalcon\Events\Manager as EventsManager;
  */
 $di = new FactoryDefault();
 
+/**
+ * Register the global configuration as config
+ */
+$di->set('config', $config);
 
 /**
  * The URL component is used to generate all kind of urls in the application

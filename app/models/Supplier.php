@@ -143,12 +143,12 @@ class Supplier extends \Phalcon\Mvc\Model
     }
 
     public function afterCreate() {
-        $this->getDI()->getMail()->send(
-            array($this->email => $this->name),
-            'Please confirm your email',
-            'confirmation',
-            array('confirmUrl' => '/confirm/')
-        );
+        // $this->getDI()->getMail()->send(
+        //     array($this->email => $this->name),
+        //     'Please confirm your email',
+        //     'confirmation',
+        //     array('confirmUrl' => '/confirm/')
+        // );
     }
 
 }
