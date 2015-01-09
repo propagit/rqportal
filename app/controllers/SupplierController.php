@@ -31,7 +31,7 @@ class SupplierController extends ControllerBase
     {
         $supplier = Supplier::findFirst($supplierId);
         $supplier->status = Supplier::ACTIVATED;
-        $supplier->key = md5($supplierId . '4w3s0m3');
+        $supplier->activation_key = md5($supplierId . '4w3s0m3');
         $supplier->save();
         return $this->response->redirect('supplier/search');
     }

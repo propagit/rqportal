@@ -31,7 +31,7 @@ class Supplier extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $key;
+    public $activation_key;
 
     /**
      *
@@ -127,7 +127,7 @@ class Supplier extends \Phalcon\Mvc\Model
             'id' => 'id',
             'user_id' => 'user_id',
             'status' => 'status',
-            'key' => 'key',
+            'activation_key' => 'activation_key',
             'name' => 'name',
             'business' => 'business',
             'address' => 'address',

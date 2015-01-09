@@ -18,12 +18,12 @@ class ApplicantController extends \Phalcon\Mvc\Controller
         return $this->response->redirect('login');
     }
 
-    public function registerAction($supplierId = null, $key = null)
+    public function registerAction($supplierId = null, $activation_key = null)
     {
         $supplier = Supplier::findFirst("
             id='$supplierId'
             AND status='" . Supplier::ACTIVATED . "'
-            AND key='$key'");
+            AND activation_key='$activation_key'");
 
         if (!$supplier) {
             return $this->response->redirect('signup');
@@ -50,7 +50,7 @@ class ApplicantController extends \Phalcon\Mvc\Controller
             if ($user->save() == false) {
                 # Error
             } else {
-                $supplier->key = null;
+                $supplier->activation_key = null;
                 $supplier->user_id = $user->id;
                 $supplier->save();
                 $this->session->set('auth', array(
