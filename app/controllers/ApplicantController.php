@@ -33,35 +33,36 @@ class ApplicantController extends \Phalcon\Mvc\Controller
         $this->view->supplier = $supplier;
 
         $form = new RegisterForm();
+
         if ($this->request->isPost()) {
             $username = $this->request->getPost('username', 'alphanum');
             $password = $this->request->getPost('password');
             $repeatPassword = $this->request->getPost('repeatPassword');
             if ($password != $repeatPassword) {
                 $this->flash->error('Passwords are diferent');
-                return false;
-            }
-
-            $user = new User();
-            $user->status = User::PENDING;
-            $user->username = $username;
-            $user->password = md5($password);
-            $user->level = User::SUPPLIER;
-            if ($user->save() == false) {
-                # Error
             } else {
-                $supplier->activation_key = null;
-                $supplier->user_id = $user->id;
-                $supplier->save();
-                $this->session->set('auth', array(
-                    'id' => $user->id,
-                    'username' => $user->username,
-                    'status' => $user->status,
-                    'level' => $user->level
-                ));
-                $this->response->redirect('applicant/profile');
-            }
+                $user = new User();
+                $user->status = User::PENDING;
+                $user->username = $username;
+                $user->password = md5($password);
+                $user->level = User::SUPPLIER;
+                if ($user->save()) {
+                    $supplier->activation_key = null;
+                    $supplier->user_id = $user->id;
+                    $supplier->save();
+                    $this->session->set('auth', array(
+                        'id' => $user->id,
+                        'username' => $user->username,
+                        'status' => $user->status,
+                        'level' => $user->level
+                    ));
+                    $this->response->redirect('applicant/profile');
+                }
+                foreach($user->getMessages() as $message) {
+                    $this->flash->error($message);
+                }
 
+            }
         }
         $this->view->form = $form;
     }

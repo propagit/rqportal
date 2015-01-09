@@ -1,6 +1,9 @@
 <?php
 
-class User extends \Phalcon\Mvc\Model
+use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model\Validator\Uniqueness;
+
+class User extends Model
 {
 
     /**
@@ -53,4 +56,16 @@ class User extends \Phalcon\Mvc\Model
         );
     }
 
+    /**
+     * Validate that username are unique across users
+     */
+    public function validation()
+    {
+        $this->validate(new Uniqueness(array(
+            "field" => "username",
+            "message" => "The username is already registered"
+        )));
+
+        return $this->validationHasFailed() != true;
+    }
 }

@@ -23,7 +23,8 @@
                     <a href="#" class="text"><i class="fa fa-bookmark"></i> Bookmark</a> this page to return to your member account at any time.
                 </p>
                 <br />
-                <?php echo $this->tag->form(array('applicant/register/' . $supplier->id . '/' . $supplier->key, 'id' => 'registerForm', 'class' => 'form-horizontal', 'onbeforesubmit' => 'return false')); ?>
+                <?php echo $this->flash->output(); ?>
+                <?php echo $this->tag->form(array('applicant/register/' . $supplier->id . '/' . $supplier->activation_key, 'id' => 'registerForm', 'class' => 'form-horizontal', 'onbeforesubmit' => 'return false')); ?>
 
                 <div class="form-group">
                     <?php echo $form->label('username', array('class' => ' col-lg-2')); ?>

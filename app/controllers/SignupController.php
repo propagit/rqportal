@@ -39,7 +39,7 @@ class SignupController extends \Phalcon\Mvc\Controller
             }
             else
             {
-                $this->flash->success('Thank you for signing up. We will contact you shortly!')
+                $this->flash->success('Thank you for signing up. We will contact you shortly!');
             }
         }
         $this->view->form = $form;

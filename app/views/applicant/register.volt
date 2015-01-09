@@ -23,6 +23,7 @@
                     <a href="#" class="text"><i class="fa fa-bookmark"></i> Bookmark</a> this page to return to your member account at any time.
                 </p>
                 <br />
+                {{ flash.output() }}
                 {{ form('applicant/register/' ~ supplier.id ~ '/' ~ supplier.activation_key, 'id': 'registerForm', 'class': 'form-horizontal', 'onbeforesubmit': 'return false') }}
 
                 <div class="form-group">
