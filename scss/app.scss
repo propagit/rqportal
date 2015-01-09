@@ -18,6 +18,7 @@
     bottom: 0;
 }
 body {
+    font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
     font-size: 16px;
     color: #2f2e2e;
 }
@@ -42,20 +43,21 @@ h1,h2,h3,h4,h5,h6 {
     margin: 0;
     padding: 0 0 10px 0;
     line-height: 30px;
+    font-weight: 100;
 }
 h1 {
     font-size: 30px;
-    font-weight: 600;
 }
 h3 {
     font-size: 24px;
-    font-weight: 600;
 }
 h4 {
-    font-weight: 600;
 }
 .fw300 {
     font-weight: 300;
+}
+.fw600 {
+    font-weight: 600;
 }
 hr {
     border-color: #c1c1c1;
@@ -102,19 +104,26 @@ hr {
                 width: 64px;
                 border-radius: 32px;
                 border: 10px solid #d5d5d5;
+                color: #d5d5d5;
                 background: #fff;
                 text-align: center;
-                line-height: 44px;
+                line-height: 40px;
                 font-size: 20px;
+                font-weight: 600;
             }
             .step.completed {
                 border-color: #6eb02f;
+                color: #6eb02f;
+                &.current {
+                    color: #000;
+                }
             }
             label {
                 font-weight: 500;
                 font-size: 14px;
                 margin-left: -52px;
                 margin-top: 10px;
+                color: #333;
             }
         }
         li.step1 {
@@ -173,8 +182,6 @@ hr {
 .btn-red {
     @include linear-gradient(#a60921, #8d0c1e);
     color: #fff;
-    font-weight: 600;
-    font-size: 24px;
     &:hover, &:focus {
         color: #fff;
     }
@@ -197,6 +204,18 @@ hr {
 }
 
 .angular-google-map-container { height: 500px; }
+#welcome {
+    text-align: center;
+    ul {
+        margin: 30px auto;
+        width: 580px;
+        list-style: none;
+        text-align: justify;
+        li i {
+            margin-right: 10px;
+        }
+    }
+}
 
 #login-form {
     width: 400px;

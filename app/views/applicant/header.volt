@@ -18,17 +18,17 @@
                     </div>
                     <ul id="steps">
                         <li class="step1">{% if step >1 %}<a href="{{ baseUrl }}/profile">{% endif %}
-                            <div class="step{% if step >= 1 %} completed{% endif %}">1</div>
+                            <div class="step{% if step >= 1 %} completed{% endif %}{% if step == 1 %} current{% endif %}">1</div>
                             <label>Company Profile Information</label>
                             {% if step >1 %}</a>{% endif %}
                         </li>
                         <li class="step2">{% if step > 2 %}<a href="{{ baseUrl }}/local">{% endif %}
-                            <div class="step{% if step >= 2 %} completed{% endif %}">2</div>
+                            <div class="step{% if step >= 2 %} completed{% endif %}{% if step == 2 %} current{% endif %}">2</div>
                             <label>Set Work<br />Locations</label>
                             {% if step > 2 %}</a>{% endif %}
                         </li>
                         <li class="step3">
-                            <div class="step{% if step >= 3 %} completed{% endif %}">3</div>
+                            <div class="step{% if step >= 3 %} completed{% endif %}{% if step == 3 %} current{% endif %}">3</div>
                             <label>Payment<br />Details</label>
                         </li>
                     </ul>

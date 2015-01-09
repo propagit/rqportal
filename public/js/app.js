@@ -219,8 +219,9 @@ angular.module('rqportal', [
     };
     $scope.complete = function() {
         var loadingModal = $modal.open({
-            templateUrl: 'loading',
-            size: '',
+            templateUrl: 'welcomeAboard',
+            controller: 'WelcomeCtrl',
+            size: 'lg',
             backdrop: 'static',
             resolve: {
                 items: function () {
@@ -231,11 +232,13 @@ angular.module('rqportal', [
 
         $http.post(Config.BASE_URL + 'applicant/complete')
         .success(function(response){
-            loadingModal.close();
-            window.location = '..';
         }).error(function(error){
-
         });
+    };
+})
+.controller('WelcomeCtrl', function($scope){
+    $scope.goToPortal = function() {
+        window.location = '..';
     };
 })
 .filter('range', function(){

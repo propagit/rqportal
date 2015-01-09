@@ -18,17 +18,17 @@
                     </div>
                     <ul id="steps">
                         <li class="step1"><?php if ($step > 1) { ?><a href="<?php echo $baseUrl; ?>/profile"><?php } ?>
-                            <div class="step<?php if ($step >= 1) { ?> completed<?php } ?>">1</div>
+                            <div class="step<?php if ($step >= 1) { ?> completed<?php } ?><?php if ($step == 1) { ?> current<?php } ?>">1</div>
                             <label>Company Profile Information</label>
                             <?php if ($step > 1) { ?></a><?php } ?>
                         </li>
                         <li class="step2"><?php if ($step > 2) { ?><a href="<?php echo $baseUrl; ?>/local"><?php } ?>
-                            <div class="step<?php if ($step >= 2) { ?> completed<?php } ?>">2</div>
+                            <div class="step<?php if ($step >= 2) { ?> completed<?php } ?><?php if ($step == 2) { ?> current<?php } ?>">2</div>
                             <label>Set Work<br />Locations</label>
                             <?php if ($step > 2) { ?></a><?php } ?>
                         </li>
                         <li class="step3">
-                            <div class="step<?php if ($step >= 3) { ?> completed<?php } ?>">3</div>
+                            <div class="step<?php if ($step >= 3) { ?> completed<?php } ?><?php if ($step == 3) { ?> current<?php } ?>">3</div>
                             <label>Payment<br />Details</label>
                         </li>
                     </ul>

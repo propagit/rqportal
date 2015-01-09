@@ -23,14 +23,5 @@
     </head>
     <body ng-app="rqportal">
         <?php echo $this->getContent(); ?>
-
-        <script type="text/ng-template" id="loading">
-            <div class="modal-body">
-                <br />
-                <p align="center"><i class="fa fa-cog fa-3x fa-spin"></i></p>
-                <h3 class="modal-title" align="center">Please wait ...</h3>
-                <br />
-            </div>
-        </script>
     </body>
 </html>

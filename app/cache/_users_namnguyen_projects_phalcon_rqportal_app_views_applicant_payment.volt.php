@@ -35,13 +35,13 @@
                 <div class="col-lg-2">
                     <select class="form-control" ng-model="card.month" name="month" id="expiry" data-card-expiration required>
                         <option disabled selected value="">Month</option>
-                        <option ng-repeat="month in months" value="[[$index+1]]" > [[$index+1]] - [[month]]
+                        <option ng-repeat="month in months" value="[[$index+1]]" > [[$index+1]] - [[month]]</option>
                     </select>
                 </div>
                 <div class="col-lg-2">
                     <select class="form-control" ng-model="card.year" name="year" required>
                         <option disabled selected value="">Year</option>
-                        <option ng-repeat="year in [] | range:currentYear:currentYear+13">[[year]]
+                        <option ng-repeat="year in [] | range:currentYear:currentYear+13">[[year]]</option>
                     </select>
                 </div>
             </div>
@@ -72,3 +72,24 @@
         </div>
     </div>
 </div>
+
+<script type="text/ng-template" id="welcomeAboard">
+    <div class="modal-header"><br />
+        <h3 class="modal-title" align="center"><i class="fa fa-smile-o"></i> Welcome Aboard!</h3>
+    </div>
+    <div class="modal-body" id="welcome">
+        <h4 align="center" class="fw600">Congratulations you have completed your account set up and will now start receiving quotes!</h4>
+        <p align="center">
+            Quotes will be sent to the email address specified in your profile and will also be available via your user portal.<br />
+            Login to your user portal anytime using the user name and password you created at set up. <br />
+            You can do the following tasks via your user portal:
+        </p>
+        <ul>
+            <li><i class="fa fa-square-o"></i> Update and change your company profile information</li>
+            <li><i class="fa fa-square-o"></i> Manage and track quotes sent to you from the system</li>
+            <li><i class="fa fa-square-o"></i> Manage your location settings (where you would like to recieve jobs)</li>
+            <li><i class="fa fa-square-o"></i> Manage and pay bills</li>
+        </ul>
+        <p align="center"><a class="btn btn-red" ng-click="goToPortal()">Go To Portal <i class="fa fa-arrow-right"></i></a></p>
+    </div>
+</script>
