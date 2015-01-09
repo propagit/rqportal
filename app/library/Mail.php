@@ -23,7 +23,7 @@ class Mail extends Component
     public function getTemplate($name, $params)
     {
         $parameters = array_merge(array(
-            'publicUrl' => $this->config->application->baseUri,
+            // 'publicUrl' => $this->config->application->baseUri,
         ), $params);
 
         return $this->view->getRender('emailTemplates', $name, $parameters, function($view){
