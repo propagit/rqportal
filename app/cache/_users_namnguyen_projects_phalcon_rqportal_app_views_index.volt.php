@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html <?php if ($this->router->getControllerName() != 'applicant') { ?> class="be"<?php } ?>>
     <head>
         <meta charset="UTF-8" />
         <?php echo $this->tag->getTitle(); ?>

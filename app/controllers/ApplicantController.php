@@ -7,8 +7,8 @@ class ApplicantController extends \Phalcon\Mvc\Controller
     {
         $auth = $this->session->get('auth');
         if ($auth) {
-            $this->supplier = Supplier::findFirst("user_id = " . $auth['id']);
-            $this->user = User::findFirst("id = " . $auth['id']);
+            $this->supplier = Supplier::findFirstByUserId($auth['id']);
+            $this->user = User::findFirstById($auth['id']);
         }
         $this->view->baseUrl = $this->url->get('applicant');
     }
@@ -76,12 +76,20 @@ class ApplicantController extends \Phalcon\Mvc\Controller
             foreach($this->request->getPost() as $key => $value) {
                 $this->supplier->$key = $value;
                 $this->supplier->save();
-                $this->response->redirect('applicant/local');
+                $this->response->redirect('applicant/location/local');
             }
         }
 
         $form = new ProfileForm($this->supplier, array('edit' => true));
         $this->view->form = $form;
+    }
+
+    public function locationAction($zoneType='local')
+    {
+        $this->tag->setTitle(ucwords($zoneType) . ' Zones');
+        $this->view->zoneType = $zoneType;
+        $this->view->goNext = true;
+
     }
 
     public function localAction()

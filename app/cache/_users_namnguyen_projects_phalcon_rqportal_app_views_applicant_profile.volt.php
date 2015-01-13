@@ -12,27 +12,28 @@
 
             <?php echo $this->tag->form(array('applicant/profile', 'role' => 'form', 'class' => 'form-horizontal')); ?>
 
-            <?php foreach ($form as $element) { ?>
-                <?php if (is_a($element, 'Phalcon\Forms\Element\Hidden')) { ?>
-                <?php echo $element; ?>
-                <?php } else { ?>
+                <?php foreach ($form as $element) { ?>
+                    <?php if (is_a($element, 'Phalcon\Forms\Element\Hidden')) { ?>
+                    <?php echo $element; ?>
+                    <?php } else { ?>
+                    <div class="form-group">
+                        <?php echo $element->label(array('class' => 'col-lg-2')); ?>
+                        <div class="col-lg-10">
+                            <?php echo $element->render(array('class' => 'form-control')); ?>
+                        </div>
+                    </div>
+                    <?php } ?>
+                <?php } ?>
+
                 <div class="form-group">
-                    <?php echo $element->label(array('class' => 'col-lg-2')); ?>
-                    <div class="col-lg-10">
-                        <?php echo $element->render(array('class' => 'form-control')); ?>
+                    <div class="col-lg-offset-2 col-lg-10">
+                        <button class="btn btn-labeled btn-danger" type="submit">
+                            <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Next Step
+                        </button>
                     </div>
                 </div>
-                <?php } ?>
-            <?php } ?>
-
-            <div class="form-group">
-                <div class="col-lg-offset-2 col-lg-10">
-                    <button class="btn btn-danger" type="submit">Next Step</button>
-                </div>
-            </div>
 
             </form>
-
         </div>
     </div>
 </div>

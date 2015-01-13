@@ -1,22 +1,6 @@
-<?php $this->partial('applicant/header', array('step' => 2)); ?>
 
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
 
-            <h3>What Locations Can you Work In</h3>
-
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs tabs-red">
-                <li<?php if ($zone == 'local') { ?> class="active"<?php } ?>><a href="<?php echo $baseUrl; ?>/local#map">Local Zones</a></li>
-                <li<?php if ($zone == 'country') { ?> class="active"<?php } ?>><a href="<?php echo $baseUrl; ?>/country#map">Country Zones</a></li>
-                <li<?php if ($zone == 'interstate') { ?> class="active"<?php } ?>><a href="<?php echo $baseUrl; ?>/interstate#map">Interstate Zones</a></li>
-            </ul>
-
-            <!-- Tab panes -->
-            <div id="map">
-                
 <div class="row" ng-controller="StateMapCtrl">
     <div class="col-lg-7">
         <h3>Create Your Interstate Zones</h3>
@@ -80,13 +64,11 @@
                 </tr>
             </tbody>
         </table>
-        <a class="btn btn-red" href="<?php echo $baseUrl; ?>/payment">Next Step</a>
+        <?php if ($goNext) { ?>
+        <a href="<?php echo $baseUrl; ?>/payment" class="btn btn-labeled btn-danger">
+            <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Next Step
+        </a>
+        <?php } ?>
     </div>
 </div>
 
-            </div>
-        </div>
-    </div>
-</div>
-
-<br />

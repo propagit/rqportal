@@ -1,4 +1,4 @@
-{% extends "applicant/location.volt" %}
+{#% extends "applicant/location.volt" %#}
 
 {% block location %}
 <div class="row" ng-controller="CountryMapCtrl">
@@ -57,7 +57,11 @@
                 </tr>
             </tbody>
         </table>
-        <a class="btn btn-red" href="{{ baseUrl }}/interstate#map">Next Step</a>
+        {% if goNext %}
+        <a href="{{ baseUrl }}/location/interstate#map" class="btn btn-labeled btn-danger">
+            <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Next Step
+        </a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

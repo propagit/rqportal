@@ -1,3 +1,6 @@
+// Import Google Font Open Sans
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800);
+
 // Import Font Awesome
 @import url("../font-awesome-4.2.0/css/font-awesome.min.css");
 @import url("../smart-admin/css/smartadmin-production.min.css");
@@ -17,11 +20,32 @@
 .modal-backdrop {
     bottom: 0;
 }
+.lh-28 {
+    line-height: 28px;
+}
+.col-lg-5-4 {
+    width: 13.88888889%;
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-left: 13px;
+    padding-right: 13px;
+}
 body {
     font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
     font-size: 16px;
     color: #2f2e2e;
 }
+
+html.be {
+    background: #f5f5f5;
+    font-size: 13px;
+    body {
+        background: #f5f5f5;
+        font-size: 13px;
+    }
+}
+
 a {
     label {
         cursor: pointer;
@@ -173,11 +197,13 @@ hr {
             background: #9e0a20;
             border: 1px solid #9e0a20;
             color: #fff;
-            box-shadow: 0 -2px 0 #77021d;
-            -webkit-box-shadow: 0 -2px 0 #77021d;
-            -moz-box-shadow: 0 -2px 0 #77021d;
         }
     }
+}
+.nav-tabs>li.active>a {
+    box-shadow: 0 -2px 0 #77021d;
+    -webkit-box-shadow: 0 -2px 0 #77021d;
+    -moz-box-shadow: 0 -2px 0 #77021d;
 }
 .btn-red {
     @include linear-gradient(#a60921, #8d0c1e);
@@ -188,6 +214,7 @@ hr {
 }
 .map {
     margin-top: 20px;
+    border: 1px solid #ccc;
 }
 
 .progress {
@@ -208,7 +235,7 @@ hr {
     text-align: center;
     ul {
         margin: 30px auto;
-        width: 580px;
+        width: 600px;
         list-style: none;
         text-align: justify;
         li i {
@@ -306,4 +333,26 @@ aside {
 }
 .jarviswidget-color-red>header {
     background: #931313;
+}
+.jarviswidget-no-header {
+    border-top: 1px solid #ccc;
+}
+#ribbon {
+    background: none;
+    padding: 0 20px;
+    .breadcrumb {
+        color: #697386;
+        &>li+li:before, li:last-child, &>.active {
+            color: #202427;
+        }
+    }
+}
+#content {
+    padding: 0 20px 10px 20px;
+}
+.page-title {
+    margin-bottom: 10px;
+}
+.btn-label {
+    border-radius: 1px 0 0 3px;
 }

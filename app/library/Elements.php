@@ -28,7 +28,12 @@ class Elements extends Component
         'profile' => array(
             'icon' => 'fa-user',
             'label' => 'Update Profile',
-            'action' => ''
+            'action' => '#',
+            'children' => array(
+                'company' => 'Company Profile',
+                'location' => 'Work Locations',
+                'payment' => 'Payment Info'
+            )
         ),
         'quote' => array(
             'icon' => 'fa-file-text-o',
@@ -96,9 +101,27 @@ class Elements extends Component
 
     }
 
+    public function getBreadcrumb()
+    {
+        $controller = $this->view->getControllerName();
+        $action = $this->view->getActionName();
+        echo '<ol class="breadcrumb">';
+        echo '<li>' . ucwords($controller) . '</li>';
+        if ($action && $action != 'index') {
+            echo '<li>' . ucwords($action) . '</li>';
+        }
+        echo '</ol>';
+    }
+
     public function getUsername()
     {
         $auth = $this->session->get('auth');
         echo $auth['username'];
+    }
+
+    public function getAccessLevel()
+    {
+        $auth = $this->session->get('auth');
+        echo $auth['level'];
     }
 }

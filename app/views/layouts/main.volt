@@ -5,6 +5,15 @@
 
 <!-- MAIN PANEL -->
 <div id="main" role="main">
+    <!-- RIBBON -->
+    <div id="ribbon">
+
+
+        <!-- breadcrumb -->
+        {{ elements.getBreadcrumb() }}
+
+    </div>
+    <!-- END RIBBON -->
 
     <!-- MAIN CONTENT -->
     <div id="content">

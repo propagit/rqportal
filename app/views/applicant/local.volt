@@ -1,4 +1,4 @@
-{% extends "applicant/location.volt" %}
+{#% extends "applicant/location.volt" %#}
 
 {% block location %}
 <div class="row" ng-controller="LocalMapCtrl">
@@ -52,7 +52,11 @@
                 </tr>
             </tbody>
         </table>
-        <a class="btn btn-red" ng-if="zones.length > 0" href="{{ baseUrl }}/country#map">Next Step</a>
+        {% if goNext %}
+        <a href="{{ baseUrl }}/location/country#map" ng-if="zones.length > 0" class="btn btn-labeled btn-danger">
+            <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Next Step
+        </a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

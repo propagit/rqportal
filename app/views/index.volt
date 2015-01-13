@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html {% if router.getControllerName() != "applicant" %} class="be"{% endif %}>
     <head>
         <meta charset="UTF-8" />
         {{ get_title() }}

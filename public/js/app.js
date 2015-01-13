@@ -251,3 +251,28 @@ angular.module('rqportal', [
     }
     return filter;
 })
+
+.controller('QuoteCtrl', function($scope, $http, Config, uiGmapGoogleMapApi) {
+    $scope.active_quote = {};
+
+    $http.get(Config.BASE_URL + 'quote/ajaxGet')
+    .success(function(response){
+        $scope.quotes = response.quotes;
+        $scope.quoteDetails(response.quotes[0]);
+    }).error(function(error){
+        console.log("Error", error);
+    });
+    $scope.quoteDetails = function(quote) {
+        $scope.active_quote = quote;
+        $scope.paths = [];
+        uiGmapGoogleMapApi.then(function(maps) {
+            var lat = (parseFloat(quote.from_lat) + parseFloat(quote.to_lat))/2;
+            var lon = (parseFloat(quote.from_lon) + parseFloat(quote.to_lon))/2;
+            $scope.map = { center: { latitude: lat, longitude: lon }, zoom: 13 };
+            $scope.paths.push(quote.path);
+            $scope.from_marker = quote.from_marker;
+            $scope.to_marker = quote.to_marker;
+        });
+    };
+
+})

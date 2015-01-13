@@ -49,6 +49,18 @@ class Supplier extends \Phalcon\Mvc\Model
      *
      * @var string
      */
+    public $company;
+
+    /**
+     *
+     * @var string
+     */
+    public $abn_acn;
+
+    /**
+     *
+     * @var string
+     */
     public $address;
 
     /**
@@ -130,6 +142,8 @@ class Supplier extends \Phalcon\Mvc\Model
             'activation_key' => 'activation_key',
             'name' => 'name',
             'business' => 'business',
+            'company' => 'company',
+            'abn_acn' => 'abn_acn',
             'address' => 'address',
             'suburb' => 'suburb',
             'state' => 'state',
@@ -152,6 +166,8 @@ class Supplier extends \Phalcon\Mvc\Model
             array(
                 'name' => $this->name,
                 'business' => $this->business,
+                'company' => $this->company,
+                'abn_acn' => $this->abn_acn,
                 'address' => $this->address,
                 'suburb' => $this->suburb,
                 'state' => $this->state,
@@ -163,5 +179,4 @@ class Supplier extends \Phalcon\Mvc\Model
             )
         );
     }
-
 }

@@ -1,0 +1,214 @@
+<html ng-app="rqdemo">
+<head>
+    <meta charset="UTF-8" />
+    <title>Add New Quote</title>
+
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="bower_components/angular-bootstrap3-datepicker/dist/ng-bs3-datepicker.css" />
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css" />
+
+    <link rel="stylesheet" type="text/css" href="bower_components/angucomplete/angucomplete-alt.css" />
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/moment/min/moment-with-locales.min.js" charset="utf-8"></script>
+    <script src="bower_components/angular-bootstrap3-datepicker/dist/ng-bs3-datepicker.min.js" charset="utf-8"></script>
+
+    <!-- Auto complete-->
+    <script type="text/javascript" src="bower_components/angucomplete/angucomplete-alt.min.js"></script>
+    <script type="text/javascript" src="demo.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Removalist Quote">
+    <meta name="author" content="Propagate Team">
+    <style>
+    .container {width:800px;}
+    hr {margin:10px 0;padding:0;}
+    h3 {margin:10px 0;padding:0;}
+    </style>
+</head>
+<body>
+    <div class="container" ng-controller="AddQuoteCtrl">
+        <div class="row">
+            <h1>Demo Quote Form</h1><hr />
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-12"><h3>Moving Type</h3></div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <div class="radio alert alert-info">
+                            <label for="moving_home" class="radio-inline">
+                                <input type="radio" ng-model="quote.moving_type" id="moving_home" value="moving_home" ng-required> Moving Home
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="radio alert alert-info">
+                            <label for="moving_office" class="radio-inline">
+                                <input type="radio" ng-model="quote.moving_type" id="moving_office" value="moving_office" ng-required> Moving Office
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="radio alert alert-info">
+                            <label for="storage" class="radio-inline">
+                                <input type="radio" ng-model="quote.moving_type" id="storage" value="storage" ng-required> Storage
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="radio alert alert-info">
+                            <label for="moving_interstate" class="radio-inline">
+                                <input type="radio" ng-model="quote.moving_type" id="moving_interstate" value="moving_interstate" ng-required> Interstate Move
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12"><h3>Customer Details</h3></div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" ng-model="quote.customer_name" placeholder="Name *" required>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="email" class="form-control" ng-model="quote.customer_email" placeholder="Email *" required>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" ng-model="quote.customer_phone" placeholder="Phone *" required>
+                    </div>
+                </div>
+
+                <div ng-if="quote.moving_type == 'storage'">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <h3>Pick Up Location</h3>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <angucomplete-alt id="pickup"
+                              minlength="1"
+                              placeholder="Enter postcode or suburb name"
+                              pause="100"
+                              selected-object="quote.pickup"
+                              remote-url="http://localhost/rqportal/api/postcode/"
+                              remote-url-data-field="postcodes"
+                              title-field="name"
+                              input-class="form-control form-control-small"
+                              match-class="highlight"
+                              field-required="true"></angucomplete-alt>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6">How many storage containers do you need?</div>
+                        <div class="col-sm-6">Storage period</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <select ng-model="quote.containers" ng-options="container as container for container in containers" class="form-control" required>
+                                <option></option>
+                            </select>
+                            <span id="helpBlock" class="help-block">An average storage container is Height 2.4m x Length 2.4m x Width 1.8m</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <select ng-model="quote.period" ng-options="period as period for period in periods" class="form-control" required>
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="quote.moving_type != 'storage'">
+                    <div class="form-group">
+                        <div class="col-sm-6"><h3>Moving From</h3></div>
+                        <div class="col-sm-6"><h3>Moving To</h3></div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <angucomplete-alt id="moving_from"
+                              minlength="1"
+                              placeholder="Enter postcode or suburb name"
+                              pause="100"
+                              selected-object="quote.moving_from"
+                              remote-url="http://localhost/rqportal/api/postcode/"
+                              remote-url-data-field="postcodes"
+                              title-field="name"
+                              input-class="form-control form-control-small"
+                              match-class="highlight"
+                              field-required="true"></angucomplete-alt>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <angucomplete-alt id="moving_to"
+                              placeholder="Enter postcode or suburb name"
+                              pause="100"
+                              selected-object="quote.moving_to"
+                              remote-url="http://localhost/rqportal/api/postcode/"
+                              remote-url-data-field="postcodes"
+                              title-field="name"
+                              input-class="form-control form-control-small"
+                              match-class="highlight"></angucomplete-alt>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-12"><h3>Moving Details</h3></div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4">Moving Date</div>
+                        <div class="col-sm-3">Bedrooms</div>
+                        <div class="col-sm-5">Packing Needs</div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                        <ng-bs3-datepicker data-ng-model='quote.moving_date' language="en-ca" date-format="YYYY-MM-DD" required></ng-bs3-datepicker>
+                        </div>
+                        <div class="col-sm-3">
+                            <select ng-model="quote.bedrooms" ng-options="bedroom as bedroom for bedroom in bedrooms" class="form-control" required>
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="col-sm-5">
+                            <select ng-model="quote.packing" ng-options="packing as packing for packing in packings" class="form-control" required>
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">Notes</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <textarea class="form-control" ng-model="quote.notes" placeholder="Let us know any additional information that can help to provide a more accurate quote such as do you have stairs or lift and heavy or tricky items"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary" ng-click="submit(quote)">Get Quote Now!</button>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="result == 'success'">
+                    <div class="col-sm-12">
+                        <span class="alert alert-success help-block">Your quote has been submitted successfully!</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="result == 'error'">
+                    <div class="col-sm-12">
+                        <span class="alert alert-danger help-block">{{ error_message }}</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

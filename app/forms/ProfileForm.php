@@ -43,6 +43,26 @@ class ProfileForm extends Form
         ));
         $this->add($business);
 
+        $company = new Text("company");
+        $company->setLabel("Company Name *");
+        $company->setFilters(array('striptags', 'string'));
+        $company->addValidators(array(
+            new PresenceOf(array(
+                'message' => 'Company Name is required'
+            ))
+        ));
+        $this->add($company);
+
+        $abn_acn = new Text("abn_acn");
+        $abn_acn->setLabel("ABN/ACN *");
+        $abn_acn->setFilters(array('striptags', 'string'));
+        $abn_acn->addValidators(array(
+            new PresenceOf(array(
+                'message' => 'ABN/ACN is required'
+            ))
+        ));
+        $this->add($abn_acn);
+
         $address = new Text("address");
         $address->setLabel("Address *");
         $address->setFilters(array('striptags', 'string'));
@@ -119,6 +139,7 @@ class ProfileForm extends Form
         $about = new TextArea('about');
         $about->setLabel('About My Business');
         $about->setFilters(array('striptags', 'string'));
+        $about->setAttribute('rows', 5);
         $this->add($about);
     }
 }

@@ -11,17 +11,9 @@ class SignupController extends \Phalcon\Mvc\Controller
         if ($this->request->isPost())
         {
             $applicant = new Supplier();
-
-            $applicant->name = $this->request->getPost('name');
-            $applicant->business = $this->request->getPost('business');
-            $applicant->address = $this->request->getPost('address');
-            $applicant->suburb = $this->request->getPost('suburb');
-            $applicant->state = $this->request->getPost('state');
-            $applicant->postcode = $this->request->getPost('postcode');
-            $applicant->phone = $this->request->getPost('phone');
-            $applicant->email = $this->request->getPost('email');
-            $applicant->website = $this->request->getPost('website');
-            $applicant->about = $this->request->getPost('about');
+            foreach($this->request->getPost() as $key => $value) {
+                $applicant->$key = $value;
+            }
             $applicant->status = Supplier::APPLIED;
             $applicant->created_on = new Phalcon\Db\RawValue('now()');
 

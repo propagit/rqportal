@@ -20,6 +20,16 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
                 <td>{{ business }}</td>
             </tr>
             <tr>
+                <td>Company Name:</td>
+                <td width="20"></td>
+                <td>{{ company }}</td>
+            </tr>
+            <tr>
+                <td>ABN/ACN:</td>
+                <td width="20"></td>
+                <td>{{ abn_acn }}</td>
+            </tr>
+            <tr>
                 <td>Address:</td>
                 <td width="20"></td>
                 <td>{{ address }}</td>
