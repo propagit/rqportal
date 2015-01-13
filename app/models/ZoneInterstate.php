@@ -1,6 +1,6 @@
 <?php
 
-class ZoneInterstate extends \Phalcon\Mvc\Model
+class ZoneInterstate extends BaseModel
 {
 
     /**
@@ -182,20 +182,22 @@ class ZoneInterstate extends \Phalcon\Mvc\Model
     public function generatePool()
     {
         # Pool 1
-        $query = new Phalcon\Mvc\Model\Query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode1, p.postcode) <= $this->distance1", $this->getDI());
-        $postcodes = $query->execute();
+        $result = $this->db->query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode1, p.postcode) <= $this->distance1");
+
         $pool1 = array();
-        foreach($postcodes as $p) {
-            $pool1[] = $p->postcode;
+        $result->setFetchMode(Phalcon\Db::FETCH_OBJ);
+        while($postcode = $result->fetch()) {
+            $pool1[] = $postcode->postcode;
         }
         $this->pool1 = json_encode($pool1);
 
         # Pool 2
-        $query = new Phalcon\Mvc\Model\Query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode2, p.postcode) <= $this->distance2", $this->getDI());
-        $postcodes = $query->execute();
+        $result = $this->db->query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode2, p.postcode) <= $this->distance2");
+
         $pool2 = array();
-        foreach($postcodes as $p) {
-            $pool2[] = $p->postcode;
+        $result->setFetchMode(Phalcon\Db::FETCH_OBJ);
+        while($postcode = $result->fetch()) {
+            $pool2[] = $postcode->postcode;
         }
         $this->pool2 = json_encode($pool2);
 

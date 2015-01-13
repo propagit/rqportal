@@ -1,6 +1,6 @@
 <?php
 
-class ZoneCountry extends \Phalcon\Mvc\Model
+class ZoneCountry extends BaseModel
 {
 
     /**
@@ -108,11 +108,13 @@ class ZoneCountry extends \Phalcon\Mvc\Model
     public function generatePool()
     {
         $local = ZoneLocal::findFirst("id = " . $this->local_id);
-        $query = new Phalcon\Mvc\Model\Query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($local->postcode, p.postcode) <= $this->distance", $this->getDI());
-        $postcodes = $query->execute();
+
+        $result = $this->db->query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($local->postcode, p.postcode) <= $this->distance");
+
         $pool = array();
-        foreach($postcodes as $p) {
-            $pool[] = $p->postcode;
+        $result->setFetchMode(Phalcon\Db::FETCH_OBJ);
+        while($postcode = $result->fetch()) {
+            $pool[] = $postcode->postcode;
         }
         $this->pool_local = $local->pool;
         $this->pool_country = json_encode($pool);

@@ -105,9 +105,6 @@ class ZoneLocal extends BaseModel
 
     public function generatePool()
     {
-        // $query = new Phalcon\Mvc\Model\Query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode, p.postcode) <= $this->distance", $this->getDI());
-        // $postcodes = $query->execute();
-
         $result = $this->db->query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode, p.postcode) <= $this->distance");
 
         $pool = array();
@@ -118,7 +115,5 @@ class ZoneLocal extends BaseModel
         $this->pool = json_encode($pool);
         $this->save();
         return count($pool);
-
-        // $postcodes = Postcodes::find("postcode_dist($this->postcode,postcode) <= $this->distance");
     }
 }
