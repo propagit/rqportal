@@ -17,7 +17,7 @@ return new \Phalcon\Config(array(
         'formsDir'       => __DIR__ . '/../../app/forms/',
         'cacheDir'       => __DIR__ . '/../../app/cache/',
         'baseUri'        => '/rqportal/',
-        'publicUrl'      => 'http://localhost/rqportal'
+        'publicUrl'      => 'http://localhost/rqportal/'
     ),
     'mail' => array(
         'toName'    => 'Team',

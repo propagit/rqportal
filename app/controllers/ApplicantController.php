@@ -87,29 +87,12 @@ class ApplicantController extends \Phalcon\Mvc\Controller
     public function locationAction($zoneType='local')
     {
         $this->tag->setTitle(ucwords($zoneType) . ' Zones');
+        if ($zoneType == 'country') {
+            $this->view->local_zones = ZoneLocal::find("user_id = " . $this->user->id);
+        }
         $this->view->zoneType = $zoneType;
         $this->view->goNext = true;
 
-    }
-
-    public function localAction()
-    {
-        $this->tag->setTitle('Local Zones');
-        $this->view->zone = 'local';
-    }
-
-
-    public function countryAction()
-    {
-        $this->tag->setTitle('Country Zones');
-        $this->view->zone = 'country';
-        $this->view->local_zones = ZoneLocal::find("user_id = " . $this->supplier->id);
-    }
-
-    public function interstateAction()
-    {
-        $this->tag->setTitle('Interstate Zones');
-        $this->view->zone = 'interstate';
     }
 
     public function paymentAction()
@@ -126,7 +109,7 @@ class ApplicantController extends \Phalcon\Mvc\Controller
         $this->view->disable();
 
         if ($this->request->isPost() == true) {
-            $zones = ZoneLocal::find("user_id = " . $this->supplier->id);
+            $zones = ZoneLocal::find("user_id = " . $this->user->id);
             $zoneObjects = array();
             $markers = array();
             $circles = array();
@@ -151,7 +134,7 @@ class ApplicantController extends \Phalcon\Mvc\Controller
         if ($this->request->isPost() == true) {
             $payload = $this->request->getJsonRawBody();
             $zone = new ZoneLocal();
-            $zone->user_id = $this->supplier->id;
+            $zone->user_id = $this->user->id;
             $zone->postcode = $payload->postcode;
             $zone->latitude = $payload->latitude;
             $zone->longitude = $payload->longitude;
@@ -171,7 +154,7 @@ class ApplicantController extends \Phalcon\Mvc\Controller
     {
         $this->view->disable();
         if ($this->request->isPost() == true) {
-            $zone = ZoneLocal::findFirst("id = $id AND user_id = " . $this->supplier->id);
+            $zone = ZoneLocal::findFirst("id = $id AND user_id = " . $this->user->id);
             if ($zone) {
                 $zone->delete();
             }
@@ -184,7 +167,7 @@ class ApplicantController extends \Phalcon\Mvc\Controller
         $this->view->disable();
 
         if ($this->request->isPost() == true) {
-            $zones = ZoneCountry::find("user_id = " . $this->supplier->id);
+            $zones = ZoneCountry::find("user_id = " . $this->user->id);
             $zoneObjects = array();
             $markers = array();
             $circles = array();
@@ -210,7 +193,7 @@ class ApplicantController extends \Phalcon\Mvc\Controller
             $payload = $this->request->getJsonRawBody();
             $zone_local = ZoneLocal::findFirst("id = '" . $payload->local_id . "'");
             $zone_country = new ZoneCountry();
-            $zone_country->user_id = $this->supplier->id;
+            $zone_country->user_id = $this->user->id;
             $zone_country->local_id = $zone_local->id;
             $zone_country->distance = $payload->distance;
             if ($zone_country->save() == false)
@@ -235,7 +218,7 @@ class ApplicantController extends \Phalcon\Mvc\Controller
     {
         $this->view->disable();
         if ($this->request->isPost() == true) {
-            $zone = ZoneCountry::findFirst("id = $id AND user_id = " . $this->supplier->id);
+            $zone = ZoneCountry::findFirst("id = $id AND user_id = " . $this->user->id);
             if ($zone) {
                 $zone->delete();
             }
@@ -248,7 +231,7 @@ class ApplicantController extends \Phalcon\Mvc\Controller
         $this->view->disable();
 
         if ($this->request->isPost() == true) {
-            $zones = ZoneInterstate::find("user_id = " . $this->supplier->id);
+            $zones = ZoneInterstate::find("user_id = " . $this->user->id);
             $zoneObjects = array();
             $circles1 = array();
             $circles2 = array();
@@ -275,7 +258,7 @@ class ApplicantController extends \Phalcon\Mvc\Controller
         if ($this->request->isPost() == true) {
             $payload = $this->request->getJsonRawBody();
             $zone = new ZoneInterstate();
-            $zone->user_id = $this->supplier->id;
+            $zone->user_id = $this->user->id;
             foreach($payload as $key => $value) {
                 $zone->$key = $value;
             }
@@ -298,7 +281,7 @@ class ApplicantController extends \Phalcon\Mvc\Controller
     {
         $this->view->disable();
         if ($this->request->isPost() == true) {
-            $zone = ZoneInterstate::findFirst("id = $id AND user_id = " . $this->supplier->id);
+            $zone = ZoneInterstate::findFirst("id = $id AND user_id = " . $this->user->id);
             if ($zone) {
                 $zone->delete();
             }
@@ -310,7 +293,8 @@ class ApplicantController extends \Phalcon\Mvc\Controller
     {
         $this->view->disable();
         if ($this->request->isPost() == true) {
-            $url = $this->url->get('applicant/populate/' . $this->supplier->id);
+            // $url = $this->url->get('applicant/populate/' . $this->user->id);
+            $url = $this->config->application->publicUrl . 'applicant/populate/' . $this->user->id;
             exec("curl $url > /dev/null 2>&1 &");
             $this->user->status = User::APPROVED;
             $this->user->save();
@@ -325,23 +309,23 @@ class ApplicantController extends \Phalcon\Mvc\Controller
         }
     }
 
-    public function populateAction($supplierId)
+    public function populateAction($userId)
     {
         $this->view->disable();
-        if (!$supplierId)
+        if (!$userId)
         {
             return false;
         }
-        $zone_local = ZoneLocal::find("user_id = $supplierId");
+        $zone_local = ZoneLocal::find("user_id = $userId");
         $count = 0;
         foreach($zone_local as $zone) {
             $count += $zone->generatePool();
         }
-        $zone_country = ZoneCountry::find("user_id = $supplierId");
+        $zone_country = ZoneCountry::find("user_id = $userId");
         foreach($zone_country as $zone) {
             $count += $zone->generatePool();
         }
-        $zone_interstate = ZoneInterstate::find("user_id = $supplierId");
+        $zone_interstate = ZoneInterstate::find("user_id = $userId");
         foreach($zone_interstate as $zone) {
             $count += $zone->generatePool();
         }
