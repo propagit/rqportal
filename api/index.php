@@ -59,6 +59,7 @@ $app->post('/quote/removal', function() use($app, $config) {
     $quote = $app->request->getJsonRawBody();
 
     $response = new Phalcon\Http\Response();
+    $response->setHeader('Access-Control-Allow-Origin', '*');
 
     # Check required fields for Removal
     $required_fields = array(
@@ -146,6 +147,7 @@ $app->post('/quote/storage', function() use($app, $config) {
     $quote = $app->request->getJsonRawBody();
 
     $response = new Phalcon\Http\Response();
+    $response->setHeader('Access-Control-Allow-Origin', '*');
 
     # Check required fields for Removal
     $required_fields = array(
