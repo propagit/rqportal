@@ -1,6 +1,6 @@
 angular.module('rqdemo', [
     'ng-bs3-datepicker',
-    'angucomplete-alt'
+    'angucomplete-alt',
 ])
 
 .controller('AddQuoteCtrl', function($scope, $http) {

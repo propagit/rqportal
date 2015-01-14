@@ -13,7 +13,7 @@ angular.module('rqportal', [
     uiGmapGoogleMapApiProvider.configure({
         key: 'AIzaSyCJLXHwzgv6qUZ8qtQhYvKm03173zJ2kyQ',
         v: '3.17',
-        libraries: 'places,weather,geometry,visualization'
+        libraries: 'places,weather,geometry,visualization,drawing'
     });
 })
 .controller('LocalMapCtrl', function($scope, $http, Config, uiGmapGoogleMapApi){
@@ -269,10 +269,28 @@ angular.module('rqportal', [
         $scope.active_removal = removal;
         $scope.active_storage = {};
         $scope.paths = [];
+
+
         uiGmapGoogleMapApi.then(function(maps) {
+
+            // Calculate Zoom
+            var latlngList = [];
+            latlngList.push(new google.maps.LatLng(removal.from_lat, removal.from_lon));
+            latlngList.push(new google.maps.LatLng(removal.to_lat, removal.to_lon));
+            var bounds = new google.maps.LatLngBounds();
+            latlngList.forEach(function(n){
+                bounds.extend(n);
+            });
+            var mapDim = {
+                height: $('#map-wrapper').height(),
+                width: $('#map-wrapper').width()
+            };
+            var zoom = getBoundsZoomLevel(bounds, mapDim);
+            console.log(zoom);
+
             var lat = (parseFloat(removal.from_lat) + parseFloat(removal.to_lat))/2;
             var lon = (parseFloat(removal.from_lon) + parseFloat(removal.to_lon))/2;
-            $scope.map = { center: { latitude: lat, longitude: lon }, zoom: 13 };
+            $scope.map = { center: { latitude: lat, longitude: lon }, zoom: zoom };
             $scope.paths.push(removal.path);
             $scope.from_marker = removal.from_marker;
             $scope.to_marker = removal.to_marker;
@@ -287,6 +305,34 @@ angular.module('rqportal', [
             $scope.from_marker = storage.pickup_marker;
             $scope.to_marker = {};
         });
+    };
+
+    function getBoundsZoomLevel(bounds, mapDim) {
+        var WORLD_DIM = { height: 256, width: 256 };
+        var ZOOM_MAX = 21;
+
+        function latRad(lat) {
+            var sin = Math.sin(lat * Math.PI / 180);
+            var radX2 = Math.log((1 + sin) / (1 - sin)) / 2;
+            return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;
+        }
+
+        function zoom(mapPx, worldPx, fraction) {
+            return Math.floor(Math.log(mapPx / worldPx / fraction) / Math.LN2);
+        }
+
+        var ne = bounds.getNorthEast();
+        var sw = bounds.getSouthWest();
+
+        var latFraction = (latRad(ne.lat()) - latRad(sw.lat())) / Math.PI;
+
+        var lngDiff = ne.lng() - sw.lng();
+        var lngFraction = ((lngDiff < 0) ? (lngDiff + 360) : lngDiff) / 360;
+
+        var latZoom = zoom(mapDim.height, WORLD_DIM.height, latFraction);
+        var lngZoom = zoom(mapDim.width, WORLD_DIM.width, lngFraction);
+
+        return Math.min(latZoom, lngZoom, ZOOM_MAX);
     };
 
 })

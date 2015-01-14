@@ -200,7 +200,7 @@
                         </div>
                     </div>
 
-                    <div class="widget-footer no-padding">
+                    <div class="widget-footer no-padding" id="map-wrapper">
                         <ui-gmap-google-map center='map.center' zoom='map.zoom'>
                             <!-- From Maker -->
                             <ui-gmap-marker coords="from_marker.coords" options="from_marker.options" events="from_marker.events" idkey="from_marker.id">
