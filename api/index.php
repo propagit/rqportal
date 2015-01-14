@@ -31,8 +31,11 @@ $app = new \Phalcon\Mvc\Micro($di);
 // define the routes here
 # Get the postcode
 $app->get('/postcode/{keyword}', function($keyword) use($app) {
-    $phql = "SELECT p.* FROM postcodes p WHERE p.postcode LIKE '%$keyword%' OR p.suburb LIKE '%$keyword%'";
-    $postcodes = $app->modelsManager->executeQuery($phql);
+    $phql = "SELECT p.* FROM postcodes p
+                WHERE p.postcode LIKE :keyword: OR p.suburb LIKE :keyword:";
+    $postcodes = $app->modelsManager->executeQuery($phql, array(
+        'keyword' => '%' . $keyword . '%'
+    ));
 
     $data = array();
     foreach($postcodes as $postcode) {
