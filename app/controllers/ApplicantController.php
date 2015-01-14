@@ -293,7 +293,6 @@ class ApplicantController extends \Phalcon\Mvc\Controller
     {
         $this->view->disable();
         if ($this->request->isPost() == true) {
-            // $url = $this->url->get('applicant/populate/' . $this->user->id);
             $url = $this->config->application->publicUrl . 'applicant/populate/' . $this->user->id;
             exec("curl $url > /dev/null 2>&1 &");
             $this->user->status = User::APPROVED;

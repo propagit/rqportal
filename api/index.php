@@ -47,7 +47,7 @@ $app->get('/postcode/{keyword}', function($keyword) use($app) {
 });
 
 # Add new removal quote
-$app->post('/quote/removal', function() use($app) {
+$app->post('/quote/removal', function() use($app, $config) {
     $quote = $app->request->getJsonRawBody();
 
     $response = new Phalcon\Http\Response();
@@ -116,6 +116,9 @@ $app->post('/quote/removal', function() use($app) {
     ));
 
     if ($status->success() == true) {
+
+        $url = $config->application->publicUrl . 'distribute/removal/' . $status->getModel()->id;;
+        exec("curl $url > /dev/null 2>&1 &");
         $response->setStatusCode(201, "Created");
         $response->setJsonContent(array('status' => 'OK', 'data' => $quote));
     } else {
@@ -131,7 +134,7 @@ $app->post('/quote/removal', function() use($app) {
 });
 
 # Add new storage quote
-$app->post('/quote/storage', function() use($app) {
+$app->post('/quote/storage', function() use($app, $config) {
     $quote = $app->request->getJsonRawBody();
 
     $response = new Phalcon\Http\Response();
@@ -160,13 +163,23 @@ $app->post('/quote/storage', function() use($app) {
         return $response;
     }
 
-    $phql = "INSERT INTO storage (customer_name, customer_email, customer_phone, pickup_postcode, containers, period, notes, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :pickup_postcode:, :containers:, :period:, :notes:, :created_on:)";
+    # Get pickup postcode
+    $pickup = $quote->pickup->originalObject;
+    $phql = "SELECT p.* FROM postcodes p WHERE p.postcode = :postcode: AND p.suburb = :suburb:";
+    $pickup_postcode = $app->modelsManager->executeQuery($phql, array(
+        'postcode' => $pickup->postcode,
+        'suburb' => $pickup->suburb
+    ))->getFirst();
+
+    $phql = "INSERT INTO storage (customer_name, customer_email, customer_phone, pickup_postcode, pickup_lat, pickup_lon, containers, period, notes, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :pickup_postcode:, :pickup_lat:, :pickup_lon:, :containers:, :period:, :notes:, :created_on:)";
 
     $status = $app->modelsManager->executeQuery($phql, array(
         'customer_name' => $quote->customer_name,
         'customer_email' => $quote->customer_email,
         'customer_phone' => $quote->customer_phone,
-        'pickup_postcode' => $quote->pickup->originalObject->postcode,
+        'pickup_postcode' => $pickup_postcode->postcode,
+        'pickup_lat' => $pickup_postcode->lat,
+        'pickup_lon' => $pickup_postcode->lon,
         'containers' => $quote->containers,
         'period' => $quote->period,
         'notes' => $quote->notes,
@@ -174,6 +187,8 @@ $app->post('/quote/storage', function() use($app) {
     ));
 
     if ($status->success() == true) {
+        $url = $config->application->publicUrl . 'distribute/storage/' . $status->getModel()->id;;
+        exec("curl $url > /dev/null 2>&1 &");
         $response->setStatusCode(201, "Created");
         $response->setJsonContent(array('status' => 'OK', 'data' => $quote));
     } else {

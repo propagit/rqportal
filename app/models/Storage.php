@@ -37,6 +37,18 @@ class Storage extends \Phalcon\Mvc\Model
      *
      * @var string
      */
+    public $pickup_lat;
+
+    /**
+     *
+     * @var string
+     */
+    public $pickup_lon;
+
+    /**
+     *
+     * @var string
+     */
     public $containers;
 
     /**
@@ -63,15 +75,38 @@ class Storage extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'id' => 'id', 
-            'customer_name' => 'customer_name', 
-            'customer_email' => 'customer_email', 
-            'customer_phone' => 'customer_phone', 
-            'pickup_postcode' => 'pickup_postcode', 
-            'containers' => 'containers', 
-            'period' => 'period', 
-            'notes' => 'notes', 
+            'id' => 'id',
+            'customer_name' => 'customer_name',
+            'customer_email' => 'customer_email',
+            'customer_phone' => 'customer_phone',
+            'pickup_postcode' => 'pickup_postcode',
+            'pickup_lat' => 'pickup_lat',
+            'pickup_lon' => 'pickup_lon',
+            'containers' => 'containers',
+            'period' => 'period',
+            'notes' => 'notes',
             'created_on' => 'created_on'
+        );
+    }
+
+    public function toJson()
+    {
+        $storage = $this->toArray();
+        $storage['pickup_marker'] = $this->drawPickupMarker();
+        return $storage;
+    }
+
+    public function drawPickupMarker()
+    {
+        return array(
+            'id' => 1,
+            'coords' => array(
+                'latitude' => $this->pickup_lat,
+                'longitude' => $this->pickup_lon,
+            ),
+            'options' => array(
+                'draggable' => false
+            )
         );
     }
 

@@ -31,5 +31,6 @@ return new \Phalcon\Config(array(
             'username'  => 'propagate.au@gmail.com',
             'password'  => 'm0r3m0n3Y'
         )
-    )
+    ),
+    'supplierPerQuote' => 3
 ));

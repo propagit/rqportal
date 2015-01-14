@@ -253,25 +253,39 @@ angular.module('rqportal', [
 })
 
 .controller('QuoteCtrl', function($scope, $http, Config, uiGmapGoogleMapApi) {
-    $scope.active_quote = {};
+    $scope.active_removal = {};
+    $scope.active_storage = {};
 
-    $http.get(Config.BASE_URL + 'quote/ajaxGet')
+    $http.get(Config.BASE_URL + 'quote/ajaxGetQuotes')
     .success(function(response){
-        $scope.quotes = response.quotes;
-        $scope.quoteDetails(response.quotes[0]);
+        console.log(response);
+        $scope.removals = response.removals;
+        $scope.storages = response.storages;
+        $scope.removalDetails(response.removals[0]);
     }).error(function(error){
         console.log("Error", error);
     });
-    $scope.quoteDetails = function(quote) {
-        $scope.active_quote = quote;
+    $scope.removalDetails = function(removal) {
+        $scope.active_removal = removal;
+        $scope.active_storage = {};
         $scope.paths = [];
         uiGmapGoogleMapApi.then(function(maps) {
-            var lat = (parseFloat(quote.from_lat) + parseFloat(quote.to_lat))/2;
-            var lon = (parseFloat(quote.from_lon) + parseFloat(quote.to_lon))/2;
+            var lat = (parseFloat(removal.from_lat) + parseFloat(removal.to_lat))/2;
+            var lon = (parseFloat(removal.from_lon) + parseFloat(removal.to_lon))/2;
             $scope.map = { center: { latitude: lat, longitude: lon }, zoom: 13 };
-            $scope.paths.push(quote.path);
-            $scope.from_marker = quote.from_marker;
-            $scope.to_marker = quote.to_marker;
+            $scope.paths.push(removal.path);
+            $scope.from_marker = removal.from_marker;
+            $scope.to_marker = removal.to_marker;
+        });
+    };
+    $scope.storageDetails = function(storage) {
+        $scope.active_storage = storage;
+        $scope.active_removal = {};
+        uiGmapGoogleMapApi.then(function(maps) {
+            $scope.map = { center: { latitude: storage.pickup_lat, longitude: storage.pickup_lon }, zoom: 10 };
+            $scope.paths = [];
+            $scope.from_marker = storage.pickup_marker;
+            $scope.to_marker = {};
         });
     };
 

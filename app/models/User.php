@@ -68,4 +68,11 @@ class User extends Model
 
         return $this->validationHasFailed() != true;
     }
+
+    public function getTodayQuote()
+    {
+        $today = date('Y-m-d');
+        $quotes = Quote::find("user_id = $this->id");
+        return count($quotes);
+    }
 }

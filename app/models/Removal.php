@@ -124,4 +124,73 @@ class Removal extends \Phalcon\Mvc\Model
         );
     }
 
+    public function toJson()
+    {
+        $removal = array();
+        foreach($this->columnMap() as $key => $value) {
+            $removal[$key] = $this->$key;
+        }
+        $removal['path'] = $this->drawPath();
+        $removal['from_marker'] = $this->drawFromMarker();
+        $removal['to_marker'] = $this->drawToMarker();
+        return $removal;
+    }
+
+    public function drawFromMarker()
+    {
+        return array(
+            'id' => 1,
+            'coords' => array(
+                'latitude' => $this->from_lat,
+                'longitude' => $this->from_lon,
+            ),
+            'options' => array(
+                'draggable' => false
+            )
+        );
+    }
+
+    public function drawToMarker()
+    {
+        return array(
+            'id' => 2,
+            'coords' => array(
+                'latitude' => $this->to_lat,
+                'longitude' => $this->to_lon,
+            ),
+            'options' => array(
+                'draggable' => false
+            ),
+            'events' => array(
+            )
+        );
+    }
+
+    public function drawPath()
+    {
+        return array(
+            'id' => $this->id,
+            'path' => array(
+                array('latitude' => $this->from_lat, 'longitude' => $this->from_lon),
+                array('latitude' => $this->to_lat, 'longitude' => $this->to_lon)
+            ),
+            'stroke' => array(
+                'color' => '#08B21F',
+                'weight' => 3
+            ),
+            'editable' => false,
+            'draggable' => false,
+            'geodesic' => true,
+            'visible' => true,
+            'icons' => array(
+                array(
+                    'icon' => array(
+                        'path' => ''
+                    ),
+                    'offset' => '25px',
+                    'repeat' => '50px'
+                )
+            )
+        );
+    }
 }
