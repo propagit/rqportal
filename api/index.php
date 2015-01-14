@@ -83,7 +83,7 @@ $app->post('/quote/removal', function() use($app, $config) {
 
     # Get from postcode
     $from = $quote->moving_from->originalObject;
-    $phql = "SELECT p.* FROM postcodes p WHERE p.postcode = :postcode: AND p.suburb = :suburb:";
+    $phql = "SELECT * FROM Postcodes WHERE postcode = :postcode: AND suburb = :suburb:";
     $from_postcode = $app->modelsManager->executeQuery($phql, array(
         'postcode' => $from->postcode,
         'suburb' => $from->suburb
@@ -167,7 +167,7 @@ $app->post('/quote/storage', function() use($app, $config) {
 
     # Get pickup postcode
     $pickup = $quote->pickup->originalObject;
-    $phql = "SELECT p.* FROM postcodes p WHERE p.postcode = :postcode: AND p.suburb = :suburb:";
+    $phql = "SELECT * FROM Postcodes WHERE postcode = :postcode: AND suburb = :suburb:";
     $pickup_postcode = $app->modelsManager->executeQuery($phql, array(
         'postcode' => $pickup->postcode,
         'suburb' => $pickup->suburb
