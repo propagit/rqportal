@@ -43,6 +43,7 @@ class ProfileController extends ControllerBase
     public function locationAction($zoneType='local')
     {
         $this->tag->setTitle('Work Locations');
+        $this->view->goNext = false;
         $this->view->zoneType = $zoneType;
     }
 

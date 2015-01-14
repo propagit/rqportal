@@ -34,7 +34,7 @@ angular.module('rqdemo', [
 
 
     $scope.submit = function(quote) {
-        var postUrl = 'http://localhost/rqportal/api/quote/'
+        var postUrl = 'http://propatest.com/rqportal/api/quote/'
             + ((quote.moving_type == 'storage') ? 'storage' : 'removal');
         $http.post(postUrl, quote)
         .success(function(response){

@@ -139,14 +139,22 @@ class ApplicantController extends \Phalcon\Mvc\Controller
             $zone->latitude = $payload->latitude;
             $zone->longitude = $payload->longitude;
             $zone->distance = $payload->distance;
-            $zone->save();
-            $this->response->setContent(json_encode(array(
-                'zone' => $zone,
-                'circle' => $zone->drawCircle(),
-                'marker' => $zone->drawMarker()
-            )));
 
-            return $this->response;
+            if ($zone->save())
+            {
+                if ($this->user->status == User::APPROVED)
+                {
+                    $url = $this->config->application->publicUrl . 'applicant/populateLocal/' . $zone->id;
+                    exec("curl $url > /dev/null 2>&1 &");
+                }
+                $this->response->setContent(json_encode(array(
+                    'zone' => $zone,
+                    'circle' => $zone->drawCircle(),
+                    'marker' => $zone->drawMarker()
+                )));
+
+                return $this->response;
+            }
         }
     }
 
@@ -154,6 +162,12 @@ class ApplicantController extends \Phalcon\Mvc\Controller
     {
         $this->view->disable();
         if ($this->request->isPost() == true) {
+            # Find country zone associated and delete country zones first
+            $zone_country = ZoneCountry::find("local_id = $id");
+            foreach($zone_country as $z) {
+                $z->delete();
+            }
+
             $zone = ZoneLocal::findFirst("id = $id AND user_id = " . $this->user->id);
             if ($zone) {
                 $zone->delete();
@@ -196,13 +210,14 @@ class ApplicantController extends \Phalcon\Mvc\Controller
             $zone_country->user_id = $this->user->id;
             $zone_country->local_id = $zone_local->id;
             $zone_country->distance = $payload->distance;
-            if ($zone_country->save() == false)
+            if ($zone_country->save())
             {
+                if ($this->user->status == User::APPROVED)
+                {
+                    $url = $this->config->application->publicUrl . 'applicant/populateCountry/' . $zone_country->id;
+                    exec("curl $url > /dev/null 2>&1 &");
+                }
 
-                $this->response->setStatusCode(400, 'Error');
-            }
-            else
-            {
                 $zone_country->postcode = $zone_local->postcode; // For display
                 $this->response->setContent(json_encode(array(
                     'zone' => $zone_country,
@@ -265,6 +280,11 @@ class ApplicantController extends \Phalcon\Mvc\Controller
             if ($zone->save() == false) {
                 $this->response->setStatusCode(400, 'Error');
             } else {
+                if ($this->user->status == User::APPROVED)
+                {
+                    $url = $this->config->application->publicUrl . 'applicant/populateInterstate/' . $zone->id;
+                    exec("curl $url > /dev/null 2>&1 &");
+                }
                 $this->response->setStatusCode(200, 'OK');
                 $this->response->setContent(json_encode(array(
                     'zone' => $zone,
@@ -329,6 +349,30 @@ class ApplicantController extends \Phalcon\Mvc\Controller
             $count += $zone->generatePool();
         }
         echo $count . ' postcodes';
+    }
+
+    public function populateLocalAction($id)
+    {
+        $this->view->disable();
+        if (!$id) { return false; }
+        $zone = ZoneLocal::findFirst($id);
+        $zone->generatePool();
+    }
+
+    public function populateCountryAction($id)
+    {
+        $this->view->disable();
+        if (!$id) { return false; }
+        $zone = ZoneCountry::findFirst($id);
+        $zone->generatePool();
+    }
+
+    public function populateInterstateAction($id)
+    {
+        $this->view->disable();
+        if (!$id) { return false; }
+        $zone = ZoneInterstate::findFirst($id);
+        $zone->generatePool();
     }
 }
 
