@@ -51,6 +51,7 @@ $app->get('/postcode/{keyword}', function($keyword) use($app) {
     $response->setHeader('Access-Control-Allow-Origin', '*');
     $response->setStatusCode(201, "Created");
     $response->setJsonContent(array('status' => 'OK', 'data' => $data));
+    return $response;
 });
 
 # Add new removal quote
