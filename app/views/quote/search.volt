@@ -29,7 +29,7 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                    <input class="form-control" id="prepend" placeholder="Filter" type="text">
+                                    <input class="form-control" ng-model="keyword" placeholder="Search by customer name, postcode or moving date" type="text">
                                 </div>
                             </div>
                         </div>
@@ -51,14 +51,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="[[ current_quote.id == quote.id ? 'active' : '' ]] status-quote-[[quote.status]]" ng-repeat="quote in removals">
+                                        <tr class="[[ quote.status == 2 ? 'danger' : '' ]][[ quote.status == 3 ? 'success' : '' ]] [[ current_quote.id == quote.id ? 'active' : '' ]]" ng-repeat="quote in removals | filter: keyword">
                                             <td>[[ quote.removal.customer_name ]]</td>
                                             <td>[[ quote.removal.from_postcode ]]</td>
                                             <td>[[ quote.removal.to_postcode ]]</td>
                                             <td align="center">[[ quote.removal.bedrooms ]]</td>
                                             <td>[[ quote.removal.moving_date ]]</td>
                                             <td align="right">
-                                                <a class="btn btn-xs btn-danger" ng-click="removalDetails(quote)"><i class="fa fa-search"></i></a>
+                                                <a ng-if="current_quote.id != quote.id" class="btn btn-xs btn-danger" ng-click="removalDetails(quote)"><i class="fa fa-search"></i></a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -80,13 +80,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="[[ current_quote.id == quote.id ? 'active' : '' ]]" ng-repeat="quote in storages">
+                                        <tr class="[[ quote.status == 2 ? 'danger' : '' ]][[ quote.status == 3 ? 'success' : '' ]] [[ current_quote.id == quote.id ? 'active' : '' ]]" ng-repeat="quote in storages | filter: keyword">
                                             <td>[[ quote.storage.customer_name ]]</td>
                                             <td>[[ quote.storage.pickup_postcode ]]</td>
                                             <td>[[ quote.storage.containers ]]</td>
                                             <td>[[ quote.storage.period ]]</td>
                                             <td align="right">
-                                                <a class="btn btn-xs btn-danger" ng-click="storageDetails(quote)"><i class="fa fa-search"></i></a>
+                                                <a ng-if="current_quote.id != quote.id" class="btn btn-xs btn-danger" ng-click="storageDetails(quote)"><i class="fa fa-search"></i></a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -105,10 +105,10 @@
             <header>
                 <h2>Removal Details</h2>
                 <div class="widget-toolbar">
-                    <a class="btn btn-default"><i class="fa fa-thumbs-o-down"></i></a>
+                    <a class="btn btn-[[ current_quote.status == 2 ? 'danger' : 'default' ]]" rel="popover-hover" data-placement="top" data-original-title="Mark as Lost" data-content="Mark this job as 'Lost' so you can keep track of the jobs you lost." ng-click="updateQuoteStatus(current_quote.id, 2)"><i class="fa fa-thumbs-o-down"></i></a>
                 </div>
                 <div class="widget-toolbar">
-                    <a class="btn btn-success"><i class="fa fa-thumbs-o-up"></i></a>
+                    <a class="btn btn-[[ current_quote.status == 3 ? 'success' : 'default' ]]" class="btn btn-default btn-lg" rel="popover-hover" data-placement="top" data-original-title="Mark as Won" data-content="Mark this job as 'Won' so you can keep track of the jobs you win." ng-click="updateQuoteStatus(current_quote.id, 3)"><i class="fa fa-thumbs-o-up"></i></a>
                 </div>
             </header>
 
@@ -225,3 +225,8 @@
         <!-- end widget -->
     </div>
 </div>
+<script>
+$(function () {
+    pageSetUp();
+})
+</script>

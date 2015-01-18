@@ -317,13 +317,26 @@ angular.module('rqportal', [
     $scope.updateQuoteStatus = function(id, status) {
         $http.put(Config.BASE_URL + 'quote/ajaxUpdate/' + id , {status: status })
         .success(function(quote){
-            if (quote.job_type) {
-                $scope.removals[quote.id] = quote;
-                console.log(quote.id, quote);
-            } else {
-                $scope.storages[quote.id] = quote;
+            $scope.current_quote = quote;
+            if (quote.job_type == 'removal') {
+                var updated_removals = [];
+                $scope.removals.forEach(function(removal_quote){
+                    if (removal_quote.id == quote.id) {
+                        updated_removals.push(quote);
+                    } else {
+                        updated_removals.push(removal_quote);
+                    }
+                })
+            } else { // Storage
+                var updated_storages = [];
+                $scope.storages.forEach(function(storage_quote) {
+                    if (storage_quote.id == quote.id) {
+                        updated_storages.push(quote);
+                    } else {
+                        updated_storages.push(storage_quote);
+                    }
+                })
             }
-            // console.log("Success update quote status: ", quote);
         }).error(function(error){
             console.log("Error update quote status: ", error);
         });

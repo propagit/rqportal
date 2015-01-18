@@ -22,44 +22,17 @@ class QuoteController extends ControllerBase
         $this->view->quotes = Quote::find();
     }
 
-    public function ajaxGetQuotesAction()
-    {
-        $this->view->disable();
-        $quotes = Quote::find(array(
-            "user_id = " . $this->user->id,
-            "order" => "created_on DESC",
-        ));
-        $removals = array();
-        $storages = array();
-        foreach($quotes as $quote) {
-            if ($quote->job_type == Quote::REMOVAL) {
-                $removal = Removal::findFirst($quote->job_id);
-                $r = $removal->toArray();
-                $r['path'] = $removal->drawPath(); # Draw Path
-                $r['from_marker'] = $removal->drawFromMarker(); # Draw From marker
-                $r['to_marker'] = $removal->drawToMarker(); # Draw To marker
-                $r['quote'] = $quote->toArray(); # Inject quote
-                $removals[] = $r;
-            } else {
-                $storage = Storage::findFirst($quote->job_id);
-                $s = $storage->toArray();
-                $s['pickup_marker'] = $storage->drawPickupMarker(); # Draw Pickup marker
-                $s['quote'] = $quote->toArray(); # Inject quote
-                $storages[] = $s;
-            }
-        }
-        $this->response->setContent(json_encode(array(
-            'removals' => $removals,
-            'storages' => $storages
-        )));
-        return $this->response;
-    }
-
     public function ajaxGetAllAction()
     {
         $this->view->disable();
+
+        $conditions = "";
+        if ($this->user->level == User::SUPPLIER) {
+            $conditions = "user_id = " . $this->user->id;
+        }
+
         $quotes = Quote::find(array(
-            "user_id = " . $this->user->id,
+            $conditions,
             "order" => "created_on DESC",
         ));
         $results = array();
@@ -90,7 +63,11 @@ class QuoteController extends ControllerBase
         $payload = $this->request->getJsonRawBody();
         $quote = Quote::findFirst($id);
 
-        $quote->status = $payload->status;
+        if ($payload->status > 1) {
+            $quote->status = $payload->status;
+        } else if ($quote->status == 0) {
+            $quote->status = 1;
+        }
         $quote->save();
         $q = $quote->toArray();
         $q['removal'] = $quote->getRemoval();
