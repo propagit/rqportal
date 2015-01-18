@@ -315,7 +315,7 @@ angular.module('rqportal', [
     };
 
     $scope.updateQuoteStatus = function(id, status) {
-        $http.put(Config.BASE_URL + 'quote/ajaxUpdate/' + id , {status: status })
+        $http.post(Config.BASE_URL + 'quote/ajaxUpdate/' + id , {status: status })
         .success(function(quote){
             $scope.current_quote = quote;
             if (quote.job_type == 'removal') {
