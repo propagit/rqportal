@@ -63,10 +63,10 @@ class QuoteController extends ControllerBase
         $payload = $this->request->getJsonRawBody();
         $quote = Quote::findFirst($id);
 
-        if ($payload->status > 1) {
+        if ($payload->status > Quote::VIEWED) {
             $quote->status = $payload->status;
-        } else if ($quote->status == 0) {
-            $quote->status = 1;
+        } else if ($quote->status == Quote::FRESH) {
+            $quote->status = Quote::VIEWED;
         }
         $quote->save();
         $q = $quote->toArray();
