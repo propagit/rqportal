@@ -36,8 +36,10 @@ class Quote extends \Phalcon\Mvc\Model
      */
     public $status;
 
-    const LOSS = 1;
-    const WON = 2;
+    const FRESH = 0;
+    const VIEWED = 1;
+    const LOST = 2;
+    const WON = 3;
 
     /**
      *
@@ -58,6 +60,24 @@ class Quote extends \Phalcon\Mvc\Model
             'status' => 'status',
             'created_on' => 'created_on'
         );
+    }
+
+    public function getRemoval()
+    {
+        if ($this->job_type == Quote::REMOVAL) {
+            $removal = Removal::findFirst($this->job_id);
+            return $removal->toArray();
+        }
+        return false;
+    }
+
+    public function getStorage()
+    {
+        if ($this->job_type == Quote::STORAGE) {
+            $storage = Storage::findFirst($this->job_id);
+            return $storage->toArray();
+        }
+        return false;
     }
 
 }

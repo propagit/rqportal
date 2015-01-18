@@ -69,10 +69,17 @@ class User extends Model
         return $this->validationHasFailed() != true;
     }
 
-    public function getTodayQuote()
+    public function countNewQuotes()
     {
-        $today = date('Y-m-d');
-        $quotes = Quote::find("user_id = $this->id");
+        $conditions = "user_id = :user_id: AND status = :status:";
+        $parameters = array(
+            'user_id' => $this->id,
+            'status' => Quote::FRESH
+        );
+        $quotes = Quote::find(array(
+            $conditions,
+            "bind" => $parameters
+        ));
         return count($quotes);
     }
 }

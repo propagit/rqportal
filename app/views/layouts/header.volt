@@ -6,34 +6,17 @@
 
         <!-- Note: The activity badge color changes when clicked and resets the number to 0
         Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
-        <span id="activity" class="activity-dropdown"> <i class="fa fa-file-text-o"></i> <b class="badge"> 21 </b> </span>
+        <span id="activity"> <i class="fa fa-file-text-o"></i> <b class="badge"> {{ elements.countNewQuote() }} </b> </span>
     </div>
 
     <!-- projects dropdown -->
-    <div class="project-context hidden-xs">
+    <a class="project-context hidden-xs" href="{{ baseUrl }}quote/search">
 
         <span class="label">TODAYS</span>
-        <span class="project-selector dropdown-toggle" data-toggle="dropdown">Recent Quotes <i class="fa fa-angle-down"></i></span>
+        <span class="project-selector">Recent Quotes</span>
 
-        <!-- Suggestion: populate this list with fetch and push technique -->
-        <ul class="dropdown-menu">
-            <li>
-                <a href="javascript:void(0);">Online e-merchant management system - attaching integration with the iOS</a>
-            </li>
-            <li>
-                <a href="javascript:void(0);">Notes on pipeline upgradee</a>
-            </li>
-            <li>
-                <a href="javascript:void(0);">Assesment Report for merchant account</a>
-            </li>
-            <li class="divider"></li>
-            <li>
-                <a href="javascript:void(0);"><i class="fa fa-power-off"></i> Clear</a>
-            </li>
-        </ul>
-        <!-- end dropdown-menu-->
 
-    </div>
+    </a>
     <!-- end projects dropdown -->
 
     <!-- pulled right: nav area -->

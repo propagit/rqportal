@@ -255,24 +255,30 @@ angular.module('rqportal', [
 .controller('QuoteCtrl', function($scope, $http, Config, uiGmapGoogleMapApi) {
     $scope.active_removal = {};
     $scope.active_storage = {};
+    $scope.current_quote = {};
+    $scope.removals = [];
+    $scope.storages = [];
 
-    $http.get(Config.BASE_URL + 'quote/ajaxGetQuotes')
+    $http.get(Config.BASE_URL + 'quote/ajaxGetAll')
     .success(function(response){
-        console.log(response);
-        $scope.removals = response.removals;
-        $scope.storages = response.storages;
-        $scope.removalDetails(response.removals[0]);
+        response.forEach(function(quote){
+            if (quote.removal) {
+                $scope.removals.push(quote);
+            } else {
+                $scope.storages.push(quote);
+            }
+        });
+        $scope.removalDetails($scope.removals[0]);
     }).error(function(error){
         console.log("Error", error);
     });
-    $scope.removalDetails = function(removal) {
-        $scope.active_removal = removal;
-        $scope.active_storage = {};
+    $scope.removalDetails = function(quote) {
+        var removal = quote.removal;
+        $scope.current_quote = quote;
         $scope.paths = [];
-
+        $scope.updateQuoteStatus(quote.id, 1);
 
         uiGmapGoogleMapApi.then(function(maps) {
-
             // Calculate Zoom
             var latlngList = [];
             latlngList.push(new google.maps.LatLng(removal.from_lat, removal.from_lon));
@@ -286,19 +292,20 @@ angular.module('rqportal', [
                 width: $('#map-wrapper').width()
             };
             var zoom = getBoundsZoomLevel(bounds, mapDim);
-            console.log(zoom);
 
             var lat = (parseFloat(removal.from_lat) + parseFloat(removal.to_lat))/2;
             var lon = (parseFloat(removal.from_lon) + parseFloat(removal.to_lon))/2;
+
             $scope.map = { center: { latitude: lat, longitude: lon }, zoom: zoom };
             $scope.paths.push(removal.path);
             $scope.from_marker = removal.from_marker;
             $scope.to_marker = removal.to_marker;
         });
     };
-    $scope.storageDetails = function(storage) {
-        $scope.active_storage = storage;
-        $scope.active_removal = {};
+    $scope.storageDetails = function(quote) {
+        var storage = quote.storage;
+        $scope.current_quote = quote;
+        // $scope.updateQuoteStatus(quote.id, 1);
         uiGmapGoogleMapApi.then(function(maps) {
             $scope.map = { center: { latitude: storage.pickup_lat, longitude: storage.pickup_lon }, zoom: 10 };
             $scope.paths = [];
@@ -307,6 +314,22 @@ angular.module('rqportal', [
         });
     };
 
+    $scope.updateQuoteStatus = function(id, status) {
+        $http.put(Config.BASE_URL + 'quote/ajaxUpdate/' + id , {status: status })
+        .success(function(quote){
+            if (quote.job_type) {
+                $scope.removals[quote.id] = quote;
+                console.log(quote.id, quote);
+            } else {
+                $scope.storages[quote.id] = quote;
+            }
+            // console.log("Success update quote status: ", quote);
+        }).error(function(error){
+            console.log("Error update quote status: ", error);
+        });
+    };
+
+    // Private function, calculate zoom level
     function getBoundsZoomLevel(bounds, mapDim) {
         var WORLD_DIM = { height: 256, width: 256 };
         var ZOOM_MAX = 21;

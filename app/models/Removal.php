@@ -124,15 +124,12 @@ class Removal extends \Phalcon\Mvc\Model
         );
     }
 
-    public function toJson()
+    public function toArray()
     {
-        $removal = array();
-        foreach($this->columnMap() as $key => $value) {
-            $removal[$key] = $this->$key;
-        }
-        $removal['path'] = $this->drawPath();
+        $removal = parent::toArray();
         $removal['from_marker'] = $this->drawFromMarker();
         $removal['to_marker'] = $this->drawToMarker();
+        $removal['path'] = $this->drawPath();
         return $removal;
     }
 

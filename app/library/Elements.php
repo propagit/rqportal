@@ -98,7 +98,6 @@ class Elements extends Component
             echo '</li>';
         }
         echo '</ul>';
-
     }
 
     public function getBreadcrumb()
@@ -123,5 +122,21 @@ class Elements extends Component
     {
         $auth = $this->session->get('auth');
         echo $auth['level'];
+    }
+
+    public function countNewQuote()
+    {
+        $auth = $this->session->get('auth');
+
+        $conditions = "user_id = :user_id: AND status = :status:";
+        $parameters = array(
+            'user_id' => $auth['id'],
+            'status' => Quote::FRESH
+        );
+        $quotes = Quote::find(array(
+            $conditions,
+            "bind" => $parameters
+        ));
+        echo count($quotes);
     }
 }

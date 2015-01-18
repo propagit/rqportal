@@ -51,14 +51,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="[[ active_removal.id == removal.id ? 'active' : '' ]]" ng-repeat="removal in removals">
-                                            <td>[[ removal.customer_name ]]</td>
-                                            <td>[[ removal.from_postcode ]]</td>
-                                            <td>[[ removal.to_postcode ]]</td>
-                                            <td align="center">[[ removal.bedrooms ]]</td>
-                                            <td>[[ removal.moving_date ]]</td>
+                                        <tr class="[[ current_quote.id == quote.id ? 'active' : '' ]] status-quote-[[quote.status]]" ng-repeat="quote in removals">
+                                            <td>[[ quote.removal.customer_name ]]</td>
+                                            <td>[[ quote.removal.from_postcode ]]</td>
+                                            <td>[[ quote.removal.to_postcode ]]</td>
+                                            <td align="center">[[ quote.removal.bedrooms ]]</td>
+                                            <td>[[ quote.removal.moving_date ]]</td>
                                             <td align="right">
-                                                <a class="btn btn-xs btn-danger" ng-click="removalDetails(removal)"><i class="fa fa-search"></i></a>
+                                                <a class="btn btn-xs btn-danger" ng-click="removalDetails(quote)"><i class="fa fa-search"></i></a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -80,13 +80,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="[[ active_storage.id == storage.id ? 'active' : '' ]]" ng-repeat="storage in storages">
-                                            <td>[[ storage.customer_name ]]</td>
-                                            <td>[[ storage.pickup_postcode ]]</td>
-                                            <td>[[ storage.containers ]]</td>
-                                            <td>[[ storage.period ]]</td>
+                                        <tr class="[[ current_quote.id == quote.id ? 'active' : '' ]]" ng-repeat="quote in storages">
+                                            <td>[[ quote.storage.customer_name ]]</td>
+                                            <td>[[ quote.storage.pickup_postcode ]]</td>
+                                            <td>[[ quote.storage.containers ]]</td>
+                                            <td>[[ quote.storage.period ]]</td>
                                             <td align="right">
-                                                <a class="btn btn-xs btn-danger" ng-click="storageDetails(storage)"><i class="fa fa-search"></i></a>
+                                                <a class="btn btn-xs btn-danger" ng-click="storageDetails(quote)"><i class="fa fa-search"></i></a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -100,10 +100,10 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-7" ng-show="active_removal.id > 0 || active_storage.id > 0">
+    <div class="col-lg-7" ng-show="current_quote.id > 0">
         <div class="jarviswidget jarviswidget-color-blueLight" id="wid-2">
             <header>
-                <h2>Job Details</h2>
+                <h2>Removal Details</h2>
                 <div class="widget-toolbar">
                     <a class="btn btn-default"><i class="fa fa-thumbs-o-down"></i></a>
                 </div>
@@ -111,92 +111,93 @@
                     <a class="btn btn-success"><i class="fa fa-thumbs-o-up"></i></a>
                 </div>
             </header>
+
             <!-- widget div-->
             <div>
                 <!-- widget content -->
                 <div class="widget-body no-padding">
 
                     <!-- Removal details -->
-                    <div class="padding-10" ng-if="active_removal.id > 0">
+                    <div class="padding-10" ng-if="current_quote.removal">
                         <div class="row lh-28">
                             <div class="col-lg-5">
                                 <b>Contact Details</b>
                                 <div class="row">
                                     <div class="col-lg-4">Customer</div>
-                                    <div class="col-lg-8"><b>[[ active_removal.customer_name ]]</b></div>
+                                    <div class="col-lg-8"><b>[[ current_quote.removal.customer_name ]]</b></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4">Phone</div>
-                                    <div class="col-lg-8"><b>[[ active_removal.customer_phone ]]</b></div>
+                                    <div class="col-lg-8"><b>[[ current_quote.removal.customer_phone ]]</b></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4">Email</div>
-                                    <div class="col-lg-8"><a class="text" href="mailto:[[active_removal.customer_email]]"><b>[[ active_removal.customer_email ]]</b></a></div>
+                                    <div class="col-lg-8"><a class="text" href="mailto:[[current_quote.removal.customer_email]]"><b>[[ current_quote.removal.customer_email ]]</b></a></div>
                                 </div>
                             </div>
                             <div class="col-lg-7">
                                 <b>Job Details</b>
                                 <div class="row">
                                     <div class="col-lg-3">Pick Up</div>
-                                    <div class="col-lg-3"><b>[[ active_removal.from_postcode ]]</b></div>
+                                    <div class="col-lg-3"><b>[[ current_quote.removal.from_postcode ]]</b></div>
                                     <div class="col-lg-3">Drop Off</div>
-                                    <div class="col-lg-3"><b>[[ active_removal.to_postcode ]]</b></div>
+                                    <div class="col-lg-3"><b>[[ current_quote.removal.to_postcode ]]</b></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-3">Job Date</div>
-                                    <div class="col-lg-3"><b>[[ active_removal.moving_date ]]</b></div>
+                                    <div class="col-lg-3"><b>[[ current_quote.removal.moving_date ]]</b></div>
                                     <div class="col-lg-3">Rooms</div>
-                                    <div class="col-lg-3"><b>[[ active_removal.bedrooms ]]</b></div>
+                                    <div class="col-lg-3"><b>[[ current_quote.removal.bedrooms ]]</b></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-3">Packing</div>
-                                    <div class="col-lg-9"><b>[[ active_removal.packing ]]</b></div>
+                                    <div class="col-lg-9"><b>[[ current_quote.removal.packing ]]</b></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row lh-28" ng-if="active_quote.notes">
+                        <div class="row lh-28" ng-if="current_quote.removal.notes">
                             <div class="col-lg-5-4">Notes</div>
-                            <div class="col-lg-10"><b>[[ active_removal.notes ]]</b></div>
+                            <div class="col-lg-10"><b>[[ current_quote.removal.notes ]]</b></div>
                         </div>
                     </div>
 
                     <!-- Storage details -->
-                    <div class="padding-10" ng-if="active_storage.id > 0">
+                    <div class="padding-10" ng-if="current_quote.storage">
                         <div class="row lh-28">
                             <div class="col-lg-6">
                                 <b>Contact Details</b>
                                 <div class="row">
                                     <div class="col-lg-4">Customer</div>
-                                    <div class="col-lg-8"><b>[[ active_storage.customer_name ]]</b></div>
+                                    <div class="col-lg-8"><b>[[ current_quote.storage.customer_name ]]</b></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4">Phone</div>
-                                    <div class="col-lg-8"><b>[[ active_storage.customer_phone ]]</b></div>
+                                    <div class="col-lg-8"><b>[[ current_quote.storage.customer_phone ]]</b></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4">Email</div>
-                                    <div class="col-lg-8"><a class="text" href="mailto:[[active_storage.customer_email]]"><b>[[ active_storage.customer_email ]]</b></a></div>
+                                    <div class="col-lg-8"><a class="text" href="mailto:[[current_quote.storage.customer_email]]"><b>[[ current_quote.storage.customer_email ]]</b></a></div>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <b>Job Details</b>
                                 <div class="row">
                                     <div class="col-lg-4">Pick Up</div>
-                                    <div class="col-lg-8"><b>[[ active_storage.pickup_postcode ]]</b></div>
+                                    <div class="col-lg-8"><b>[[ current_quote.storage.pickup_postcode ]]</b></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4">Containers</div>
-                                    <div class="col-lg-8"><b>[[ active_storage.containers ]]</b></div>
+                                    <div class="col-lg-8"><b>[[ current_quote.storage.containers ]]</b></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4">Period</div>
-                                    <div class="col-lg-8"><b>[[ active_storage.period ]]</b></div>
+                                    <div class="col-lg-8"><b>[[ current_quote.storage.period ]]</b></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row lh-28" ng-if="active_quote.notes">
-                            <div class="col-lg-5-4">Notes</div>
-                            <div class="col-lg-10"><b>[[ active_storage.notes ]]</b></div>
+                        <div class="row lh-28" ng-if="current_quote.storage.notes">
+                            <div class="col-lg-2">Notes</div>
+                            <div class="col-lg-10"><b>[[ current_quote.storage.notes ]]</b></div>
                         </div>
                     </div>
 
