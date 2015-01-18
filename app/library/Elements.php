@@ -128,11 +128,16 @@ class Elements extends Component
     {
         $auth = $this->session->get('auth');
 
-        $conditions = "user_id = :user_id: AND status = :status:";
+        $conditions = "status = :status:";
         $parameters = array(
-            'user_id' => $auth['id'],
             'status' => Quote::FRESH
         );
+
+        if ($auth['level'] == User::SUPPLIER) {
+            $conditions .= " AND user_id = :user_id:";
+            $parameters['user_id'] = $auth['id'];
+        }
+
         $quotes = Quote::find(array(
             $conditions,
             "bind" => $parameters
