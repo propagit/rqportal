@@ -305,7 +305,8 @@ angular.module('rqportal', [
     $scope.storageDetails = function(quote) {
         var storage = quote.storage;
         $scope.current_quote = quote;
-        // $scope.updateQuoteStatus(quote.id, 1);
+        $scope.updateQuoteStatus(quote.id, 1);
+
         uiGmapGoogleMapApi.then(function(maps) {
             $scope.map = { center: { latitude: storage.pickup_lat, longitude: storage.pickup_lon }, zoom: 10 };
             $scope.paths = [];

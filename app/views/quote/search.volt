@@ -51,7 +51,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="[[ quote.status == 2 ? 'danger' : '' ]][[ quote.status == 3 ? 'success' : '' ]] [[ current_quote.id == quote.id ? 'active' : '' ]]" ng-repeat="quote in removals | filter: keyword">
+                                        <tr class="[[ current_quote.id == quote.id ? 'active' : '' ]] status-quote-[[ quote.status ]]" ng-repeat="quote in removals | filter: keyword">
                                             <td>[[ quote.removal.customer_name ]]</td>
                                             <td>[[ quote.removal.from_postcode ]]</td>
                                             <td>[[ quote.removal.to_postcode ]]</td>
@@ -80,7 +80,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="[[ quote.status == 2 ? 'danger' : '' ]][[ quote.status == 3 ? 'success' : '' ]] [[ current_quote.id == quote.id ? 'active' : '' ]]" ng-repeat="quote in storages | filter: keyword">
+                                        <tr class="[[ current_quote.id == quote.id ? 'active' : '' ]] status-quote-[[ quote.status ]]" ng-repeat="quote in storages | filter: keyword">
                                             <td>[[ quote.storage.customer_name ]]</td>
                                             <td>[[ quote.storage.pickup_postcode ]]</td>
                                             <td>[[ quote.storage.containers ]]</td>
