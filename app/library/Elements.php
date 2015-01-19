@@ -131,7 +131,7 @@ class Elements extends Component
         $conditions = "";
 
         if ($auth['level'] == User::SUPPLIER) {
-            $conditions .= " AND user_id = " . $auth['id'];
+            $conditions .= "user_id = " . $auth['id'];
         }
 
         $params = array(
