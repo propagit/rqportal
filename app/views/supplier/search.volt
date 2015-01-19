@@ -32,7 +32,7 @@
             <table id="datatable_fixed_column" class="table table-striped table-bordered" width="100%">
 
                 <thead>
-                    <tr>
+                    <!-- <tr>
                         <th class="hasinput" style="width:17%">
                             <input type="text" class="form-control" placeholder="Filter Name" />
                         </th>
@@ -64,7 +64,7 @@
                         <th class="hasinput" style="width:16%">
                             <input type="text" class="form-control" placeholder="Filter Salary" />
                         </th>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <th data-class="expand">Name</th>
                         <th>Business</th>
@@ -107,6 +107,9 @@
                             {% endif %}
                             {% if supplier.status == constant("Supplier::ACTIVATED") %}
                                 <a class="btn btn-xs btn-info">Activated</a>
+                            {% endif %}
+                            {% if supplier.status == constant("Supplier::APPROVED") %}
+                                <a class="btn btn-xs btn-success">Approved</a>
                             {% endif %}
                         </td>
                     </tr>
