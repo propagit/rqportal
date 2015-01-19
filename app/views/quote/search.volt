@@ -87,6 +87,10 @@
 
 <div class="section-divider"></div>
 
+<div class="alert alert-warning" ng-if="removals.length == 0 && storages.length == 0">
+    There is no quote
+</div>
+
 <div class="row">
     <div class="col-lg-5">
         <div class="jarviswidget" id="wid-1" ng-if="removals.length > 0 || storages.length > 0">
