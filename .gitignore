@@ -2,3 +2,4 @@ app/cache
 app/config/config.php
 .sass-cache
 .DS_Store?
+public/demo
