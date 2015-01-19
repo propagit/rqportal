@@ -6,6 +6,7 @@
     </div>
 </div>
 <form class="form-horizontal">
+    {% if elements.isAdmin() %}
     <div class="form-group">
         <div class="col-md-6">
             <div class="input-group">
@@ -38,6 +39,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
     <div class="form-group">
         <div class="col-md-3">
             <div class="input-group">
@@ -52,6 +54,7 @@
         </div>
     </div>
 
+    {% if elements.isAdmin() %}
     <div class="form-group">
         <div class="col-md-3">
             <?php echo $this->tag->selectStatic(array(
@@ -73,6 +76,7 @@
             )); ?>
         </div>
     </div>
+    {% endif %}
 </form>
 
 <div class="row">

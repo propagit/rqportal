@@ -275,14 +275,20 @@ angular.module('rqportal', [
         $scope.storages = [];
         $http.post(Config.BASE_URL + 'quoteAjax/search', params)
         .success(function(response){
-            response.results.forEach(function(quote){
-                if (quote.removal) {
-                    $scope.removals.push(quote);
-                } else {
-                    $scope.storages.push(quote);
+            console.log(response);
+            if(response.results) {
+                response.results.forEach(function(quote){
+                    if (quote.removal) {
+                        $scope.removals.push(quote);
+                    } else {
+                        $scope.storages.push(quote);
+                    }
+                });
+                if ($scope.removals.length > 0) {
+                    $scope.removalDetails($scope.removals[0]);
                 }
-            });
-            $scope.removalDetails($scope.removals[0]);
+
+            }
         }).error(function(error){
             console.log("ERROR: ", error);
         });

@@ -124,6 +124,15 @@ class Elements extends Component
         echo $auth['level'];
     }
 
+    public function isAdmin()
+    {
+        $auth = $this->session->get('auth');
+        if ($auth['level'] == User::ADMIN) {
+            return true;
+        }
+        return false;
+    }
+
     public function countNewQuote()
     {
         $auth = $this->session->get('auth');

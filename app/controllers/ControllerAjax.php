@@ -5,6 +5,14 @@ use Phalcon\Mvc\View;
 
 class ControllerAjax extends Controller
 {
+    public function initialize()
+    {
+        $auth = $this->session->get('auth');
+        if ($auth) {
+            $this->user = User::findFirstById($auth['id']);
+        }
+    }
+
     // After route execute event
     public function afterExecuteRoute(\Phalcon\Mvc\Dispatcher $dispatcher)
     {
