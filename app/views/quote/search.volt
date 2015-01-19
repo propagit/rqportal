@@ -91,7 +91,7 @@
 
 <div class="row">
     <div class="col-lg-5">
-        <div class="jarviswidget" id="wid-1" ng-if="removal.length > 0 || storage.length > 0">
+        <div class="jarviswidget" id="wid-1" ng-if="removals.length > 0 || storages.length > 0">
 
             <header>
                 <ul id="widget-tab-1" class="nav nav-tabs pull-left">
