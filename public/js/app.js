@@ -263,10 +263,9 @@ angular.module('rqportal', [
 
     $scope.params = {
         from_date: moment().format("YYYY-MM-DD"),
-        to_date: moment().format("YYYY-MM-DD")
     };
     angular.element(document).ready(function () {
-        $scope.searchQuotes();
+        $scope.searchQuotes($scope.params);
     });
 
 
