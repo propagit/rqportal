@@ -255,8 +255,6 @@ angular.module('rqportal', [
 })
 
 .controller('QuoteCtrl', function($scope, $http, Config, uiGmapGoogleMapApi) {
-    $scope.active_removal = {};
-    $scope.active_storage = {};
     $scope.current_quote = {};
     $scope.removals = [];
     $scope.storages = [];
