@@ -1,11 +1,91 @@
+<div ng-controller="QuoteCtrl">
 
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-file-text-o"></i> Search Quotes</h1>
+        <h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-file-text-o"></i> Search Quotes <small>> Search and find quotes in the system</small></h1>
     </div>
 </div>
+<form class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="radio">
+                    <label>
+                        <input type="radio" class="radiobox style-0" ng-model="params.allocated" value="located">
+                        <span> &nbsp; <i class="fa fa-user"></i></span>
+                    </label>
+                </span></span>
+                <angucomplete-alt id="pickup"
+                              minlength="1"
+                              placeholder="Enter supplier name, company, business to search..."
+                              pause="400"
+                              selected-object="params.supplier"
+                              remote-url="/rqportal/supplierAjax/search/"
+                              remote-url-data-field="suppliers"
+                              title-field="name"
+                              description-field="business"
+                              input-class="form-control"
+                              match-class="highlight"
+                              field-required="true" disable-input="params.allocated == 'not_allocated'"></angucomplete-alt>
+                <span class="input-group-addon">
+                    <span class="radio">
+                        <label>
+                            <input type="radio" class="radiobox style-0" ng-model="params.allocated" value="not_allocated">
+                            <span> &nbsp; Not allocated</span>
+                        </label>
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-3">
+            <div class="input-group">
+                <ng-bs3-datepicker data-ng-model='params.from_date' language="en-ca" date-format="YYYY-MM-DD" placeholder="From Date" required></ng-bs3-datepicker>
+            </div>
+        </div>
 
-<div class="row" ng-controller="QuoteCtrl">
+        <div class="col-md-3">
+            <div class="input-group">
+                <ng-bs3-datepicker data-ng-model='params.to_date' language="en-ca" date-format="YYYY-MM-DD" placeholder="To Date" required></ng-bs3-datepicker>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-3">
+            <?php echo $this->tag->selectStatic(array(
+                'state', State::find(),
+                'useEmpty'  => true,
+                'emptyText' => 'Select State',
+                'using' => array('code', 'name'),
+                'class' => 'form-control',
+                'ng-model' => 'params.state'
+            )); ?>
+        </div>
+        <div class="col-md-3">
+            <?php echo $this->tag->selectStatic(array(
+                'status', Quote::getStatus(),
+                'useEmpty' => true,
+                'emptyText' => 'Any',
+                'class' => 'form-control',
+                'ng-model' => 'params.status'
+            )); ?>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <section class="col-lg-6">
+        <a class="btn btn-labeled btn-danger" ng-click="searchQuotes(params)">
+            <span class="btn-label"><i class="fa fa-search"></i></span>Search
+        </a>
+    </section>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="row">
     <div class="col-lg-5">
         <div class="jarviswidget" id="wid-1">
 
@@ -225,8 +305,6 @@
         <!-- end widget -->
     </div>
 </div>
-<script>
-$(function () {
-    pageSetUp();
-})
-</script>
+
+</div>
+

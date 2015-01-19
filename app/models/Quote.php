@@ -80,4 +80,12 @@ class Quote extends \Phalcon\Mvc\Model
         return false;
     }
 
+    public static function getStatus()
+    {
+        return array(
+            Quote::LOST => 'Lost',
+            Quote::WON => 'Won'
+        );
+    }
+
 }

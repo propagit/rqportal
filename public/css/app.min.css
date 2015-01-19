@@ -1,6 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800);
 @import url("../font-awesome-4.2.0/css/font-awesome.min.css");
-@import url("../smart-admin/css/smartadmin-production.min.css");
 /* Fix bootstrap modal backdrop */
 .modal-backdrop {
   bottom: 0; }
@@ -55,6 +54,10 @@ h1 {
 
 h3 {
   font-size: 24px; }
+
+.section-divider {
+  border-top: 1px solid #ccc;
+  margin: 20px -20px; }
 
 .popover {
   width: 300px; }

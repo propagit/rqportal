@@ -60,6 +60,21 @@ class DistributeController extends \Phalcon\Mvc\Controller
             }
         }
 
+        if ($count == 1) { # The quote has not been sent to any supplier
+            $quote = new Quote();
+            $quote->job_type = Quote::STORAGE;
+            $quote->job_id = $storage->id;
+            $quote->user_id = 0;
+            $quote->status = 0;
+            $quote->created_on = new Phalcon\Db\RawValue('now()');
+            if ($quote->save()) {
+                $count++;
+                echo 'Storage quote created but not allocated';
+            } else {
+                var_dump($quote->getMessages());
+            }
+        }
+
     }
 
     public function removalAction($id=0)
@@ -132,6 +147,21 @@ class DistributeController extends \Phalcon\Mvc\Controller
             if ($quote->save()) {
                 $count++;
                 echo 'Removal quote sent to ' . $user_id . '<br />';
+            } else {
+                var_dump($quote->getMessages());
+            }
+        }
+
+        if ($count == 1) { # The quote has not been sent to any supplier
+            $quote = new Quote();
+            $quote->job_type = Quote::REMOVAL;
+            $quote->job_id = $removal->id;
+            $quote->user_id = 0;
+            $quote->status = 0;
+            $quote->created_on = new Phalcon\Db\RawValue('now()');
+            if ($quote->save()) {
+                $count++;
+                echo 'Removal quote created but not allocated';
             } else {
                 var_dump($quote->getMessages());
             }

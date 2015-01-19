@@ -1,5 +1,7 @@
 angular.module('rqportal', [
     'config',
+    'ng-bs3-datepicker',
+    'angucomplete-alt',
     'ui.bootstrap',
     'ui.utils.masks',
     'uiGmapgoogle-maps'
@@ -272,6 +274,25 @@ angular.module('rqportal', [
     }).error(function(error){
         console.log("Error", error);
     });
+
+
+    $scope.searchQuotes = function(params) {
+        $scope.removals = [];
+        $scope.storages = [];
+        $http.post(Config.BASE_URL + 'quoteAjax/search', params)
+        .success(function(response){
+            response.results.forEach(function(quote){
+                if (quote.removal) {
+                    $scope.removals.push(quote);
+                } else {
+                    $scope.storages.push(quote);
+                }
+            });
+            $scope.removalDetails($scope.removals[0]);
+        }).error(function(error){
+            console.log("ERROR: ", error);
+        });
+    };
     $scope.removalDetails = function(quote) {
         var removal = quote.removal;
         $scope.current_quote = quote;

@@ -124,7 +124,7 @@ class Removal extends \Phalcon\Mvc\Model
         );
     }
 
-    public function toArray()
+    public function toArray($columns = NULL)
     {
         $removal = parent::toArray();
         $removal['from_marker'] = $this->drawFromMarker();

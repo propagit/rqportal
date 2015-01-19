@@ -30,11 +30,15 @@ class QuoteController extends ControllerBase
         if ($this->user->level == User::SUPPLIER) {
             $conditions = "user_id = " . $this->user->id;
         }
-
-        $quotes = Quote::find(array(
+        $params = array(
             $conditions,
-            "order" => "created_on DESC",
-        ));
+            "order" => "created_on DESC, status DESC",
+        );
+        if ($this->user->level == User::ADMIN) {
+            $params['group'] = array('job_id', 'job_type');
+        }
+
+        $quotes = Quote::find($params);
         $results = array();
         foreach($quotes as $quote) {
             $q = $quote->toArray();

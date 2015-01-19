@@ -4,7 +4,11 @@
         <meta charset="UTF-8" />
         {{ get_title() }}
         {{ stylesheet_link('bootstrap/css/bootstrap.min.css') }}
+        {{ stylesheet_link('smart-admin/css/smartadmin-production.min.css') }}
+        {{ stylesheet_link('js/lib/angular-bootstrap3-datepicker/ng-bs3-datepicker.css') }}
+        {{ stylesheet_link('js/lib/angucomplete/angucomplete-alt.css') }}
         {{ stylesheet_link('css/app.min.css') }}
+
         {{ javascript_include('js/lib/jquery.min.js') }}
         {{ javascript_include('bootstrap/js/bootstrap.min.js') }}
         {{ javascript_include('smart-admin/js/app.config.js') }}
@@ -14,6 +18,10 @@
         {{ javascript_include('js/lib/masks.min.js') }}
         {{ javascript_include('js/lib/lodash.min.js')}}
         {{ javascript_include('js/lib/angular-google-maps.min.js') }}
+        {{ javascript_include('js/lib/moment-with-locales.min.js') }}
+        {{ javascript_include('js/lib/angular-bootstrap3-datepicker/ng-bs3-datepicker.min.js') }}
+        {{ javascript_include('js/lib/angucomplete/angucomplete-alt.min.js') }}
+
         {{ javascript_include('js/app.js') }}
         {{ javascript_include('js/config.js') }}
 
@@ -23,5 +31,12 @@
     </head>
     <body ng-app="rqportal">
         {{ content() }}
+
+
+        <script>
+        $(function () {
+            pageSetUp();
+        })
+        </script>
     </body>
 </html>

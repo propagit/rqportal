@@ -128,20 +128,27 @@ class Elements extends Component
     {
         $auth = $this->session->get('auth');
 
-        $conditions = "status = :status:";
-        $parameters = array(
-            'status' => Quote::FRESH
-        );
+        $conditions = "";
 
         if ($auth['level'] == User::SUPPLIER) {
-            $conditions .= " AND user_id = :user_id:";
-            $parameters['user_id'] = $auth['id'];
+            $conditions .= " AND user_id = " . $auth['id'];
         }
 
-        $quotes = Quote::find(array(
+        $params = array(
             $conditions,
-            "bind" => $parameters
-        ));
-        echo count($quotes);
+            "order" => "status DESC",
+        );
+        if ($auth['level'] == User::ADMIN) {
+            $params['group'] = array('job_id', 'job_type');
+        }
+
+        $quotes = Quote::find($params);
+        $new = 0;
+        foreach($quotes as $quote) {
+            if ($quote->status == Quote::FRESH) {
+                $new++;
+            }
+        }
+        return $new;
     }
 }

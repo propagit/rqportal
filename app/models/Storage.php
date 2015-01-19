@@ -89,7 +89,7 @@ class Storage extends \Phalcon\Mvc\Model
         );
     }
 
-    public function toArray()
+    public function toArray($columns = NULL)
     {
         $storage = parent::toArray();
         $storage['pickup_marker'] = $this->drawPickupMarker();
