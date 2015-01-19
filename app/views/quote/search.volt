@@ -202,7 +202,7 @@
                 <div class="widget-body no-padding">
 
                     <!-- Removal details -->
-                    <div class="padding-10" ng-if="current_quote.removal">
+                    <div class="padding-10" ng-show="current_quote.removal">
                         <div class="row lh-28">
                             <div class="col-lg-5">
                                 <b>Contact Details</b>

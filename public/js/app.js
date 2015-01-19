@@ -274,7 +274,7 @@ angular.module('rqportal', [
         $scope.storages = [];
         $http.post(Config.BASE_URL + 'quoteAjax/search', params)
         .success(function(response){
-            console.log(response);
+            //console.log(response);
             if(response.results) {
                 response.results.forEach(function(quote){
                     if (quote.removal) {
@@ -308,11 +308,10 @@ angular.module('rqportal', [
                 bounds.extend(n);
             });
             var mapDim = {
-                height: $('#map-wrapper').height(),
-                width: $('#map-wrapper').width()
+                height: $('#map-wrapper').height() > 0 ? $('#map-wrapper').height() : 600,
+                width: $('#map-wrapper').width() > 0 ? $('#map-wrapper').width() : 500
             };
             var zoom = getBoundsZoomLevel(bounds, mapDim);
-
             var lat = (parseFloat(removal.from_lat) + parseFloat(removal.to_lat))/2;
             var lon = (parseFloat(removal.from_lon) + parseFloat(removal.to_lon))/2;
 
