@@ -261,18 +261,12 @@ angular.module('rqportal', [
     $scope.removals = [];
     $scope.storages = [];
 
-    $http.get(Config.BASE_URL + 'quote/ajaxGetAll')
-    .success(function(response){
-        response.forEach(function(quote){
-            if (quote.removal) {
-                $scope.removals.push(quote);
-            } else {
-                $scope.storages.push(quote);
-            }
-        });
-        $scope.removalDetails($scope.removals[0]);
-    }).error(function(error){
-        console.log("Error", error);
+    $scope.params = {
+        from_date: moment().format("YYYY-MM-DD"),
+        to_date: moment().format("YYYY-MM-DD")
+    };
+    angular.element(document).ready(function () {
+        $scope.searchQuotes();
     });
 
 
