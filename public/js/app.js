@@ -317,7 +317,6 @@ angular.module('rqportal', [
     $scope.updateQuoteStatus = function(id, status) {
         $http.post(Config.BASE_URL + 'quote/ajaxUpdate/' + id , {status: status })
         .success(function(quote){
-            $scope.current_quote = quote;
             if (quote.job_type == 'removal') {
                 var updated_removals = [];
                 $scope.removals.forEach(function(removal_quote){
@@ -326,7 +325,8 @@ angular.module('rqportal', [
                     } else {
                         updated_removals.push(removal_quote);
                     }
-                })
+                });
+                $scope.removals = updated_removals;
             } else { // Storage
                 var updated_storages = [];
                 $scope.storages.forEach(function(storage_quote) {
@@ -335,8 +335,10 @@ angular.module('rqportal', [
                     } else {
                         updated_storages.push(storage_quote);
                     }
-                })
+                });
+                $scope.storages = updated_storages;
             }
+            $scope.current_quote = quote;
         }).error(function(error){
             console.log("Error update quote status: ", error);
         });
