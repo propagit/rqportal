@@ -286,7 +286,8 @@ angular.module('rqportal', [
                 if ($scope.removals.length > 0) {
                     $scope.removalDetails($scope.removals[0]);
                 }
-
+            } else {
+                $scope.current_quote = {};
             }
         }).error(function(error){
             console.log("ERROR: ", error);
