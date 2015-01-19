@@ -6,6 +6,7 @@ class QuoteAjaxController extends ControllerAjax
 
     public function searchAction()
     {
+        echo 'test'; die();
         $this->view->test = array('1' => 2); return;
         $request = $this->request->getJsonRawBody();
 
