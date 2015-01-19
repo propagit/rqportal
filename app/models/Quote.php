@@ -83,6 +83,7 @@ class Quote extends \Phalcon\Mvc\Model
     public static function getStatus()
     {
         return array(
+            Quote::VIEWED => 'Any',
             Quote::LOST => 'Lost',
             Quote::WON => 'Won'
         );

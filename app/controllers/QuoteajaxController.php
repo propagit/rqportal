@@ -31,7 +31,9 @@ class QuoteajaxController extends ControllerAjax
             $conditions .= " AND DATE(created_on) <= '$request->to_date'";
         }
         if (isset($request->status)) {
-            $conditions .= " AND status = '$request->status'";
+            if ($request->status > Quote::VIEWED) {
+                $conditions .= " AND status = '$request->status'";
+            }
         }
 
         $params = array(

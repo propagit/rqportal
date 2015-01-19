@@ -69,8 +69,6 @@
         <div class="col-md-3">
             <?php echo $this->tag->selectStatic(array(
                 'status', Quote::getStatus(),
-                'useEmpty' => true,
-                'emptyText' => 'Any',
                 'class' => 'form-control',
                 'ng-model' => 'params.status'
             )); ?>
