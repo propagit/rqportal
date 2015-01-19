@@ -14,28 +14,28 @@ class ControllerAjax extends Controller
     // }
 
     // After route execute event
-    // public function afterExecuteRoute(\Phalcon\Mvc\Dispatcher $dispatcher)
-    // {
+    public function afterExecuteRoute(\Phalcon\Mvc\Dispatcher $dispatcher)
+    {
 
-    //     // $this->view->disableLevel(array(
-    //     //     View::LEVEL_ACTION_VIEW => true,
-    //     //     View::LEVEL_LAYOUT => true,
-    //     //     View::LEVEL_MAIN_LAYOUT => true,
-    //     //     View::LEVEL_AFTER_TEMPLATE => true,
-    //     //     View::LEVEL_BEFORE_TEMPLATE => true
-    //     // ));
-    //     // // $this->view->disable();
-    //     // $this->response->setContentType('application/json', 'UTF-8');
-    //     // $data = $this->view->getParamsToView();
+        $this->view->disableLevel(array(
+            View::LEVEL_ACTION_VIEW => true,
+            View::LEVEL_LAYOUT => true,
+            View::LEVEL_MAIN_LAYOUT => true,
+            View::LEVEL_AFTER_TEMPLATE => true,
+            View::LEVEL_BEFORE_TEMPLATE => true
+        ));
+        // $this->view->disable();
+        $this->response->setContentType('application/json', 'UTF-8');
+        $data = $this->view->getParamsToView();
 
-    //     // if (is_array($data))
-    //     // {
-    //     //     $data = json_encode($data);
-    //     // }
+        if (is_array($data))
+        {
+            $data = json_encode($data);
+        }
 
-    //     // $this->response->setContent($data);
+        $this->response->setContent($data);
 
 
-    //     return $this->response->send();
-    // }
+        return $this->response->send();
+    }
 }

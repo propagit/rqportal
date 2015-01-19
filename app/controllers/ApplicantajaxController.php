@@ -5,7 +5,7 @@ class ApplicantajaxController extends ControllerAjax
 
     public function indexAction()
     {
-        echo 'test';
+        $this->view->test = array(1 => 2);
     }
 
 }
