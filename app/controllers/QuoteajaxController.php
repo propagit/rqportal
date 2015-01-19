@@ -3,14 +3,8 @@
 class QuoteajaxController extends ControllerAjax
 {
 
-    public function indexAction()
-    {
-        $this->view->test = array('1' => 2);
-    }
-
     public function searchAction()
     {
-        $this->view->test = array('1' => 2); return;
         $request = $this->request->getJsonRawBody();
 
         $conditions = "1=1";
