@@ -137,22 +137,21 @@ class DistributePool extends Injectable
         $count = 0;
         foreach($users_with_quote as $user_id => $quote_number) {
 
-            if ($count > $this->config->supplierPerQuote) {
-                echo 'More than 3';
-                break;
+            if ($count < $this->config->supplierPerQuote) {
+                $quote = new Quote();
+                $quote->job_type = Quote::REMOVAL;
+                $quote->job_id = $removal->id;
+                $quote->user_id = $user_id;
+                $quote->status = 0;
+                $quote->created_on = new Phalcon\Db\RawValue('now()');
+                if ($quote->save()) {
+                    $count++;
+                    echo 'Removal quote sent to ' . $user_id . PHP_EOL;
+                } else {
+                    var_dump($quote->getMessages());
+                }
             }
-            $quote = new Quote();
-            $quote->job_type = Quote::REMOVAL;
-            $quote->job_id = $removal->id;
-            $quote->user_id = $user_id;
-            $quote->status = 0;
-            $quote->created_on = new Phalcon\Db\RawValue('now()');
-            if ($quote->save()) {
-                $count++;
-                echo 'Removal quote sent to ' . $user_id . PHP_EOL;
-            } else {
-                var_dump($quote->getMessages());
-            }
+
         }
 
         if ($count == 0) { # The quote has not been sent to any supplier
@@ -206,22 +205,21 @@ class DistributePool extends Injectable
         $count = 0;
         foreach($users_with_quote as $user_id => $quote_number) {
 
-            if ($count > $this->config->supplierPerQuote) {
-                echo 'More than 3';
-                break;
+            if ($count < $this->config->supplierPerQuote) {
+                $quote = new Quote();
+                $quote->job_type = Quote::STORAGE;
+                $quote->job_id = $storage->id;
+                $quote->user_id = $user_id;
+                $quote->status = 0;
+                $quote->created_on = new Phalcon\Db\RawValue('now()');
+                if ($quote->save()) {
+                    $count++;
+                    echo 'Storage quote sent to ' . $user_id . PHP_EOL;
+                } else {
+                    var_dump($quote->getMessages());
+                }
             }
-            $quote = new Quote();
-            $quote->job_type = Quote::STORAGE;
-            $quote->job_id = $storage->id;
-            $quote->user_id = $user_id;
-            $quote->status = 0;
-            $quote->created_on = new Phalcon\Db\RawValue('now()');
-            if ($quote->save()) {
-                $count++;
-                echo 'Storage quote sent to ' . $user_id . PHP_EOL;
-            } else {
-                var_dump($quote->getMessages());
-            }
+
         }
 
         if ($count == 0) { # The quote has not been sent to any supplier
