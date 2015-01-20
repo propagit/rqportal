@@ -76,6 +76,7 @@ class QuoteController extends ControllerBase
         $q = $quote->toArray();
         $q['removal'] = $quote->getRemoval();
         $q['storage'] = $quote->getStorage();
+        $q['suppliers'] = $quote->getSuppliers();
         $this->response->setContent(json_encode($q));
         return $this->response;
     }

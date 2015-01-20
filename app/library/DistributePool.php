@@ -57,21 +57,27 @@ class DistributePool extends Injectable
     {
         if (!$id) { return false; }
         $zone = ZoneLocal::findFirst($id);
-        $zone->generatePool();
+        if ($zone) {
+            $zone->generatePool();
+        }
     }
 
     public function populateCountry($id)
     {
         if (!$id) { return false; }
         $zone = ZoneCountry::findFirst($id);
-        $zone->generatePool();
+        if ($zone) {
+            $zone->generatePool();
+        }
     }
 
     public function populateInterstate($id)
     {
         if (!$id) { return false; }
         $zone = ZoneInterstate::findFirst($id);
-        $zone->generatePool();
+        if ($zone) {
+            $zone->generatePool();
+        }
     }
 
     public function distributeRemoval($id)
@@ -128,7 +134,7 @@ class DistributePool extends Injectable
         asort($users_with_quote);
 
 
-        $count = 1;
+        $count = 0;
         foreach($users_with_quote as $user_id => $quote_number) {
 
             if ($count > $this->config->supplierPerQuote) {
@@ -149,7 +155,7 @@ class DistributePool extends Injectable
             }
         }
 
-        if ($count == 1) { # The quote has not been sent to any supplier
+        if ($count == 0) { # The quote has not been sent to any supplier
             $quote = new Quote();
             $quote->job_type = Quote::REMOVAL;
             $quote->job_id = $removal->id;
@@ -197,7 +203,7 @@ class DistributePool extends Injectable
         asort($users_with_quote);
 
 
-        $count = 1;
+        $count = 0;
         foreach($users_with_quote as $user_id => $quote_number) {
 
             if ($count > $this->config->supplierPerQuote) {
@@ -218,7 +224,7 @@ class DistributePool extends Injectable
             }
         }
 
-        if ($count == 1) { # The quote has not been sent to any supplier
+        if ($count == 0) { # The quote has not been sent to any supplier
             $quote = new Quote();
             $quote->job_type = Quote::STORAGE;
             $quote->job_id = $storage->id;

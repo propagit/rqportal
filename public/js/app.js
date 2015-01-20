@@ -272,7 +272,6 @@ angular.module('rqportal', [
         $scope.storages = [];
         $http.post(Config.BASE_URL + 'quoteAjax/search', params)
         .success(function(response){
-            //console.log(response);
             if(response.results && response.results.length > 0) {
                 response.results.forEach(function(quote){
                     if (quote.removal) {
@@ -294,6 +293,7 @@ angular.module('rqportal', [
     $scope.removalDetails = function(quote) {
         var removal = quote.removal;
         $scope.current_quote = quote;
+        console.log(quote);
         $scope.paths = [];
         $scope.updateQuoteStatus(quote.id, 1);
 

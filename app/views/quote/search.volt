@@ -88,7 +88,7 @@
 <div class="section-divider"></div>
 
 <div class="alert alert-warning" ng-if="removals.length == 0 && storages.length == 0">
-    There is no quote
+    There are no quotes
 </div>
 
 <div class="row">
@@ -187,119 +187,170 @@
         </div>
     </div>
     <div class="col-lg-7" ng-show="current_quote.id > 0">
-        <div class="jarviswidget jarviswidget-color-blueLight" id="wid-2">
+        <div class="jarviswidget" id="wid-2">
             <header>
                 <h2>Removal Details</h2>
+                {% if not elements.isAdmin() %}
                 <div class="widget-toolbar">
                     <a class="btn btn-[[ current_quote.status == 2 ? 'danger' : 'default' ]]" rel="popover-hover" data-placement="top" data-original-title="Mark as Lost" data-content="Mark this job as 'Lost' so you can keep track of the jobs you lost." ng-click="updateQuoteStatus(current_quote.id, 2)"><i class="fa fa-thumbs-o-down"></i></a>
                 </div>
                 <div class="widget-toolbar">
                     <a class="btn btn-[[ current_quote.status == 3 ? 'success' : 'default' ]]" class="btn btn-default btn-lg" rel="popover-hover" data-placement="top" data-original-title="Mark as Won" data-content="Mark this job as 'Won' so you can keep track of the jobs you win." ng-click="updateQuoteStatus(current_quote.id, 3)"><i class="fa fa-thumbs-o-up"></i></a>
                 </div>
+                {% endif %}
+
+                <ul id="widget-tab-3" class="nav nav-tabs pull-right">
+                    <li class="active">
+                        <a data-toggle="tab" href="#details"> Quote Details </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#suppliers"> Suppliers </a>
+                    </li>
+                </ul>
             </header>
 
             <!-- widget div-->
             <div>
                 <!-- widget content -->
                 <div class="widget-body no-padding">
-
-                    <!-- Removal details -->
-                    <div class="padding-10" ng-show="current_quote.removal">
-                        <div class="row lh-28">
-                            <div class="col-lg-5">
-                                <b>Contact Details</b>
-                                <div class="row">
-                                    <div class="col-lg-4">Customer</div>
-                                    <div class="col-lg-8"><b>[[ current_quote.removal.customer_name ]]</b></div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="details">
+                            <!-- Removal details -->
+                            <div class="padding-10" ng-show="current_quote.removal">
+                                <div class="row lh-28">
+                                    <div class="col-lg-5">
+                                        <b>Contact Details</b>
+                                        <div class="row">
+                                            <div class="col-lg-4">Customer</div>
+                                            <div class="col-lg-8"><b>[[ current_quote.removal.customer_name ]]</b></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">Phone</div>
+                                            <div class="col-lg-8"><b>[[ current_quote.removal.customer_phone ]]</b></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">Email</div>
+                                            <div class="col-lg-8"><a class="text" href="mailto:[[current_quote.removal.customer_email]]"><b>[[ current_quote.removal.customer_email ]]</b></a></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <b>Job Details</b>
+                                        <div class="row">
+                                            <div class="col-lg-3">Pick Up</div>
+                                            <div class="col-lg-3"><b>[[ current_quote.removal.from_postcode ]]</b></div>
+                                            <div class="col-lg-3">Drop Off</div>
+                                            <div class="col-lg-3"><b>[[ current_quote.removal.to_postcode ]]</b></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3">Job Date</div>
+                                            <div class="col-lg-3"><b>[[ current_quote.removal.moving_date ]]</b></div>
+                                            <div class="col-lg-3">Rooms</div>
+                                            <div class="col-lg-3"><b>[[ current_quote.removal.bedrooms ]]</b></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3">Packing</div>
+                                            <div class="col-lg-9"><b>[[ current_quote.removal.packing ]]</b></div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-4">Phone</div>
-                                    <div class="col-lg-8"><b>[[ current_quote.removal.customer_phone ]]</b></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">Email</div>
-                                    <div class="col-lg-8"><a class="text" href="mailto:[[current_quote.removal.customer_email]]"><b>[[ current_quote.removal.customer_email ]]</b></a></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-7">
-                                <b>Job Details</b>
-                                <div class="row">
-                                    <div class="col-lg-3">Pick Up</div>
-                                    <div class="col-lg-3"><b>[[ current_quote.removal.from_postcode ]]</b></div>
-                                    <div class="col-lg-3">Drop Off</div>
-                                    <div class="col-lg-3"><b>[[ current_quote.removal.to_postcode ]]</b></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-3">Job Date</div>
-                                    <div class="col-lg-3"><b>[[ current_quote.removal.moving_date ]]</b></div>
-                                    <div class="col-lg-3">Rooms</div>
-                                    <div class="col-lg-3"><b>[[ current_quote.removal.bedrooms ]]</b></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-3">Packing</div>
-                                    <div class="col-lg-9"><b>[[ current_quote.removal.packing ]]</b></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row lh-28" ng-if="current_quote.removal.notes">
-                            <div class="col-lg-5-4">Notes</div>
-                            <div class="col-lg-10"><b>[[ current_quote.removal.notes ]]</b></div>
-                        </div>
-                    </div>
-
-                    <!-- Storage details -->
-                    <div class="padding-10" ng-if="current_quote.storage">
-                        <div class="row lh-28">
-                            <div class="col-lg-6">
-                                <b>Contact Details</b>
-                                <div class="row">
-                                    <div class="col-lg-4">Customer</div>
-                                    <div class="col-lg-8"><b>[[ current_quote.storage.customer_name ]]</b></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">Phone</div>
-                                    <div class="col-lg-8"><b>[[ current_quote.storage.customer_phone ]]</b></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">Email</div>
-                                    <div class="col-lg-8"><a class="text" href="mailto:[[current_quote.storage.customer_email]]"><b>[[ current_quote.storage.customer_email ]]</b></a></div>
+                                <div class="row lh-28" ng-if="current_quote.removal.notes">
+                                    <div class="col-lg-5-4">Notes</div>
+                                    <div class="col-lg-10"><b>[[ current_quote.removal.notes ]]</b></div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <b>Job Details</b>
-                                <div class="row">
-                                    <div class="col-lg-4">Pick Up</div>
-                                    <div class="col-lg-8"><b>[[ current_quote.storage.pickup_postcode ]]</b></div>
+
+                            <!-- Storage details -->
+                            <div class="padding-10" ng-if="current_quote.storage">
+                                <div class="row lh-28">
+                                    <div class="col-lg-6">
+                                        <b>Contact Details</b>
+                                        <div class="row">
+                                            <div class="col-lg-4">Customer</div>
+                                            <div class="col-lg-8"><b>[[ current_quote.storage.customer_name ]]</b></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">Phone</div>
+                                            <div class="col-lg-8"><b>[[ current_quote.storage.customer_phone ]]</b></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">Email</div>
+                                            <div class="col-lg-8"><a class="text" href="mailto:[[current_quote.storage.customer_email]]"><b>[[ current_quote.storage.customer_email ]]</b></a></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <b>Job Details</b>
+                                        <div class="row">
+                                            <div class="col-lg-4">Pick Up</div>
+                                            <div class="col-lg-8"><b>[[ current_quote.storage.pickup_postcode ]]</b></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">Containers</div>
+                                            <div class="col-lg-8"><b>[[ current_quote.storage.containers ]]</b></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">Period</div>
+                                            <div class="col-lg-8"><b>[[ current_quote.storage.period ]]</b></div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-4">Containers</div>
-                                    <div class="col-lg-8"><b>[[ current_quote.storage.containers ]]</b></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">Period</div>
-                                    <div class="col-lg-8"><b>[[ current_quote.storage.period ]]</b></div>
+                                <div class="row lh-28" ng-if="current_quote.storage.notes">
+                                    <div class="col-lg-2">Notes</div>
+                                    <div class="col-lg-10"><b>[[ current_quote.storage.notes ]]</b></div>
                                 </div>
                             </div>
+
+                            <div class="widget-footer no-padding" id="map-wrapper">
+                                <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+                                    <!-- From Maker -->
+                                    <ui-gmap-marker coords="from_marker.coords" options="from_marker.options" events="from_marker.events" idkey="from_marker.id">
+                                    </ui-gmap-marker>
+
+                                    <!-- To Marker -->
+                                    <ui-gmap-marker coords="to_marker.coords" options="to_marker.options" events="to_marker.events" idkey="to_marker.id">
+                                    </ui-gmap-marker>
+
+                                    <!-- Path -->
+                                    <ui-gmap-polyline ng-repeat="p in paths" path="p.path" stroke="p.stroke" visible='p.visible' geodesic='p.geodesic' fit="false" editable="p.editable" draggable="p.draggable" icons='p.icons'></ui-gmap-polyline>
+                                </ui-gmap-google-map>
+                            </div>
+
+
                         </div>
-                        <div class="row lh-28" ng-if="current_quote.storage.notes">
-                            <div class="col-lg-2">Notes</div>
-                            <div class="col-lg-10"><b>[[ current_quote.storage.notes ]]</b></div>
+                        <div class="tab-pane fade" id="suppliers">
+                            <div class="widget-body-toolbar">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                            <input class="form-control" id="prepend" placeholder="Search supplier" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="current_quote.suppliers.length == 0">
+                                <div class="alert alert-warning">
+                                    This quote has not been sent to any suppliers.
+                                </div>
+                            </div>
+                            <div class="table-responsive" ng-show="current_quote.suppliers.length > 0">
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Supplier</th>
+                                            <th>Company</i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="supplier in current_quote.suppliers" class="status-quote-[[ supplier.quote_status ]]">
+                                            <td>[[ supplier.name ]]</td>
+                                            <td>[[ supplier.business ]]</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="widget-footer no-padding" id="map-wrapper">
-                        <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-                            <!-- From Maker -->
-                            <ui-gmap-marker coords="from_marker.coords" options="from_marker.options" events="from_marker.events" idkey="from_marker.id">
-                            </ui-gmap-marker>
-
-                            <!-- To Marker -->
-                            <ui-gmap-marker coords="to_marker.coords" options="to_marker.options" events="to_marker.events" idkey="to_marker.id">
-                            </ui-gmap-marker>
-
-                            <!-- Path -->
-                            <ui-gmap-polyline ng-repeat="p in paths" path="p.path" stroke="p.stroke" visible='p.visible' geodesic='p.geodesic' fit="false" editable="p.editable" draggable="p.draggable" icons='p.icons'></ui-gmap-polyline>
-                        </ui-gmap-google-map>
                     </div>
                 </div>
                 <!-- end widget content -->

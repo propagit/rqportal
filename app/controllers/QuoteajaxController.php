@@ -48,6 +48,7 @@ class QuoteajaxController extends ControllerAjax
             $q = $quote->toArray();
             $q['removal'] = $quote->getRemoval();
             $q['storage'] = $quote->getStorage();
+            #$q['suppliers'] = $quote->getSuppliers();
             $results[] = $q;
         }
         $this->view->results = $results;

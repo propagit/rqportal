@@ -80,6 +80,32 @@ class Quote extends \Phalcon\Mvc\Model
         return false;
     }
 
+    /**
+     * Get suppliers who get the same quote
+     */
+    public function getSuppliers()
+    {
+        $conditions = "job_type = :job_type: AND job_id = :job_id:";
+        $parameters = array(
+            'job_type' => $this->job_type,
+            'job_id' => $this->job_id
+        );
+        $quotes = Quote::find(array(
+            $conditions,
+            "bind" => $parameters
+        ));
+        $suppliers = array();
+        foreach($quotes as $quote) {
+            $supplier = Supplier::findFirstByUserId($quote->user_id);
+            if ($supplier) {
+                $supplier = $supplier->toArray();
+                $supplier['quote_status'] = $quote->status;
+                $suppliers[] = $supplier;
+            }
+        }
+        return $suppliers;
+    }
+
     public static function getStatus()
     {
         return array(
