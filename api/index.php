@@ -139,7 +139,7 @@ $app->post('/quote/removal', function() use($app, $config) {
         $job_id = $app->queue->put(array('removal' => $status->getModel()->id));
 
         $response->setStatusCode(201, "Created");
-        $response->setJsonContent(array('status' => 'OK', 'data' => $quote));
+        $response->setJsonContent(array('status' => 'OK', 'data' => $job_id));
     } else {
         $response->setStatusCode(409, "Conflict");
         $errors = array();
