@@ -29,7 +29,7 @@ $di->set('db', function() use($config) {
 $di->set('queue', function() use($config) {
     return new \Phalcon\Queue\Beanstalk(array(
         'host' => $config->beanstalk->host,
-        'port' => $config->beanstalk->port
+        #'port' => $config->beanstalk->port
     ));
 });
 
@@ -55,18 +55,14 @@ $app->get('/postcode/{keyword}', function($keyword) use($app) {
     }
     // echo json_encode(array('postcodes' => $data));
 
-    $queue = new \Phalcon\Queue\Beanstalk(array(
-        'host' => '127.0.0.1',
-        'port' => '11300'
-    ));
 
-    $job_id = $queue->put(array('processVideo' => 4871));
+    $job_id = $app->queue->put(array('processVideo' => 4871));
 
 
     $response = new Phalcon\Http\Response();
     $response->setHeader('Access-Control-Allow-Origin', '*');
     $response->setStatusCode(201, "Created");
-    $response->setJsonContent(array('postcodes' => $data));
+    $response->setJsonContent(array('postcodes' => $job_id));
     return $response;
 });
 

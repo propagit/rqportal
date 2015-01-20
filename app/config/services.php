@@ -118,7 +118,7 @@ $di->set('queue', function() use($config) {
 
     return new Beanstalk(array(
         'host' => $config->beanstalk->host,
-        'port' => $config->beanstalk->port
+        #'port' => $config->beanstalk->port
     ));
 });
 
