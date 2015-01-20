@@ -108,10 +108,6 @@ $di->set('db', function () use ($config) {
  * Queue to distribute quotes in real-time
  */
 $di->set('queue', function() use($config) {
-    if (isset($config->beanstalk->disabled) && $config->beanstalk->disabled) {
-        return new DummyServer();
-    }
-
     if (!isset($config->beanstalk->host)) {
         throw new \Exception("Beanstalk is not configured");
     }

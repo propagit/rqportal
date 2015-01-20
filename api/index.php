@@ -28,8 +28,7 @@ $di->set('db', function() use($config) {
 # Set up the queue service
 $di->set('queue', function() use($config) {
     return new \Phalcon\Queue\Beanstalk(array(
-        'host' => $config->beanstalk->host,
-        #'port' => $config->beanstalk->port
+        'host' => $config->beanstalk->host
     ));
 });
 
@@ -55,14 +54,10 @@ $app->get('/postcode/{keyword}', function($keyword) use($app) {
     }
     // echo json_encode(array('postcodes' => $data));
 
-
-    $job_id = $app->queue->put(array('processVideo' => 4871));
-
-
     $response = new Phalcon\Http\Response();
     $response->setHeader('Access-Control-Allow-Origin', '*');
     $response->setStatusCode(201, "Created");
-    $response->setJsonContent(array('postcodes' => $job_id));
+    $response->setJsonContent(array('postcodes' => $data));
     return $response;
 });
 
@@ -138,8 +133,11 @@ $app->post('/quote/removal', function() use($app, $config) {
 
     if ($status->success() == true) {
 
-        $url = $config->application->publicUrl . 'distribute/removal/' . $status->getModel()->id;;
-        exec("curl $url > /dev/null 2>&1 &");
+        #$url = $config->application->publicUrl . 'distribute/removal/' . $status->getModel()->id;;
+        #exec("curl $url > /dev/null 2>&1 &");
+        # Add to queue
+        $job_id = $app->queue->put(array('removal' => $status->getModel()->id));
+
         $response->setStatusCode(201, "Created");
         $response->setJsonContent(array('status' => 'OK', 'data' => $quote));
     } else {
@@ -209,10 +207,14 @@ $app->post('/quote/storage', function() use($app, $config) {
     ));
 
     if ($status->success() == true) {
-        $url = $config->application->publicUrl . 'distribute/storage/' . $status->getModel()->id;;
-        exec("curl $url > /dev/null 2>&1 &");
+        #$url = $config->application->publicUrl . 'distribute/storage/' . $status->getModel()->id;;
+        #exec("curl $url > /dev/null 2>&1 &");
+
+        # Add to queue
+        $job_id = $app->queue->put(array('storage' => $status->getModel()->id));
+
         $response->setStatusCode(201, "Created");
-        $response->setJsonContent(array('status' => 'OK', 'data' => $quote));
+        $response->setJsonContent(array('status' => 'OK', 'data' => $job_id));
     } else {
         $response->setStatusCode(409, "Conflict");
         $errors = array();
