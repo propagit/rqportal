@@ -42,7 +42,10 @@ class ProfileController extends ControllerBase
 
     public function locationAction($zoneType='local')
     {
-        $this->tag->setTitle('Work Locations');
+        $this->tag->setTitle('Work Locations - ' . ucwords($zoneType) . ' Zones');
+        if ($zoneType == 'country') {
+            $this->view->local_zones = ZoneLocal::find("user_id = " . $this->user->id);
+        }
         $this->view->goNext = false;
         $this->view->zoneType = $zoneType;
     }
