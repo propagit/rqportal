@@ -25,6 +25,14 @@ $di->set('db', function() use($config) {
     ));
 });
 
+# Set up the queue service
+$di->set('queue', function() use($config) {
+    return new \Phalcon\Queue\Beanstalk(array(
+        'host' => $config->beanstalk->host,
+        'port' => $config->beanstalk->port
+    ));
+});
+
 # Create and bind the DI to the application
 $app = new \Phalcon\Mvc\Micro($di);
 
@@ -46,6 +54,14 @@ $app->get('/postcode/{keyword}', function($keyword) use($app) {
         );
     }
     // echo json_encode(array('postcodes' => $data));
+
+    $queue = new \Phalcon\Queue\Beanstalk(array(
+        'host' => '127.0.0.1',
+        'port' => '11300'
+    ));
+
+    $job_id = $queue->put(array('processVideo' => 4871));
+
 
     $response = new Phalcon\Http\Response();
     $response->setHeader('Access-Control-Allow-Origin', '*');

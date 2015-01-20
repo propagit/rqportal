@@ -32,5 +32,10 @@ return new \Phalcon\Config(array(
             'password'  => 'm0r3m0n3Y'
         )
     ),
-    'supplierPerQuote' => 3
+    'supplierPerQuote' => 3,
+    'beanstalk' => array(
+        'disabled'  => false,
+        'host'      => '127.0.0.1',
+        'port'      => '11300'
+    )
 ));

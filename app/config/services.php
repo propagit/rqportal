@@ -10,6 +10,7 @@ use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
 use Phalcon\Flash\Session as FlashSession;
 use Phalcon\Events\Manager as EventsManager;
+use Phalcon\Queue\Beanstalk;
 
 /**
  * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
@@ -100,6 +101,24 @@ $di->set('db', function () use ($config) {
         'username' => $config->database->username,
         'password' => $config->database->password,
         'dbname' => $config->database->dbname
+    ));
+});
+
+/**
+ * Queue to distribute quotes in real-time
+ */
+$di->set('queue', function() use($config) {
+    if (isset($config->beanstalk->disabled) && $config->beanstalk->disabled) {
+        return new DummyServer();
+    }
+
+    if (!isset($config->beanstalk->host)) {
+        throw new \Exception("Beanstalk is not configured");
+    }
+
+    return new Beanstalk(array(
+        'host' => $config->beanstalk->host,
+        'port' => $config->beanstalk->port
     ));
 });
 
