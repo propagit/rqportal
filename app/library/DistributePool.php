@@ -14,14 +14,64 @@ class DistributePool extends Injectable
 
             $message = $job->getBody();
             foreach($message as $job_type => $job_id) {
-                if ($job_type == 'removal') {
-                    $this->distributeRemoval($job_id);
-                } else {
-                    $this->distributeStorage($job_id);
+                switch($job_type) {
+                    case 'location': $this->populateLocation($job_id);
+                        break;
+                    case 'local': $this->populateLocal($job_id);
+                        break;
+                    case 'country': $this->populateCountry($job_id);
+                        break;
+                    case 'interstate': $this->populateInterstate($job_id);
+                        break;
+                    case 'removal': $this->distributeRemoval($job_id);
+                        break;
+                    case 'storage': $this->distributeStorage($job_id);
+                        break;
                 }
             }
             $job->delete();
         }
+    }
+
+    public function populateLocation($userId)
+    {
+        if (!$userId)
+        {
+            return false;
+        }
+        $zone_local = ZoneLocal::find("user_id = $userId");
+        foreach($zone_local as $zone) {
+            $zone->generatePool();
+        }
+        $zone_country = ZoneCountry::find("user_id = $userId");
+        foreach($zone_country as $zone) {
+            $zone->generatePool();
+        }
+        $zone_interstate = ZoneInterstate::find("user_id = $userId");
+        foreach($zone_interstate as $zone) {
+            $zone->generatePool();
+        }
+    }
+
+    public function populateLocal($id)
+    {
+        if (!$id) { return false; }
+        $zone = ZoneLocal::findFirst($id);
+        $zone->generatePool();
+    }
+
+    public function populateCountry($id)
+    {
+        if (!$id) { return false; }
+        $zone = ZoneCountry::findFirst($id);
+        $zone->generatePool();
+    }
+
+    public function populateInterstate($id)
+    {
+        if (!$id) { return false; }
+        $zone = ZoneInterstate::findFirst($id);
+        $zone->generatePool();
     }
 
     public function distributeRemoval($id)
@@ -93,7 +143,7 @@ class DistributePool extends Injectable
             $quote->created_on = new Phalcon\Db\RawValue('now()');
             if ($quote->save()) {
                 $count++;
-                echo 'Removal quote sent to ' . $user_id . '<br />';
+                echo 'Removal quote sent to ' . $user_id . PHP_EOL;
             } else {
                 var_dump($quote->getMessages());
             }
@@ -162,7 +212,7 @@ class DistributePool extends Injectable
             $quote->created_on = new Phalcon\Db\RawValue('now()');
             if ($quote->save()) {
                 $count++;
-                echo 'Storage quote sent to ' . $user_id . '<br />';
+                echo 'Storage quote sent to ' . $user_id . PHP_EOL;
             } else {
                 var_dump($quote->getMessages());
             }

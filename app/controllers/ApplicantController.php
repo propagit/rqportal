@@ -144,8 +144,8 @@ class ApplicantController extends \Phalcon\Mvc\Controller
             {
                 if ($this->user->status == User::APPROVED)
                 {
-                    $url = $this->config->application->publicUrl . 'applicant/populateLocal/' . $zone->id;
-                    exec("curl $url > /dev/null 2>&1 &");
+                    # Add to the Queue
+                    $job_id = $this->queue->put(array('local' => $zone->id));
                 }
                 $this->response->setContent(json_encode(array(
                     'zone' => $zone,
@@ -214,8 +214,8 @@ class ApplicantController extends \Phalcon\Mvc\Controller
             {
                 if ($this->user->status == User::APPROVED)
                 {
-                    $url = $this->config->application->publicUrl . 'applicant/populateCountry/' . $zone_country->id;
-                    exec("curl $url > /dev/null 2>&1 &");
+                    # Add to the Queue
+                    $job_id = $this->queue->put(array('country' => $zone_country->id));
                 }
 
                 $zone_country->postcode = $zone_local->postcode; // For display
@@ -282,8 +282,8 @@ class ApplicantController extends \Phalcon\Mvc\Controller
             } else {
                 if ($this->user->status == User::APPROVED)
                 {
-                    $url = $this->config->application->publicUrl . 'applicant/populateInterstate/' . $zone->id;
-                    exec("curl $url > /dev/null 2>&1 &");
+                    # Add to the Queue
+                    $job_id = $this->queue->put(array('country' => $zone->id));
                 }
                 $this->response->setStatusCode(200, 'OK');
                 $this->response->setContent(json_encode(array(
@@ -313,8 +313,9 @@ class ApplicantController extends \Phalcon\Mvc\Controller
     {
         $this->view->disable();
         if ($this->request->isPost() == true) {
-            $url = $this->config->application->publicUrl . 'applicant/populate/' . $this->user->id;
-            exec("curl $url > /dev/null 2>&1 &");
+
+            # Add to the Queue
+            $job_id = $this->queue->put(array('location' => $this->user->id));
 
             $this->supplier->status = Supplier::APPROVED;
             $this->supplier->save();
@@ -332,51 +333,5 @@ class ApplicantController extends \Phalcon\Mvc\Controller
         }
     }
 
-    public function populateAction($userId)
-    {
-        $this->view->disable();
-        if (!$userId)
-        {
-            return false;
-        }
-        $zone_local = ZoneLocal::find("user_id = $userId");
-        $count = 0;
-        foreach($zone_local as $zone) {
-            $count += $zone->generatePool();
-        }
-        $zone_country = ZoneCountry::find("user_id = $userId");
-        foreach($zone_country as $zone) {
-            $count += $zone->generatePool();
-        }
-        $zone_interstate = ZoneInterstate::find("user_id = $userId");
-        foreach($zone_interstate as $zone) {
-            $count += $zone->generatePool();
-        }
-        echo $count . ' postcodes';
-    }
-
-    public function populateLocalAction($id)
-    {
-        $this->view->disable();
-        if (!$id) { return false; }
-        $zone = ZoneLocal::findFirst($id);
-        $zone->generatePool();
-    }
-
-    public function populateCountryAction($id)
-    {
-        $this->view->disable();
-        if (!$id) { return false; }
-        $zone = ZoneCountry::findFirst($id);
-        $zone->generatePool();
-    }
-
-    public function populateInterstateAction($id)
-    {
-        $this->view->disable();
-        if (!$id) { return false; }
-        $zone = ZoneInterstate::findFirst($id);
-        $zone->generatePool();
-    }
 }
 
