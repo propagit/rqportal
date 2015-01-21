@@ -26,7 +26,17 @@
             <div>
                 <b>Interstate Zone 1</b>
                 <label for="postcode">Enter a postcode for your interstate zone</label>
-                <input type="number" class="form-control" ng-model="zone.postcode1" id="postcode" required>
+                <angucomplete-alt id="postcode"
+                              minlength="1"
+                              placeholder="Enter postcode or suburb name"
+                              pause="100"
+                              selected-object="zone.postcode1"
+                              remote-url="<?php echo $baseUrl; ?>api/postcode/"
+                              remote-url-data-field="postcodes"
+                              title-field="name"
+                              input-class="form-control"
+                              match-class="highlight"
+                              field-required="true"></angucomplete-alt>
             </div>
             <div>
                 <label for="distance">Select a distance you can work from this post code</label>
@@ -35,7 +45,17 @@
             <div>
                 <b>Interstate Zone 2</b>
                 <label for="postcode2">Enter a postcode for your interstate zone</label>
-                <input type="number" class="form-control" ng-model="zone.postcode2" id="postcode2" required>
+                <angucomplete-alt id="postcode"
+                              minlength="1"
+                              placeholder="Enter postcode or suburb name"
+                              pause="100"
+                              selected-object="zone.postcode2"
+                              remote-url="<?php echo $baseUrl; ?>api/postcode/"
+                              remote-url-data-field="postcodes"
+                              title-field="name"
+                              input-class="form-control"
+                              match-class="highlight"
+                              field-required="true"></angucomplete-alt>
             </div>
             <div>
                 <label for="distance2">Select a distance you can work from this postcode</label>

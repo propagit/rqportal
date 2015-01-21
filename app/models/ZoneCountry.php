@@ -59,15 +59,14 @@ class ZoneCountry extends BaseModel
         return ZoneLocal::findFirst("id = " . $this->local_id);
     }
 
-    public function toJson()
+    public function toArray($columns = NULL)
     {
+        $zone = parent::toArray();
         $local = ZoneLocal::findFirst("id = " . $this->local_id);
-        return array(
-            'id' => $this->id,
-            'postcode' => $local->postcode,
-            'local' => $local->distance,
-            'distance' => $this->distance
-        );
+        $zone['local'] = $local->toArray();
+        $zone['circle'] = $this->drawCircle();
+        $zone['marker'] = $local->drawCircle();
+        return $zone;
     }
 
     public function drawCircle()

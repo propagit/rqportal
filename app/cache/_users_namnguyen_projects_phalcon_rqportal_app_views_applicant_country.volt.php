@@ -51,7 +51,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="zone in zones">
-                    <td>[[ zone.postcode + ' (' + zone.local + ' km)' ]]</td>
+                    <td>[[ zone.local.postcode + ' (' + zone.local.distance + ' km)' ]]</td>
                     <td>[[ zone.distance ]] km</td>
                     <td align="center"><a class="btn btn-xs btn-danger" ng-click="deleteZone(zone.id)"><i class="fa fa-times"></i> Delete</a></td>
                 </tr>

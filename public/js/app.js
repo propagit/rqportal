@@ -45,7 +45,7 @@ angular.module('rqportal', [
         geocoder.geocode( { 'address': address}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK)
             {
-                $http.post(Config.BASE_URL + 'applicantajax/addlocal', {
+                $http.post(Config.BASE_URL + 'applicantajax/addLocal', {
                     postcode: center.originalObject.postcode,
                     latitude: results[0].geometry.location.lat(),
                     longitude: results[0].geometry.location.lng(),
@@ -59,7 +59,6 @@ angular.module('rqportal', [
                         $scope.map = { center: { latitude: response.zone.latitude, longitude: response.zone.longitude }, zoom: 8 };
                         $scope.options = {scrollwheel: false};
                     });
-                    angular.element('#btn-add-zone').button('reset');
                     $scope.distance = null;
                 }).error(function(error){
                     console.log("Error adding zone: ", error);
@@ -83,35 +82,6 @@ angular.module('rqportal', [
             console.log("Error deleting zone: ", error);
         });
     };
-
-    // Private function, calculate zoom level
-    function getBoundsZoomLevel(bounds, mapDim) {
-        var WORLD_DIM = { height: 256, width: 256 };
-        var ZOOM_MAX = 21;
-
-        function latRad(lat) {
-            var sin = Math.sin(lat * Math.PI / 180);
-            var radX2 = Math.log((1 + sin) / (1 - sin)) / 2;
-            return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;
-        }
-
-        function zoom(mapPx, worldPx, fraction) {
-            return Math.floor(Math.log(mapPx / worldPx / fraction) / Math.LN2);
-        }
-
-        var ne = bounds.getNorthEast();
-        var sw = bounds.getSouthWest();
-
-        var latFraction = (latRad(ne.lat()) - latRad(sw.lat())) / Math.PI;
-
-        var lngDiff = ne.lng() - sw.lng();
-        var lngFraction = ((lngDiff < 0) ? (lngDiff + 360) : lngDiff) / 360;
-
-        var latZoom = zoom(mapDim.height, WORLD_DIM.height, latFraction);
-        var lngZoom = zoom(mapDim.width, WORLD_DIM.width, lngFraction);
-
-        return Math.min(latZoom, lngZoom, ZOOM_MAX);
-    };
 })
 
 .controller('CountryMapCtrl', function($scope, $http, Config, uiGmapGoogleMapApi){
@@ -119,39 +89,36 @@ angular.module('rqportal', [
     $scope.circles = [];
     $scope.markers = [];
     uiGmapGoogleMapApi.then(function(maps) {
-        $scope.map = { center: { latitude: -37.8602828, longitude: 145.079616 }, zoom: 7 };
-        $http.post(Config.BASE_URL + 'applicant/allCountry')
+        $scope.map = { center: { latitude: -26.4390917, longitude: 133.281323 }, zoom: 4 };
+        $http.get(Config.BASE_URL + 'applicantajax/allCountry')
         .success(function(response){
-            // console.log(response);
             response.zones.forEach(function(zone){
                 $scope.zones.push(zone);
-            });
-            response.circles.forEach(function(circle){
-                $scope.circles.push(circle);
-            });
-            response.markers.forEach(function(marker){
-                $scope.markers.push(marker);
+                $scope.circles.push(zone.circle);
+                $scope.markers.push(zone.marker);
             });
         })
         .error(function(error){
-            console.log("Error getting zones: ", error);
+            console.log("ERROR: ", error);
         });
     });
     $scope.addZone = function(local_id, distance) {
-        $http.post(Config.BASE_URL + 'applicant/addCountry', {
+        $http.post(Config.BASE_URL + 'applicantajax/addCountry', {
             local_id: local_id,
             distance: distance
         }).success(function(response) {
-            // console.log(response);
+            console.log(response);
             $scope.zones.push(response.zone);
-            $scope.circles.push(response.circle);
-            $scope.markers.push(response.marker);
+            $scope.circles.push(response.zone.circle);
+            $scope.markers.push(response.zone.marker);
+            $scope.local_id = null;
+            $scope.distance = null;
         }).error(function(error){
-            console.log("Error adding zone: ", error);
+            console.log("ERROR: ", error);
         });
     };
     $scope.deleteZone = function(id) {
-        $http.post(Config.BASE_URL + 'applicant/deleteCountry/' + id)
+        $http.delete(Config.BASE_URL + 'applicantajax/deleteCountry/' + id)
         .success(function(response){
             for(var i=0; i<$scope.zones.length; i++) {
                 if ($scope.zones[i].id == id) {
@@ -162,7 +129,7 @@ angular.module('rqportal', [
                 }
             }
         }).error(function(error){
-            console.log("Error deleting zone: ", error);
+            console.log("ERROR: ", error);
         });
     };
 })
@@ -175,46 +142,43 @@ angular.module('rqportal', [
     $scope.polylines = [];
     uiGmapGoogleMapApi.then(function(maps) {
         $scope.map = { center: { latitude: -26.4390917, longitude: 133.281323 }, zoom: 4 };
-        $http.post(Config.BASE_URL + 'applicant/allInterstate')
+        $http.post(Config.BASE_URL + 'applicantajax/allInterstate')
         .success(function(response){
             response.zones.forEach(function(zone){
                 $scope.zones.push(zone);
+                $scope.circles1.push(zone.circle1);
+                $scope.circles2.push(zone.circle2);
+                $scope.paths.push(zone.path);
             });
-            response.circles1.forEach(function(circle){
-                $scope.circles1.push(circle);
-            });
-            response.circles2.forEach(function(circle){
-                $scope.circles2.push(circle);
-            });
-            response.paths.forEach(function(path){
-                $scope.paths.push(path);
-            });
-            console.log($scope.paths);
         })
         .error(function(error){
-            console.log("Error gettting zones: ", error);
+            console.log("ERROR: ", error);
         });
     });
+
     $scope.addZone = function(zone) {
         var geocoder = new google.maps.Geocoder();
-        geocoder.geocode( { 'address': zone.postcode1 + " Australia"}, function(results, status) {
+        geocoder.geocode( { 'address': zone.postcode1.title + " Australia"}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK)
             {
                 zone.latitude1 =  results[0].geometry.location.lat();
                 zone.longitude1 = results[0].geometry.location.lng();
-                geocoder.geocode( { 'address': zone.postcode2 + " Australia"}, function(results, status) {
+                geocoder.geocode( { 'address': zone.postcode2.title + " Australia"}, function(results, status) {
                     if (status == google.maps.GeocoderStatus.OK)
                     {
                         zone.latitude2 =  results[0].geometry.location.lat();
                         zone.longitude2 = results[0].geometry.location.lng();
-                        $http.post(Config.BASE_URL + 'applicant/addInterstate', zone)
+                        $http.post(Config.BASE_URL + 'applicantajax/addInterstate', zone)
                         .success(function(response){
+                            console.log(response);
                             $scope.zones.push(response.zone);
-                            $scope.circles1.push(response.circle1);
-                            $scope.circles2.push(response.circle2);
-                            $scope.paths.push(response.path);
+                            $scope.circles1.push(response.zone.circle1);
+                            $scope.circles2.push(response.zone.circle2);
+                            $scope.paths.push(response.zone.path);
+                            $scope.distance1 = null;
+                            $scope.distance2 = null;
                         }).error(function(error){
-                            console.log("Error adding zone: ", error);
+                            console.log("ERROR: ", error);
                         });
                     }
                 });
@@ -223,7 +187,7 @@ angular.module('rqportal', [
     };
 
     $scope.deleteZone = function(id) {
-        $http.post(Config.BASE_URL + 'applicant/deleteInterstate/' + id)
+        $http.delete(Config.BASE_URL + 'applicantajax/deleteInterstate/' + id)
         .success(function(response){
             for(var i=0; i<$scope.zones.length; i++) {
                 if ($scope.zones[i].id == id) {
@@ -235,7 +199,7 @@ angular.module('rqportal', [
                 }
             }
         }).error(function(error){
-            console.log("Error deleting zone: ", error);
+            console.log("ERROR: ", error);
         });
     };
 })

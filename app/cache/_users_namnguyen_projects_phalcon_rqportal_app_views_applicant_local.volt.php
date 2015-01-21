@@ -40,7 +40,7 @@
                 <input type="number" class="form-control" ng-model="distance" id="distance" required>
             </div>
             <div>
-                <button class="btn btn-red" ng-disabled="localForm.$invalid" ng-click="addZone(center, distance)" id="btn-add-zone" data-loading-text="Adding..." autocomplete="off">Add Zone</button>
+                <button class="btn btn-red" ng-disabled="localForm.$invalid" ng-click="addZone(center, distance)">Add Zone</button>
             </div>
         </form>
         <hr />

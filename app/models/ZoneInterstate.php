@@ -96,15 +96,13 @@ class ZoneInterstate extends BaseModel
         );
     }
 
-    public function toJson()
+    public function toArray($columns = NULL)
     {
-        return array(
-            'id' => $this->id,
-            'postcode1' => $this->postcode1,
-            'distance1' => $this->distance1,
-            'postcode2' => $this->postcode2,
-            'distance2' => $this->distance2
-        );
+        $zone = parent::toArray();
+        $zone['circle1'] = $this->drawCircle1();
+        $zone['circle2'] = $this->drawCircle2();
+        $zone['path'] = $this->drawPath();
+        return $zone;
     }
 
     public function drawCircle1()
