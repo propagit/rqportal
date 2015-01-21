@@ -22,15 +22,25 @@
         <p>Add the post code of your local zone then choose the distance from the post code you can work in.</p>
         <form class="form-block" name="localForm" novalidate>
             <div>
-                <label for="postcode">Enter your local zone post code</label>
-                <input type="number" class="form-control" ng-model="postcode" id="postcode" required>
+                <label for="postcode">Enter your local zone center</label>
+                <angucomplete-alt id="postcode"
+                              minlength="1"
+                              placeholder="Enter postcode or suburb name"
+                              pause="100"
+                              selected-object="center"
+                              remote-url="<?php echo $baseUrl; ?>api/postcode/"
+                              remote-url-data-field="postcodes"
+                              title-field="name"
+                              input-class="form-control"
+                              match-class="highlight"
+                              field-required="true"></angucomplete-alt>
             </div>
             <div>
                 <label for="distance">Select a distance you can work from this post code</label>
                 <input type="number" class="form-control" ng-model="distance" id="distance" required>
             </div>
             <div>
-                <button class="btn btn-red" ng-disabled="localForm.$invalid" ng-click="addZone(postcode, distance)" data-loading-text="Adding..." autocomplete="off">Add Zone</button>
+                <button class="btn btn-red" ng-disabled="localForm.$invalid" ng-click="addZone(center, distance)" id="btn-add-zone" data-loading-text="Adding..." autocomplete="off">Add Zone</button>
             </div>
         </form>
         <hr />
@@ -53,7 +63,7 @@
             </tbody>
         </table>
         <?php if ($goNext) { ?>
-        <a href="<?php echo $baseUrl; ?>/location/country#map" ng-if="zones.length > 0" class="btn btn-labeled btn-danger">
+        <a href="<?php echo $baseUrl; ?>applicant/location/country#map" ng-if="zones.length > 0" class="btn btn-labeled btn-danger">
             <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Next Step
         </a>
         <?php } ?>

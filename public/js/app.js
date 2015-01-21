@@ -23,40 +23,44 @@ angular.module('rqportal', [
     $scope.circles = [];
     $scope.markers = [];
     uiGmapGoogleMapApi.then(function(maps) {
-        $scope.map = { center: { latitude: -37.8602828, longitude: 145.079616 }, zoom: 9 };
+        $scope.map = { center: { latitude: -26.4390917, longitude: 133.281323 }, zoom: 4 };
         $scope.options = {scrollwheel: false};
 
-        $http.post(Config.BASE_URL + 'applicant/allLocal')
+        $http.get(Config.BASE_URL + 'applicantajax/allLocal')
         .success(function(response){
             response.zones.forEach(function(zone){
                 $scope.zones.push(zone);
-            });
-            response.circles.forEach(function(circle){
-                $scope.circles.push(circle);
-            });
-            response.markers.forEach(function(marker){
-                $scope.markers.push(marker);
+                $scope.circles.push(zone.circle);
+                $scope.markers.push(zone.marker);
             });
         })
         .error(function(error){
             console.log("Error gettting zones: ", error);
         });
     });
-    $scope.addZone = function(postcode, distance) {
+
+    $scope.addZone = function(center, distance) {
         var geocoder = new google.maps.Geocoder();
-        var address = postcode + " Australia";
+        var address = center.originalObject.name + " Australia";
         geocoder.geocode( { 'address': address}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK)
             {
-                $http.post(Config.BASE_URL + 'applicant/addLocal', {
-                    postcode: postcode,
+                $http.post(Config.BASE_URL + 'applicantajax/addlocal', {
+                    postcode: center.originalObject.postcode,
                     latitude: results[0].geometry.location.lat(),
                     longitude: results[0].geometry.location.lng(),
                     distance: distance
                 }).success(function(response){
                     $scope.zones.push(response.zone);
-                    $scope.circles.push(response.circle);
-                    $scope.markers.push(response.marker);
+                    $scope.circles.push(response.zone.circle);
+                    $scope.markers.push(response.zone.marker);
+
+                    uiGmapGoogleMapApi.then(function(maps) {
+                        $scope.map = { center: { latitude: response.zone.latitude, longitude: response.zone.longitude }, zoom: 8 };
+                        $scope.options = {scrollwheel: false};
+                    });
+                    angular.element('#btn-add-zone').button('reset');
+                    $scope.distance = null;
                 }).error(function(error){
                     console.log("Error adding zone: ", error);
                 });
@@ -65,7 +69,7 @@ angular.module('rqportal', [
     };
 
     $scope.deleteZone = function(id) {
-        $http.post(Config.BASE_URL + 'applicant/deleteLocal/' + id)
+        $http.delete(Config.BASE_URL + 'applicantajax/deleteLocal/' + id)
         .success(function(response){
             for(var i=0; i<$scope.zones.length; i++) {
                 if ($scope.zones[i].id == id) {
@@ -78,6 +82,35 @@ angular.module('rqportal', [
         }).error(function(error){
             console.log("Error deleting zone: ", error);
         });
+    };
+
+    // Private function, calculate zoom level
+    function getBoundsZoomLevel(bounds, mapDim) {
+        var WORLD_DIM = { height: 256, width: 256 };
+        var ZOOM_MAX = 21;
+
+        function latRad(lat) {
+            var sin = Math.sin(lat * Math.PI / 180);
+            var radX2 = Math.log((1 + sin) / (1 - sin)) / 2;
+            return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;
+        }
+
+        function zoom(mapPx, worldPx, fraction) {
+            return Math.floor(Math.log(mapPx / worldPx / fraction) / Math.LN2);
+        }
+
+        var ne = bounds.getNorthEast();
+        var sw = bounds.getSouthWest();
+
+        var latFraction = (latRad(ne.lat()) - latRad(sw.lat())) / Math.PI;
+
+        var lngDiff = ne.lng() - sw.lng();
+        var lngFraction = ((lngDiff < 0) ? (lngDiff + 360) : lngDiff) / 360;
+
+        var latZoom = zoom(mapDim.height, WORLD_DIM.height, latFraction);
+        var lngZoom = zoom(mapDim.width, WORLD_DIM.width, lngFraction);
+
+        return Math.min(latZoom, lngZoom, ZOOM_MAX);
     };
 })
 
@@ -215,7 +248,7 @@ angular.module('rqportal', [
         name: 'John Doe',
         number: '4444333322221111',
         month: 12,
-        year: 16,
+        year: 2016,
         cvv: 123,
         agree: false
     };
@@ -235,6 +268,15 @@ angular.module('rqportal', [
         $http.post(Config.BASE_URL + 'applicant/complete')
         .success(function(response){
         }).error(function(error){
+        });
+    };
+
+    $scope.policy = function() {
+        var policyModal = $modal.open({
+            templateUrl: 'paymentPolicy',
+            controller: '',
+            size: 'lg',
+
         });
     };
 })

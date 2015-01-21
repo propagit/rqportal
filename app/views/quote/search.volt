@@ -323,6 +323,9 @@
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-search"></i></span>
                                             <input class="form-control" id="prepend" placeholder="Search supplier" type="text">
+                                            <a class="input-group-addon">
+                                                <i class="fa fa-plus"></i> &nbsp; Send Quote
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

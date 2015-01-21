@@ -189,6 +189,14 @@ hr {
             display: block;
         }
     }
+    .angucomplete-dropdown {
+        margin-top: -1px;
+        min-width: 300px;
+    }
+    .angucomplete-row {
+        margin-bottom: 0;
+        padding-bottom: 1px;
+    }
 }
 .nav-tabs.tabs-red {
     margin: 10px 0 40px 0;

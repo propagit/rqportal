@@ -10,7 +10,8 @@ class ApplicantController extends \Phalcon\Mvc\Controller
             $this->supplier = Supplier::findFirstByUserId($auth['id']);
             $this->user = User::findFirstById($auth['id']);
         }
-        $this->view->baseUrl = $this->url->get('applicant');
+        #$this->view->baseUrl = $this->url->get('applicant');
+        $this->view->baseUrl = $this->url->get('');
     }
 
     public function indexAction()
@@ -104,59 +105,6 @@ class ApplicantController extends \Phalcon\Mvc\Controller
      * Ajax function
      */
 
-    public function allLocalAction()
-    {
-        $this->view->disable();
-
-        if ($this->request->isPost() == true) {
-            $zones = ZoneLocal::find("user_id = " . $this->user->id);
-            $zoneObjects = array();
-            $markers = array();
-            $circles = array();
-            foreach($zones as $zone) {
-                $zoneObjects[] = $zone->toJson();
-                $circles[] = $zone->drawCircle();
-                $markers[] = $zone->drawMarker();
-            }
-            $this->response->setContent(json_encode(array(
-                'zones' => $zoneObjects,
-                'circles' => $circles,
-                'markers' => $markers
-            )));
-            return $this->response;
-        }
-    }
-
-    public function addLocalAction()
-    {
-        $this->view->disable();
-
-        if ($this->request->isPost() == true) {
-            $payload = $this->request->getJsonRawBody();
-            $zone = new ZoneLocal();
-            $zone->user_id = $this->user->id;
-            $zone->postcode = $payload->postcode;
-            $zone->latitude = $payload->latitude;
-            $zone->longitude = $payload->longitude;
-            $zone->distance = $payload->distance;
-
-            if ($zone->save())
-            {
-                if ($this->user->status == User::APPROVED)
-                {
-                    # Add to the Queue
-                    $job_id = $this->queue->put(array('local' => $zone->id));
-                }
-                $this->response->setContent(json_encode(array(
-                    'zone' => $zone,
-                    'circle' => $zone->drawCircle(),
-                    'marker' => $zone->drawMarker()
-                )));
-
-                return $this->response;
-            }
-        }
-    }
 
     public function deleteLocalAction($id)
     {

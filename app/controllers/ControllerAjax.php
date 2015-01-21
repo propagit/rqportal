@@ -11,6 +11,7 @@ class ControllerAjax extends Controller
         if ($auth) {
             $this->user = User::findFirstById($auth['id']);
         }
+        $this->view->baseUrl = $this->url->get('');
     }
 
     // After route execute event

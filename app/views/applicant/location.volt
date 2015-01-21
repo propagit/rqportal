@@ -9,9 +9,9 @@
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs tabs-red">
-                <li{% if zoneType == 'local' %} class="active"{% endif %}><a href="{{ baseUrl }}/location/local#map">Local Zones</a></li>
-                <li{% if zoneType == 'country' %} class="active"{% endif %}><a href="{{ baseUrl }}/location/country#map">Country Zones</a></li>
-                <li{% if zoneType == 'interstate' %} class="active"{% endif %}><a href="{{ baseUrl }}/location/interstate#map">Interstate Zones</a></li>
+                <li{% if zoneType == 'local' %} class="active"{% endif %}><a href="{{ baseUrl }}applicant/location/local#map">Local Zones</a></li>
+                <li{% if zoneType == 'country' %} class="active"{% endif %}><a href="{{ baseUrl }}applicant/location/country#map">Country Zones</a></li>
+                <li{% if zoneType == 'interstate' %} class="active"{% endif %}><a href="{{ baseUrl }}applicant/location/interstate#map">Interstate Zones</a></li>
             </ul>
 
             <!-- Tab panes -->

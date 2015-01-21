@@ -61,13 +61,12 @@ class ZoneLocal extends BaseModel
         );
     }
 
-    public function toJson()
+    public function toArray($columns = NULL)
     {
-        return array(
-            'id' => $this->id,
-            'postcode' => $this->postcode,
-            'distance' => $this->distance
-        );
+        $zone = parent::toArray();
+        $zone['circle'] = $this->drawCircle();
+        $zone['marker'] = $this->drawMarker();
+        return $zone;
     }
 
     public function drawCircle()
