@@ -101,39 +101,6 @@ class ApplicantController extends \Phalcon\Mvc\Controller
         $this->tag->setTitle('Payment Information');
     }
 
-    /**
-     * Ajax function
-     */
-
-
-
-
-
-
-
-    public function completeAction()
-    {
-        $this->view->disable();
-        if ($this->request->isPost() == true) {
-
-            # Add to the Queue
-            $job_id = $this->queue->put(array('location' => $this->user->id));
-
-            $this->supplier->status = Supplier::APPROVED;
-            $this->supplier->save();
-
-            $this->user->status = User::APPROVED;
-            $this->user->save();
-            $this->session->set('auth', array(
-                'id' => $this->user->id,
-                'username' => $this->user->username,
-                'status' => $this->user->status,
-                'level' => $this->user->level
-            ));
-            $this->response->setContent(json_encode(array('count' => $url)));
-            return $this->response;
-        }
-    }
 
 }
 

@@ -199,6 +199,7 @@
                 </div>
                 {% endif %}
 
+                {% if elements.isAdmin() %}
                 <ul id="widget-tab-3" class="nav nav-tabs pull-right">
                     <li class="active">
                         <a data-toggle="tab" href="#details"> Quote Details </a>
@@ -207,6 +208,7 @@
                         <a data-toggle="tab" href="#suppliers"> Suppliers </a>
                     </li>
                 </ul>
+                {% endif %}
             </header>
 
             <!-- widget div-->
@@ -316,6 +318,9 @@
 
 
                         </div>
+
+
+                        {% if elements.isAdmin() %}
                         <div class="tab-pane fade" id="suppliers">
                             <div class="widget-body-toolbar">
                                 <div class="row">
@@ -354,6 +359,8 @@
 
                             </div>
                         </div>
+                        {% endif %}
+
                     </div>
                 </div>
                 <!-- end widget content -->

@@ -58,7 +58,7 @@
             </tbody>
         </table>
         <?php if ($goNext) { ?>
-        <a href="<?php echo $baseUrl; ?>/location/interstate#map" class="btn btn-labeled btn-danger">
+        <a href="<?php echo $baseUrl; ?>applicant/location/interstate#map" class="btn btn-labeled btn-danger">
             <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Next Step
         </a>
         <?php } ?>

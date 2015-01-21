@@ -162,5 +162,27 @@ class ApplicantajaxController extends ControllerAjax
             $zone->delete();
         }
     }
+
+    public function completeAction()
+    {
+        if ($this->user->status < User::APPROVED)
+        {
+            # Add to the Queue
+            $job_id = $this->queue->put(array('location' => $this->user->id));
+        }
+
+
+        $this->supplier->status = Supplier::APPROVED;
+        $this->supplier->save();
+
+        $this->user->status = User::APPROVED;
+        $this->user->save();
+        $this->session->set('auth', array(
+            'id' => $this->user->id,
+            'username' => $this->user->username,
+            'status' => $this->user->status,
+            'level' => $this->user->level
+        ));
+    }
 }
 

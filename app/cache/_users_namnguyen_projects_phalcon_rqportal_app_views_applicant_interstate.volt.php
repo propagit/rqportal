@@ -85,7 +85,7 @@
             </tbody>
         </table>
         <?php if ($goNext) { ?>
-        <a href="<?php echo $baseUrl; ?>/payment" class="btn btn-labeled btn-danger">
+        <a href="<?php echo $baseUrl; ?>applicant/payment" class="btn btn-labeled btn-danger">
             <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Next Step
         </a>
         <?php } ?>

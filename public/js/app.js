@@ -229,7 +229,7 @@ angular.module('rqportal', [
             }
         });
 
-        $http.post(Config.BASE_URL + 'applicant/complete')
+        $http.post(Config.BASE_URL + 'applicantajax/complete')
         .success(function(response){
         }).error(function(error){
         });
