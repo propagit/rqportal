@@ -260,7 +260,7 @@ angular.module('rqportal', [
     return filter;
 })
 
-.controller('QuoteCtrl', function($scope, $http, Config, uiGmapGoogleMapApi) {
+.controller('QuoteCtrl', function($scope, $http, $timeout, Config, uiGmapGoogleMapApi) {
     $scope.current_quote = {};
     $scope.removals = [];
     $scope.storages = [];
@@ -365,7 +365,24 @@ angular.module('rqportal', [
             }
             $scope.current_quote = quote;
         }).error(function(error){
-            console.log("Error update quote status: ", error);
+            console.log("ERROR: ", error);
+        });
+    };
+
+    $scope.addSupplier = function(supplier) {
+        $http.post(Config.BASE_URL + 'quoteajax/addSupplier', {
+            quote_id: $scope.current_quote.id,
+            supplier_id: supplier.originalObject.id
+        })
+        .success(function(response){
+            $scope.current_quote.suppliers.push(response.supplier);
+        }).error(function(error){
+            $scope.error = error.message;
+            $timeout(function(){
+                $scope.error = null;
+            }, 4000);
+
+            console.log("ERROR: ", error);
         });
     };
 

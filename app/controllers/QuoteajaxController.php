@@ -48,10 +48,78 @@ class QuoteajaxController extends ControllerAjax
             $q = $quote->toArray();
             $q['removal'] = $quote->getRemoval();
             $q['storage'] = $quote->getStorage();
-            #$q['suppliers'] = $quote->getSuppliers();
             $results[] = $q;
         }
         $this->view->results = $results;
+
+    }
+
+    public function addSupplierAction()
+    {
+        $request = $this->request->getJsonRawBody();
+        $quote_id = $request->quote_id;
+        $supplier_id = $request->supplier_id;
+
+        $quote = Quote::findFirst($quote_id);
+        $supplier = Supplier::findFirst($supplier_id);
+
+        $errors = array();
+
+        # First check if quote has been sent to any supplier
+        if ($quote->user_id == 0) {
+            # Update user_id for this quote
+            $quote->user_id = $supplier->user_id;
+            if ($quote->save() == false)
+            {
+                foreach($quote->getMessages() as $message) {
+                    $errors[] = (string) $message;
+                }
+            }
+        }
+        else # Quote has been sent to supplier
+        {
+            # Now make sure this supplier has not receive this quote
+            $conditions = "job_type = :job_type: AND job_id = :job_id: AND user_id = :user_id:";
+            $parameters = array(
+                'job_type' => $quote->job_type,
+                'job_id' => $quote->job_id,
+                'user_id' => $supplier->user_id
+            );
+            $supplier_quote = Quote::findFirst(array(
+                $conditions,
+                "bind" => $parameters
+            ));
+            if ($supplier_quote)
+            {
+                $errors[] = "This supplier has already received this quote";
+            }
+            else
+            {
+                $new_quote = new Quote();
+                $new_quote->job_type = $quote->job_type;
+                $new_quote->job_id = $quote->job_id;
+                $new_quote->user_id = $supplier->user_id;
+                $new_quote->status = Quote::FRESH;
+                $new_quote->created_on = new Phalcon\Db\RawValue('now()');
+                if ($new_quote->save() == false)
+                {
+                    foreach($new_quote->getMessages() as $message) {
+                        $errors[] = (string) $message;
+                    }
+                }
+            }
+        }
+
+        if (count($errors) > 0)
+        {
+            $this->response->setStatusCode(400, 'ERROR');
+            $this->view->message = implode(', ', $errors);
+        }
+        else
+        {
+            $this->response->setStatusCode(200, 'OK');
+            $this->view->supplier = $supplier->toArray();
+        }
 
     }
 

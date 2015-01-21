@@ -137,27 +137,21 @@ class Elements extends Component
     {
         $auth = $this->session->get('auth');
 
-        $conditions = "";
+        $conditions = "created_on LIKE :today:";
+        $parameters = array(
+            'today' => date('Y-m-d') . '%'
+        );
 
         if ($auth['level'] == User::SUPPLIER) {
-            $conditions .= "user_id = " . $auth['id'];
+            $conditions .= "AND user_id = :user_id:";
+            $parameters['user_id'] = $auth['id'];
         }
 
-        $params = array(
+        $quotes = Quote::find(array(
             $conditions,
-            "order" => "status DESC",
-        );
-        if ($auth['level'] == User::ADMIN) {
-            $params['group'] = array('job_id', 'job_type');
-        }
-
-        $quotes = Quote::find($params);
-        $new = 0;
-        foreach($quotes as $quote) {
-            if ($quote->status == Quote::FRESH) {
-                $new++;
-            }
-        }
-        return $new;
+            "bind" => $parameters,
+            "group" => array('job_id', 'job_type')
+        ));
+        return count($quotes);
     }
 }

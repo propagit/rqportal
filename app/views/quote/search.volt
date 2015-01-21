@@ -21,7 +21,7 @@
                               placeholder="Enter supplier name, company, business to search..."
                               pause="400"
                               selected-object="params.supplier"
-                              remote-url="/rqportal/supplierAjax/search/"
+                              remote-url="{{ baseUrl }}supplierajax/search/"
                               remote-url-data-field="suppliers"
                               title-field="name"
                               description-field="business"
@@ -327,17 +327,33 @@
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                            <input class="form-control" id="prepend" placeholder="Search supplier" type="text">
-                                            <a class="input-group-addon">
+                                            <angucomplete-alt id="pickup"
+                                              minlength="1"
+                                              placeholder="Enter supplier name, company, business to search..."
+                                              pause="400"
+                                              selected-object="new_supplier"
+                                              remote-url="{{ baseUrl }}supplierajax/search/"
+                                              remote-url-data-field="suppliers"
+                                              title-field="name"
+                                              description-field="business"
+                                              input-class="form-control"
+                                              match-class="highlight"
+                                              field-required="true" disable-input="params.allocated == 'not_allocated'"></angucomplete-alt>
+                                            <a class="input-group-addon" ng-click="addSupplier(new_supplier)">
                                                 <i class="fa fa-plus"></i> &nbsp; Send Quote
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div ng-show="current_quote.suppliers.length == 0">
+                            <div class="padding-10" ng-show="current_quote.suppliers.length == 0">
                                 <div class="alert alert-warning">
                                     This quote has not been sent to any suppliers.
+                                </div>
+                            </div>
+                            <div class="padding-10" ng-if="error">
+                                <div class="alert alert-danger">
+                                    [[ error ]]
                                 </div>
                             </div>
                             <div class="table-responsive" ng-show="current_quote.suppliers.length > 0">
