@@ -1,7 +1,7 @@
 <header id="header">
     <div id="logo-group">
         <!-- PLACE YOUR LOGO HERE -->
-        <span id="logo2"><img src="<?php echo $baseUrl; ?>img/logo.png" width="110" alt="SmartAdmin"> </span>
+        <span id="logo2"><img src="<?php echo $baseUrl; ?>img/logo.png" width="110" alt="Removalist Quote"> </span>
         <!-- END LOGO PLACEHOLDER -->
 
         <!-- Note: The activity badge color changes when clicked and resets the number to 0

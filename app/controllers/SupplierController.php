@@ -5,25 +5,14 @@ class SupplierController extends ControllerBase
 
     public function initialize()
     {
-        $this->tag->setTitle('Supplier');
         parent::initialize();
+        $this->tag->setTitle('Supplier');
         $this->view->parent = 'supplier';
     }
 
     public function indexAction()
     {
-
-    }
-
-    public function searchAction()
-    {
         $this->view->suppliers = Supplier::find();
-        $this->view->child = 'search';
-    }
-
-    public function viewAction($supplierId)
-    {
-        $this->view->supplier = Supplier::findFirst($supplierId);
         $this->view->child = 'search';
     }
 
@@ -33,18 +22,30 @@ class SupplierController extends ControllerBase
         $supplier->status = Supplier::ACTIVATED;
         $supplier->activation_key = md5($supplierId . '4w3s0m3');
         if ($supplier->save() == false) {
-
+            foreach($supplier->getMessages() as $message) {
+                #var_dump($message);
+            }
         } else {
-             $this->getDI()->getMail()->send(
-                array($supplier->email => $supplier->name),
-                'Account Activation',
-                'activation',
-                array('name' => $supplier->name,
-                    'activationUrl' =>
-                    '/applicant/register/' . $supplier->id . '/' . $supplier->activation_key)
-            );
+            # Add to the Queue
+            $job_id = $this->queue->put(array('activation' => $supplierId));
         }
         return $this->response->redirect('supplier/search');
     }
+
+    public function loginAction($userId)
+    {
+        $user = User::findFirst($userId);
+
+        $this->session->set('auth', array(
+            'id' => $user->id,
+            'username' => $user->username,
+            'status' => $user->status,
+            'level' => $user->level,
+            'is_admin' => true,
+            'admin_auth' => $this->session->get('auth')
+        ));
+        return $this->response->redirect('profile/company');
+    }
+
 }
 

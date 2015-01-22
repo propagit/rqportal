@@ -4,7 +4,8 @@ angular.module('rqportal', [
     'angucomplete-alt',
     'ui.bootstrap',
     'ui.utils.masks',
-    'uiGmapgoogle-maps'
+    'uiGmapgoogle-maps',
+    'controllers.billing'
 ])
 .config(function($interpolateProvider) {
     // Avoid confliction with Phalcon
@@ -107,7 +108,6 @@ angular.module('rqportal', [
             local_id: local_id,
             distance: distance
         }).success(function(response) {
-            console.log(response);
             $scope.zones.push(response.zone);
             $scope.circles.push(response.zone.circle);
             $scope.markers.push(response.zone.marker);
@@ -170,7 +170,6 @@ angular.module('rqportal', [
                         zone.longitude2 = results[0].geometry.location.lng();
                         $http.post(Config.BASE_URL + 'applicantajax/addInterstate', zone)
                         .success(function(response){
-                            console.log(response);
                             $scope.zones.push(response.zone);
                             $scope.circles1.push(response.zone.circle1);
                             $scope.circles2.push(response.zone.circle2);
@@ -260,7 +259,7 @@ angular.module('rqportal', [
     return filter;
 })
 
-.controller('QuoteCtrl', function($scope, $http, $timeout, Config, uiGmapGoogleMapApi) {
+.controller('QuoteCtrl', function($rootScope, $scope, $http, $timeout, $modal, Config, uiGmapGoogleMapApi) {
     $scope.current_quote = {};
     $scope.removals = [];
     $scope.storages = [];
@@ -287,7 +286,7 @@ angular.module('rqportal', [
                     }
                 });
                 if ($scope.removals.length > 0) {
-                    $scope.removalDetails($scope.removals[0]);
+                    //$scope.removalDetails($scope.removals[0]);
                 }
             } else {
                 $scope.current_quote = {};
@@ -299,7 +298,6 @@ angular.module('rqportal', [
     $scope.removalDetails = function(quote) {
         var removal = quote.removal;
         $scope.current_quote = quote;
-        console.log(quote);
         $scope.paths = [];
         $scope.updateQuoteStatus(quote.id, 1);
 
@@ -386,6 +384,19 @@ angular.module('rqportal', [
         });
     };
 
+
+    $scope.deleteQuote = function() {
+        var confirmModal = $modal.open({
+            templateUrl: 'deleteQuote',
+            size: 'sm',
+            resolve: {
+                items: function () {
+                    return $scope.current_quote;
+                }
+            }
+        });
+    };
+
     // Private function, calculate zoom level
     function getBoundsZoomLevel(bounds, mapDim) {
         var WORLD_DIM = { height: 256, width: 256 };
@@ -416,3 +427,4 @@ angular.module('rqportal', [
     };
 
 })
+

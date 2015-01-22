@@ -11,6 +11,11 @@ class Elements extends Component
 {
 
     private $_menu = array(
+        'admin' => array(
+            'icon' => 'fa-users',
+            'label' => 'Back to Admin',
+            'action' => 'login/admin'
+        ),
         'dashboard' => array(
             'icon' => 'fa-dashboard',
             'label' => 'Dashboard',
@@ -19,11 +24,7 @@ class Elements extends Component
         'supplier' => array(
             'icon' => 'fa-user',
             'label' => 'Manage Supplier',
-            'action' => '#',
-            'children' => array(
-                'search' => 'Search Supplier',
-                'add' => 'Add Supplier'
-            )
+            'action' => 'supplier'
         ),
         'profile' => array(
             'icon' => 'fa-user',
@@ -38,15 +39,16 @@ class Elements extends Component
         'quote' => array(
             'icon' => 'fa-file-text-o',
             'label' => 'Manage Quotes',
-            'action' => '#',
-            'children' => array(
-                'search' => 'Search Quotes'
-            )
+            'action' => 'quote'
         ),
         'billing' => array(
             'icon' => 'fa-bank',
             'label' => 'Manage Billing',
-            'action' => '#'
+            'action' => '#',
+            'children' => array(
+                'invoice' => 'Search Invoices',
+                'quote' => 'Outstanding Quotes'
+            )
         ),
         'setting' => array(
             'icon' => 'fa-cog',
@@ -67,9 +69,15 @@ class Elements extends Component
 
         if ($auth['level'] == User::SUPPLIER) {
             unset($this->_menu['supplier']);
+            unset($this->_menu['setting']);
+            if (!isset($auth['is_admin'])) {
+                unset($this->_menu['admin']);
+            }
         } else {
             unset($this->_menu['profile']);
+            unset($this->_menu['admin']);
         }
+
         $baseUrl = $this->url->get('');
         $currentController = $this->view->getControllerName();
         $currentAction = $this->view->getActionName();
@@ -80,7 +88,7 @@ class Elements extends Component
             } else {
                 echo '<li>';
             }
-            $url = ($option['action'] == '#') ? '#' : $baseUrl . $controller;
+            $url = ($option['action'] == '#') ? '#' : $baseUrl . $option['action'];
             echo '<a href="' . $url . '"><i class="fa fa-2x fa-fw ' . $option['icon'] . '"></i> ' . $option['label'] . '</a>';
             if (isset($option['children'])) {
                 echo '<ul>';
@@ -105,7 +113,8 @@ class Elements extends Component
         $controller = $this->view->getControllerName();
         $action = $this->view->getActionName();
         echo '<ol class="breadcrumb">';
-        echo '<li>' . ucwords($controller) . '</li>';
+        echo '<li><a href="' . $this->url->get('') . '"><i class="fa fa-home"></i></a></li>';
+        echo '<li><a href="' . $this->url->get($controller) . '">' . ucwords($controller) . '</a></li>';
         if ($action && $action != 'index') {
             echo '<li>' . ucwords($action) . '</li>';
         }

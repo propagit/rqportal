@@ -9,7 +9,7 @@
 </div>
 
 <!-- Widget ID (each widget will need unique ID)-->
-<div class="jarviswidget jarviswidget-color-red" id="wid-id-1" data-widget-editbutton="false">
+<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false">
     <header>
         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
         <h2>Suppliers</h2>
@@ -72,6 +72,7 @@
                         <th data-hide="phone">Phone</th>
                         <th data-hide="phone,tablet">Email</th>
                         <th data-hide="phone,tablet">Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
 
@@ -84,33 +85,31 @@
                         <td>{{ supplier.phone }}</td>
                         <td>{{ supplier.email }}</td>
                         <td>
-                            <a href="{{ baseUrl }}supplier/view/{{ supplier.id }}" class="btn btn-xs btn-primary"><i class="fa fa-search"></i> View</a>
 
                             {% if supplier.status == constant("Supplier::APPLIED") %}
-                            <div class="btn-group">
-                                <button class="btn btn-xs btn-warning">
-                                    Applied
-                                </button>
-                                <button class="btn btn-xs btn-warning dropdown-toggle" data-toggle="dropdown">
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="{{ baseUrl }}supplier/activate/{{ supplier.id }}">Activate</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a href="{{ baseUrl }}supplier/reject/{{ supplier.id }}">Reject</a>
-                                    </li>
-                                </ul>
-                            </div>
+                                <span class="text-warning">Applied</span>
                             {% endif %}
                             {% if supplier.status == constant("Supplier::ACTIVATED") %}
-                                <a class="btn btn-xs btn-info">Activated</a>
+                                <span class="text-primary">Activated</span>
                             {% endif %}
                             {% if supplier.status == constant("Supplier::APPROVED") %}
-                                <a class="btn btn-xs btn-success">Approved</a>
+                                <span class="text-success">Approved</span>
                             {% endif %}
+                        </td>
+                        <td>
+                            {% if supplier.status == constant("Supplier::APPLIED") %}
+                                <a href="{{ baseUrl }}supplier/activate/{{ supplier.id }}" class="btn btn-xs btn-warning">Activate</a>
+                                <a href="{{ baseUrl }}supplier/reject/{{ supplier.id }}" class="btn btn-xs btn-danger">Reject</a>
+                            {% endif %}
+
+                            {% if supplier.status == constant("Supplier::ACTIVATED") %}
+                                <a href="{{ baseUrl }}applicant/register/{{ supplier.id }}/{{ supplier.activation_key }}" class="btn btn-xs btn-primary">Complete Profile</a>
+                            {% endif %}
+
+                            {% if supplier.status == constant("Supplier::APPROVED") %}
+                                <a href="{{ baseUrl }}supplier/login/{{ supplier.user_id }}" class="btn btn-xs btn-success">Login as supplier</a>
+                            {% endif %}
+
                         </td>
                     </tr>
                     {% endfor %}

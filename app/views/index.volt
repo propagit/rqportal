@@ -23,6 +23,7 @@
         {{ javascript_include('js/lib/angucomplete/angucomplete-alt.min.js') }}
 
         {{ javascript_include('js/app.js') }}
+        {{ javascript_include('js/controllers/billing.js') }}
         {{ javascript_include('js/config.js') }}
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">

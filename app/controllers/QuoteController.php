@@ -2,24 +2,10 @@
 
 class QuoteController extends ControllerBase
 {
-    public function initialize()
-    {
-        $auth = $this->session->get('auth');
-        if ($auth) {
-            $this->user = User::findFirstById($auth['id']);
-        }
-        parent::initialize();
-    }
 
     public function indexAction()
     {
-
-    }
-
-    public function searchAction()
-    {
         $this->tag->setTitle('Search Quote');
-        $this->view->quotes = Quote::find();
     }
 
     public function ajaxGetAllAction()

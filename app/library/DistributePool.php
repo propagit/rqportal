@@ -27,10 +27,27 @@ class DistributePool extends Injectable
                         break;
                     case 'storage': $this->distributeStorage($job_id);
                         break;
+                    case 'activation': $this->sendActivation($job_id);
+                        break;
                 }
             }
             $job->delete();
         }
+    }
+
+    public function sendActivation($supplierId)
+    {
+        if (!$supplierId) { return false; }
+        $supplier = Supplier::findFirst($supplierId);
+        if (!$supplier) { return false; }
+        $this->mail->send(
+            array($supplier->email => $supplier->name),
+                'Account Activation',
+                'activation',
+                array('name' => $supplier->name,
+                    'activationUrl' =>
+                    '/applicant/register/' . $supplier->id . '/' . $supplier->activation_key)
+        );
     }
 
     public function populateLocation($userId)

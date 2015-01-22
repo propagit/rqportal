@@ -92,7 +92,7 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-5">
+    <div class="col-lg-[[ current_quote.status ? 5 : 12 ]]">
         <div class="jarviswidget" id="wid-1" ng-if="removals.length > 0 || storages.length > 0">
 
             <header>
@@ -206,6 +206,9 @@
                     </li>
                     <li>
                         <a data-toggle="tab" href="#suppliers"> Suppliers </a>
+                    </li>
+                    <li>
+                        <a ng-click="deleteQuote()"><i class="fa fa-times"></i> &nbsp; Delete this quote</a>
                     </li>
                 </ul>
                 {% endif %}
@@ -389,5 +392,19 @@
     </div>
 </div>
 
+<script type="text/ng-template" id="deleteQuote">
+    <div class="modal-header">
+        <h3 class="modal-title text-danger"><i class="fa fa-times"></i> Delete this quote?</h3>
+    </div>
+    <div class="modal-body">
+        Are you sure you want to delete this quote? This action cannot be undo.
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" ng-click="delete()">Yes</button>
+        <button class="btn btn-default" ng-click="cancelDelete()">Cancel</button>
+    </div>
+</script>
+
 </div>
+
 

@@ -27,6 +27,17 @@ class LoginController extends \Phalcon\Mvc\Controller
         }
     }
 
+    public function adminAction()
+    {
+        $auth = $this->session->get('auth');
+        if (isset($auth['is_admin']))
+        {
+            $this->session->set('auth', $auth['admin_auth']);
+            return $this->response->redirect('supplier');
+        }
+        $this->_dispatcherUser();
+    }
+
     private function _registerSession(User $user)
     {
         $this->session->set('auth', array(

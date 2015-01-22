@@ -198,6 +198,14 @@ hr {
         padding-bottom: 1px;
     }
 }
+.dropdown-menu.dropdown-right {
+    left: auto;
+    right: 0;
+}
+.badge-paid {
+    margin-top: 30px;
+    margin-right: 20px;
+}
 .nav-tabs.tabs-red {
     margin: 10px 0 40px 0;
     li {
@@ -218,6 +226,11 @@ hr {
     box-shadow: 0 -2px 0 #77021d;
     -webkit-box-shadow: 0 -2px 0 #77021d;
     -moz-box-shadow: 0 -2px 0 #77021d;
+}
+.btn-goback {
+    position: absolute;
+    right: 20px;
+    z-index: 100;
 }
 .btn-red {
     @include linear-gradient(#a60921, #8d0c1e);

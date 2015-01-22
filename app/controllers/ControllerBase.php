@@ -9,6 +9,11 @@ class ControllerBase extends Controller
         // $this->tag->prependTitle('RQ Portal');
         $this->view->setTemplateAfter('main');
         $this->view->baseUrl = $this->url->get('');
+
+        $auth = $this->session->get('auth');
+        if ($auth) {
+            $this->user = User::findFirstById($auth['id']);
+        }
     }
 
     protected function forward($uri)
