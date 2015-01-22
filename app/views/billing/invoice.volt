@@ -46,7 +46,7 @@
                                     <th><i class="fa fa-dollar"></i> Amount</th>
                                     <th width="80">Status</th>
                                     <th><i class="fa fa-calendar"></i> Paid On</th>
-                                    <th></th>
+                                    <th width="268"></th>
                                 </tr>
                             </thead>
 
@@ -54,7 +54,7 @@
                                 <tr ng-repeat="invoice in invoices">
                                     <td align="center">[[ invoice.id ]]</td>
                                     <td><b>[[ invoice.supplier.name ]]</b> - [[ invoice.supplier.business ]]</td>
-                                    <td>[[ invoice.created_on ]]</td>
+                                    <td>[[ invoice.created_on | date:'dd/MM/yyyy' ]]</td>
                                     <td class="text-[[ invoice.status == {{ constant("Invoice::UNPAID") }} ? 'warning' : 'success' ]]">[[ invoice.amount | currency ]]</td>
                                     <td>
                                         <div class="btn-group" ng-if="invoice.status == {{ constant("Invoice::UNPAID") }}">

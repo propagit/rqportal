@@ -65,30 +65,36 @@
                 <button class="btn btn-red" ng-disabled="interstateForm.$invalid" ng-click="addZone(zone)">Add Zone</button>
             </div>
         </form>
-        <hr />
 
-        <h4>YOUR INTERSTATE ZONES</h4>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <td>Zone 1</td>
-                    <td>Zone 2</td>
-                    <td width="80"></td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="zone in zones">
-                    <td>[[ zone.postcode1 + ' (' + zone.distance1 + ' km)' ]]</td>
-                    <td>[[ zone.postcode2 + ' (' + zone.distance2 + ' km)' ]]</td>
-                    <td align="center"><a class="btn btn-xs btn-danger" ng-click="deleteZone(zone.id)"><i class="fa fa-times"></i> Delete</a></td>
-                </tr>
-            </tbody>
-        </table>
-        <?php if ($goNext) { ?>
-        <a href="<?php echo $baseUrl; ?>applicant/payment" class="btn btn-labeled btn-danger">
-            <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Next Step
-        </a>
-        <?php } ?>
+        <div ng-if="zones.length == 0" class="alert alert-warning">
+            There are no interstate zones set up yet.
+        </div>
+
+        <div ng-if="zones.length > 0">
+              <hr />
+              <h4>YOUR INTERSTATE ZONES</h4>
+              <table class="table table-bordered">
+                  <thead>
+                      <tr>
+                          <td>Zone 1</td>
+                          <td>Zone 2</td>
+                          <td width="80"></td>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr ng-repeat="zone in zones">
+                          <td>[[ zone.postcode1 + ' (' + zone.distance1 + ' km)' ]]</td>
+                          <td>[[ zone.postcode2 + ' (' + zone.distance2 + ' km)' ]]</td>
+                          <td align="center"><a class="btn btn-xs btn-danger" ng-click="deleteZone(zone.id)"><i class="fa fa-times"></i> Delete</a></td>
+                      </tr>
+                  </tbody>
+              </table>
+              <?php if ($goNext) { ?>
+              <a href="<?php echo $baseUrl; ?>applicant/payment" class="btn btn-labeled btn-danger">
+                  <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Next Step
+              </a>
+              <?php } ?>
+        </div>
     </div>
 </div>
 

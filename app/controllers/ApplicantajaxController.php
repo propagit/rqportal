@@ -171,9 +171,12 @@ class ApplicantajaxController extends ControllerAjax
             $job_id = $this->queue->put(array('location' => $this->user->id));
         }
 
-
-        $this->supplier->status = Supplier::APPROVED;
-        $this->supplier->save();
+        if ($this->user->level == User::SUPPLIER)
+        {
+            $supplier = Supplier::findFirstByUserId($this->user->id);
+            $supplier->status = Supplier::APPROVED;
+            $supplier->save();
+        }
 
         $this->user->status = User::APPROVED;
         $this->user->save();

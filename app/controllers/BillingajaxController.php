@@ -16,6 +16,31 @@ class BillingajaxController extends ControllerAjax
 
     }
 
+    public function searchInvoicesAction()
+    {
+        $request = $this->request->getJsonRawBody();
+
+        $conditions = "1=1";
+        $parameters = array();
+        if ($this->user->level == User::SUPPLIER)
+        {
+            $conditions .= " AND user_id = :user_id:";
+            $parameters['user_id'] = $this->user->id;
+        }
+
+        $invoices = Invoice::find(array(
+            $conditions,
+            "bind" => $parameters,
+            "order" => "id DESC"
+        ));
+        $results = array();
+        foreach($invoices as $invoice)
+        {
+            $results[] = $invoice->toArray();
+        }
+        $this->view->invoices = $results;
+    }
+
     public function processInvoiceAction($id)
     {
         if (!$id) { return; }

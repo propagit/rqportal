@@ -8,7 +8,7 @@ class ApplicantController extends \Phalcon\Mvc\Controller
         $auth = $this->session->get('auth');
         if ($auth) {
             $this->supplier = Supplier::findFirstByUserId($auth['id']);
-            $this->user = User::findFirstById($auth['id']);
+            $this->user = User::findFirst($auth['id']);
         }
         #$this->view->baseUrl = $this->url->get('applicant');
         $this->view->baseUrl = $this->url->get('');

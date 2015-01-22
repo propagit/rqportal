@@ -4,7 +4,7 @@ angular.module('controllers.billing', [])
 
     $scope.current_invoice = {};
 
-    $http.get(Config.BASE_URL + 'billingajax/getInvoices')
+    $http.post(Config.BASE_URL + 'billingajax/searchInvoices')
     .success(function(response){
         $scope.invoices = response.invoices;
     }).error(function(error){

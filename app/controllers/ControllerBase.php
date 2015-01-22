@@ -12,7 +12,7 @@ class ControllerBase extends Controller
 
         $auth = $this->session->get('auth');
         if ($auth) {
-            $this->user = User::findFirstById($auth['id']);
+            $this->user = User::findFirst($auth['id']);
         }
     }
 

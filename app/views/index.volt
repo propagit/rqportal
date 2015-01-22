@@ -23,6 +23,8 @@
         {{ javascript_include('js/lib/angucomplete/angucomplete-alt.min.js') }}
 
         {{ javascript_include('js/app.js') }}
+        {{ javascript_include('js/controllers/applicant.js') }}
+        {{ javascript_include('js/controllers/quote.js') }}
         {{ javascript_include('js/controllers/billing.js') }}
         {{ javascript_include('js/config.js') }}
 

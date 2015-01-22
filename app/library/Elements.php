@@ -73,6 +73,11 @@ class Elements extends Component
             if (!isset($auth['is_admin'])) {
                 unset($this->_menu['admin']);
             }
+            $this->_menu['billing'] = array(
+                'icon' => 'fa-bank',
+                'label' => 'Manage Invoices',
+                'action' => 'billing/invoice'
+            );
         } else {
             unset($this->_menu['profile']);
             unset($this->_menu['admin']);

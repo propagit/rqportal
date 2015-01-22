@@ -180,6 +180,6 @@
             <li><i class="fa fa-square-o"></i> Manage your location settings (where you would like to recieve jobs)</li>
             <li><i class="fa fa-square-o"></i> Manage and pay bills</li>
         </ul>
-        <p align="center"><a class="btn btn-red" ng-click="goToPortal()">Go To Portal <i class="fa fa-arrow-right"></i></a></p>
+        <p align="center"><a class="btn btn-red" href="<?php echo $baseUrl; ?>">Go To Portal <i class="fa fa-arrow-right"></i></a></p>
     </div>
 </script>

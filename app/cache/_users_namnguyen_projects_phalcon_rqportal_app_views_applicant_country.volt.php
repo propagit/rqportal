@@ -38,30 +38,35 @@
                 <button class="btn btn-red" ng-disabled="countryForm.$invalid" ng-click="addZone(local_id, distance)">Add Zone</button>
             </div>
         </form>
-        <hr />
+        <div ng-if="zones.length == 0" class="alert alert-warning">
+            There are no country zones set up yet.
+        </div>
 
-        <h4>YOUR COUNTRY ZONES</h4>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <td>Local Zone</td>
-                    <td>Distance</td>
-                    <td width="80"></td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="zone in zones">
-                    <td>[[ zone.local.postcode + ' (' + zone.local.distance + ' km)' ]]</td>
-                    <td>[[ zone.distance ]] km</td>
-                    <td align="center"><a class="btn btn-xs btn-danger" ng-click="deleteZone(zone.id)"><i class="fa fa-times"></i> Delete</a></td>
-                </tr>
-            </tbody>
-        </table>
-        <?php if ($goNext) { ?>
-        <a href="<?php echo $baseUrl; ?>applicant/location/interstate#map" class="btn btn-labeled btn-danger">
-            <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Next Step
-        </a>
-        <?php } ?>
+        <div ng-if="zones.length > 0">
+            <hr />
+            <h4>YOUR COUNTRY ZONES</h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>Local Zone</td>
+                        <td>Distance</td>
+                        <td width="80"></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="zone in zones">
+                        <td>[[ zone.local.postcode + ' (' + zone.local.distance + ' km)' ]]</td>
+                        <td>[[ zone.distance ]] km</td>
+                        <td align="center"><a class="btn btn-xs btn-danger" ng-click="deleteZone(zone.id)"><i class="fa fa-times"></i> Delete</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <?php if ($goNext) { ?>
+            <a href="<?php echo $baseUrl; ?>applicant/location/interstate#map" class="btn btn-labeled btn-danger">
+                <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Next Step
+            </a>
+            <?php } ?>
+        </div>
     </div>
 </div>
 

@@ -23,6 +23,8 @@
         <?php echo $this->tag->javascriptInclude('js/lib/angucomplete/angucomplete-alt.min.js'); ?>
 
         <?php echo $this->tag->javascriptInclude('js/app.js'); ?>
+        <?php echo $this->tag->javascriptInclude('js/controllers/applicant.js'); ?>
+        <?php echo $this->tag->javascriptInclude('js/controllers/quote.js'); ?>
         <?php echo $this->tag->javascriptInclude('js/controllers/billing.js'); ?>
         <?php echo $this->tag->javascriptInclude('js/config.js'); ?>
 

@@ -98,10 +98,14 @@
             <header>
                 <ul id="widget-tab-1" class="nav nav-tabs pull-left">
                     <li class="active">
-                        <a data-toggle="tab" href="#removal"> Removal </a>
+                        <a data-toggle="tab" href="#removal"> Removal
+                            <span class="badge">[[ removals.length ]]</span>
+                        </a>
                     </li>
                     <li>
-                        <a data-toggle="tab" href="#storage"> Storage </a>
+                        <a data-toggle="tab" href="#storage"> Storage
+                            <span class="badge">[[ storages.length ]]</span>
+                        </a>
                     </li>
                 </ul>
             </header>
@@ -205,7 +209,9 @@
                         <a data-toggle="tab" href="#details"> Quote Details </a>
                     </li>
                     <li>
-                        <a data-toggle="tab" href="#suppliers"> Suppliers </a>
+                        <a data-toggle="tab" href="#suppliers"> Suppliers
+                            <span class="badge">[[ current_quote.suppliers.length ]]</span>
+                        </a>
                     </li>
                     <li>
                         <a ng-click="deleteQuote()"><i class="fa fa-times"></i> &nbsp; Delete this quote</a>
