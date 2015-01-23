@@ -23,6 +23,8 @@ class Supplier extends \Phalcon\Mvc\Model
      */
     public $status;
 
+    const REJECTED = -2;
+    const INACTIVED = -1;
     const APPLIED = 0;
     const ACTIVATED = 1;
     const APPROVED = 2;

@@ -12,7 +12,10 @@ class SupplierController extends ControllerBase
 
     public function indexAction()
     {
-        $this->view->suppliers = Supplier::find();
+        $conditions = "status >= " . Supplier::APPLIED;
+        $this->view->suppliers = Supplier::find(array(
+            $conditions
+        ));
         $this->view->child = 'search';
     }
 
@@ -29,7 +32,15 @@ class SupplierController extends ControllerBase
             # Add to the Queue
             $job_id = $this->queue->put(array('activation' => $supplierId));
         }
-        return $this->response->redirect('supplier/search');
+        return $this->response->redirect('supplier');
+    }
+
+    public function rejectAction($supplier_id)
+    {
+        $supplier = Supplier::findFirst($supplier_id);
+        $supplier->status = Supplier::REJECTED;
+        $supplier->save();
+        return $this->response->redirect('supplier');
     }
 
     public function loginAction($userId)
