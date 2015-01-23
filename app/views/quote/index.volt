@@ -204,6 +204,19 @@
                 {% endif %}
 
                 {% if elements.isAdmin() %}
+                <div class="widget-toolbar pull-right">
+
+                    <div class="btn-group">
+                        <button class="btn dropdown-toggle btn-xs btn-danger" data-toggle="dropdown">
+                            <i class="fa fa-times"></i>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a href="javascript:void(0);">Delete this quote</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <ul id="widget-tab-3" class="nav nav-tabs pull-right">
                     <li class="active">
                         <a data-toggle="tab" href="#details"> Quote Details </a>
@@ -212,9 +225,6 @@
                         <a data-toggle="tab" href="#suppliers"> Suppliers
                             <span class="badge">[[ current_quote.suppliers.length ]]</span>
                         </a>
-                    </li>
-                    <li>
-                        <a ng-click="deleteQuote()"><i class="fa fa-times"></i> &nbsp; Delete this quote</a>
                     </li>
                 </ul>
                 {% endif %}
@@ -336,7 +346,7 @@
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                            <angucomplete-alt id="pickup"
+                                            <angucomplete-alt id="supplier"
                                               minlength="1"
                                               placeholder="Enter supplier name, company, business to search..."
                                               pause="400"
@@ -347,7 +357,28 @@
                                               description-field="business"
                                               input-class="form-control"
                                               match-class="highlight"
-                                              field-required="true" disable-input="params.allocated == 'not_allocated'"></angucomplete-alt>
+                                              field-required="true"></angucomplete-alt>
+
+                                            <span class="input-group-addon">
+                                                Free &nbsp;
+                                                <span class="onoffswitch">
+                                                    <input type="checkbox" name="start_interval" class="onoffswitch-checkbox" id="st3">
+                                                    <label class="onoffswitch-label" for="st3">
+                                                        <span class="onoffswitch-inner" data-swchon-text="YES" data-swchoff-text="NO"></span>
+                                                        <span class="onoffswitch-switch"></span>
+                                                    </label>
+                                                </span>
+                                            </span>
+                                            <span class="input-group-addon">
+                                                All &nbsp;
+                                                <span class="onoffswitch">
+                                                    <input type="checkbox" name="start_interval" class="onoffswitch-checkbox" id="st32">
+                                                    <label class="onoffswitch-label" for="st32">
+                                                        <span class="onoffswitch-inner" data-swchon-text="YES" data-swchoff-text="NO"></span>
+                                                        <span class="onoffswitch-switch"></span>
+                                                    </label>
+                                                </span>
+                                            </span>
                                             <a class="input-group-addon" ng-click="addSupplier(new_supplier)">
                                                 <i class="fa fa-plus"></i> &nbsp; Send Quote
                                             </a>
@@ -365,7 +396,7 @@
                                     [[ error ]]
                                 </div>
                             </div>
-                            <div class="table-responsive" ng-show="current_quote.suppliers.length > 0">
+                            <div class="table-responsive no-padding" ng-show="current_quote.suppliers.length > 0">
 
                                 <table class="table table-bordered">
                                     <thead>

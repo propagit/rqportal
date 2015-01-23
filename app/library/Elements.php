@@ -53,7 +53,7 @@ class Elements extends Component
         'setting' => array(
             'icon' => 'fa-cog',
             'label' => 'Settings',
-            'action' => '#'
+            'action' => 'setting'
         )
     );
 

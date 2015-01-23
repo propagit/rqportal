@@ -10,7 +10,7 @@
     </div>
 
     <!-- projects dropdown -->
-    <a class="project-context hidden-xs" href="{{ baseUrl }}quote/search">
+    <a class="project-context hidden-xs" href="{{ baseUrl }}quote">
 
         <span class="label">TODAYS</span>
         <span class="project-selector">Recent Quotes</span>

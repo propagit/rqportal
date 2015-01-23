@@ -410,3 +410,26 @@ aside {
 .status-quote-3 {
     background: #dff0d8; // Won
 }
+#sparks h5 {
+    line-height: 1.2em;
+}
+#chart-sales {
+    height: 300px;
+}
+.smart-form.no-widget {
+    background: transparent;
+    fieldset {
+        background: transparent;
+    }
+    footer {
+        border-top: 0;
+        .btn {
+            float: left;
+            margin: 0;
+        }
+    }
+}
+.input-group-addon .checkbox {
+    margin-top: 0;
+    margin-bottom: 0;
+}

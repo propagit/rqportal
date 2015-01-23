@@ -2,9 +2,11 @@ angular.module('rqportal', [
     'config',
     'ng-bs3-datepicker',
     'angucomplete-alt',
+    'chart.js',
     'ui.bootstrap',
     'ui.utils.masks',
     'uiGmapgoogle-maps',
+    'controllers.dashboard',
     'controllers.applicant',
     'controllers.quote',
     'controllers.billing'
