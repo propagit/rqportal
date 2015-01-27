@@ -84,7 +84,7 @@
                                     <br>
                                     <strong>Removalist Quote Pty. LTD</strong>
                                     <br>
-                                    ABN: 1 772 3316 42<br>
+                                    ABN: 42 155 562 959<br>
                                     <br>
                                     Head Office<br>
                                     P.O. Box 1172<br>
@@ -237,7 +237,8 @@
                                     <td>[[ removal.to_postcode ]]</td>
                                     <td align="center">[[ removal.bedrooms ]]</td>
                                     <td>[[ removal.created_on | date : 'dd MMM yyyy' ]]</td>
-                                    <td align="center">[[ removal.status == {{ constant("Quote::WON") }} ? 'Won' : 'Lost' ]]</td>
+                                    <td align="center">
+                                        [[ removal.status == {{ constant("Quote::WON") }} ? 'Won' : (removal.status == {{ constant("Quote::LOST") }} ? 'Lost' : 'Open') ]]</td>
                                     <td align="right">$10.00</td>
                                 </tr>
                                 <tr>

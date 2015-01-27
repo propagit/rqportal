@@ -53,10 +53,8 @@
             </div>
         </div>
     </div>
-
-    {% if elements.isAdmin() %}
     <div class="form-group">
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
             <?php echo $this->tag->selectStatic(array(
                 'state', State::find(),
                 'useEmpty'  => true,
@@ -65,16 +63,17 @@
                 'class' => 'form-control',
                 'ng-model' => 'params.state'
             )); ?>
-        </div>
+        </div> -->
         <div class="col-md-3">
             <?php echo $this->tag->selectStatic(array(
                 'status', Quote::getStatus(),
+                'useEmpty'  => true,
+                'emptyText' => 'Select Status',
                 'class' => 'form-control',
                 'ng-model' => 'params.status'
             )); ?>
         </div>
     </div>
-    {% endif %}
 </form>
 
 <div class="row">
@@ -135,7 +134,7 @@
                                             <th>Customer</th>
                                             <th>From</th>
                                             <th>To</th>
-                                            <th align="center">Bedrooms</th>
+                                            <th class="text-center">Bedrooms</th>
                                             <th>Moving Date</th>
                                             <th></th>
                                         </tr>
