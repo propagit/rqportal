@@ -1,90 +1,64 @@
-<div class="row">
-    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-        <h1 class="page-title txt-color-blueDark fw300"><i class="fa-fw fa fa-dashboard"></i> Dashboard</h1>
-    </div>
-    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
-        <ul id="sparks" class="">
-            <li class="sparks-info">
-                <h5> Today Income <span class="txt-color-blue">$47,171</span></h5>
-                <div class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm">
-                    1300, 1877, 2500, 2577, 2000, 2100, 3000, 2700, 3631, 2471, 2700, 3631, 2471
-                </div>
-            </li>
-            <li class="sparks-info">
-                <h5> Weeks Income <span class="txt-color-purple"><i class="fa fa-arrow-circle-up"></i>&nbsp;45%</span></h5>
-                <div class="sparkline txt-color-purple hidden-mobile hidden-md hidden-sm">
-                    110,150,300,130,400,240,220,310,220,300, 270, 210
-                </div>
-            </li>
-            <li class="sparks-info">
-                <h5> Months Members <span class="txt-color-greenDark"><i class="fa fa-user"></i>&nbsp;2447</span></h5>
-                <div class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm">
-                    110,150,300,130,400,240,220,310,220,300, 270, 210
-                </div>
-            </li>
-        </ul>
-    </div>
-</div>
+<div ng-controller="DashboardCtrl">
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark fw300"><i class="fa-fw fa fa-dashboard"></i> Dashboard</h1>
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+            <div class="pull-right smart-form" id="stats-option">
+                <section>
+                    <label class="select">
+                        <select ng-model="time">
+                            <option value="month">This Month</option>
+                            <option value="all">All Time</option>
+                        </select> <i></i> </label>
+                </section>
+            </div><!-- /btn-group -->
+            <ul id="sparks" class="">
+                <li class="sparks-info">
+                    <h5> Income <span class="txt-color-blue">[[ stats.today_income | currency ]]</span></h5>
+                </li>
+                <li class="sparks-info">
+                    <a ng-if="stats.unpaid_invoice > 0" href="{{ baseUrl }}billing/invoice" class="badge bg-color-red">[[ stats.unpaid_invoice ]]</a>
 
-<div class="row" ng-controller="DashboardCtrl">
-    <div class="col-sm-5">
+                    <h5> Invoice <span class="txt-color-greenDark"><i class="fa fa-file-text-o"></i>&nbsp;[[ stats.total_invoice ]]</span></h5>
+                </li>
+                <li class="sparks-info">
+                    <a ng-if="stats.unallocated_quote > 0" href="{{ baseUrl }}quote?q=un-allocated" class="badge bg-color-red">[[ stats.unallocated_quote ]]</a>
+
+                    <h5> Quotes <span class="txt-color-purple"><i class="fa fa-comment-o"></i>&nbsp;[[ stats.total_quotes ]]</span></h5>
+                </li>
+                <li class="sparks-info">
+                    <a ng-if="stats.incompleted_supplier > 0" href="{{ baseUrl }}supplier" class="badge bg-color-red">[[ stats.incompleted_supplier ]]</a>
+
+                    <h5> Supplier <span class="txt-color-greenDark"><i class="fa fa-user"></i>&nbsp;[[ stats.total_suppliers ]]</span></h5>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-12">
         <!-- new widget -->
-        <div class="jarviswidget jarviswidget-color-red" id="wid-id-1" data-widget-editbutton="false" data-widget-colorbutton="false">
-            <header>
-                <span class="widget-icon"> <i class="fa fa-warning txt-color-white"></i> </span>
-                <h2> Alert </h2>
-            </header>
+            <div class="jarviswidget" id="wid-id-3" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
+                    <h2>Sales Chart </h2>
+                </header>
 
-            <!-- widget div-->
-            <div>
-                <div class="widget-body no-padding smart-form">
-                    <!-- content goes here -->
-                    {% if unpaid_invoice > 0 %}
-                    <h5 class="todo-group-title"><a href="{{ baseUrl }}billing/invoice">Unpaid Invoices</a> (<small class="num-of-tasks">{{ unpaid_invoice }}</small>)</h5>
-                    {% endif %}
+                <!-- widget div-->
 
-                    {% if outstanding_quote > 0 %}
-                    <h5 class="todo-group-title"><a href="{{ baseUrl }}billing/quote">Outstanding Quotes</a> (<small class="num-of-tasks">{{ outstanding_quote }}</small>)</h5>
-                    {% endif %}
-
-                    {% if unallocated_quote > 0 %}
-                    <h5 class="todo-group-title"><a href="{{ baseUrl }}quote?q=un-allocated">Un-allocated Quotes</a> (<small class="num-of-tasks">{{ unallocated_quote }}</small>)</h5>
-                    {% endif %}
-
-                    {% if applied_supplier > 0 %}
-                    <h5 class="todo-group-title"><a href="{{ baseUrl }}supplier">Applied Suppliers</a> (<small class="num-of-tasks">{{ applied_supplier }}</small>)</h5>
-                    {% endif %}
-
-                    {% if incompleted_supplier > 0 %}
-                    <h5 class="todo-group-title"><a href="{{ baseUrl }}supplier">Incomplete Suppliers</a> (<small class="num-of-tasks">{{ incompleted_supplier }}</small>)</h5>
-                    {% endif %}
-
-                    <!-- end content -->
+                <div class="widget-body padding-10">
+                    <canvas id="chart-sales" class="chart chart-line" data="data"
+                      labels="labels" legend="true" series="series" options="options"
+                      click="onClick" height="100">
+                    </canvas>
                 </div>
-
+                <!-- end widget div -->
             </div>
-            <!-- end widget div -->
+            <!-- end widget -->
         </div>
-        <!-- end widget -->
-    </div>
-    <div class="col-sm-7">
-    <!-- new widget -->
-        <div class="jarviswidget" id="wid-id-3" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
-            <header>
-                <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
-                <h2>Sales Chart </h2>
-            </header>
-
-            <!-- widget div-->
-
-            <div class="widget-body padding-10">
-                <canvas id="chart-sales" class="chart chart-line" data="data"
-                  labels="labels" legend="true" series="series" options="options"
-                  click="onClick">
-                </canvas>
-            </div>
-            <!-- end widget div -->
-        </div>
-        <!-- end widget -->
     </div>
 </div>

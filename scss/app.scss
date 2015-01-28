@@ -202,6 +202,35 @@ hr {
     left: auto;
     right: 0;
 }
+#sparks li .badge {
+    position: absolute;
+    margin-left: -20px;
+    margin-top: 5px;
+    cursor: pointer;
+    background: #0091d9;
+    display: inline-block;
+    font-size: 10px;
+    min-width: 18px;
+    box-shadow: inset 1px 1px 0 rgba(0,0,0,.1),inset 0 -1px 0 rgba(0,0,0,.07);
+    color: #fff;
+    font-weight: 700;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    padding: 2px 4px 3px;
+    text-align: center;
+    line-height: normal;
+}
+#sparks li h5 {
+    padding-left: 7px;
+}
+#sparks li {
+    margin-left: 10px;
+}
+#stats-option {
+    width: 150px;
+    margin: 10px 0 0 10px;
+}
 .badge-paid {
     margin-top: 30px;
     margin-right: 20px;

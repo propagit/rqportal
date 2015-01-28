@@ -37,12 +37,12 @@ class Elements extends Component
             )
         ),
         'quote' => array(
-            'icon' => 'fa-file-text-o',
+            'icon' => 'fa-comment-o',
             'label' => 'Manage Quotes',
             'action' => 'quote'
         ),
         'billing' => array(
-            'icon' => 'fa-bank',
+            'icon' => 'fa-file-text-o',
             'label' => 'Manage Billing',
             'action' => '#',
             'children' => array(

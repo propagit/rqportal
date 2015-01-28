@@ -20,20 +20,20 @@ class DashboardController extends ControllerBase
     {
         $this->tag->setTitle('Dashboard');
 
-        $unpaid_invoice = Invoice::find("status = " . Invoice::UNPAID);
-        $this->view->unpaid_invoice = count($unpaid_invoice);
+        $this->view->today_income = Invoice::sum(array(
+            "column" => "amount",
+            "conditions" => "status = " . Invoice::PAID .
+                " AND paid_on LIKE '" . date('Y-m') . "%'"
+        ));
 
-        $outstanding_quote = Quote::find("invoice_id IS NULL AND user_id > 0");
-        $this->view->outstanding_quote = count($outstanding_quote);
+        $this->view->total_invoice = Invoice::count();
+        $this->view->unpaid_invoice = Invoice::count("status = " . Invoice::UNPAID);
 
-        $unallocated_quote = Quote::find("user_id = 0");
-        $this->view->unallocated_quote = count($unallocated_quote);
+        $this->view->total_quotes = Removal::count() + Storage::count();
+        $this->view->unallocated_quote = Quote::count("user_id = 0");
 
-        $applied_supplier = Supplier::find("status = " . Supplier::APPLIED);
-        $this->view->applied_supplier = count($applied_supplier);
-
-        $incompleted_supplier = Supplier::find("status = " . Supplier::ACTIVATED);
-        $this->view->incompleted_supplier = count($incompleted_supplier);
+        $this->view->total_suppliers = Supplier::count("status > " . Supplier::APPLIED);
+        $this->view->incompleted_supplier = Supplier::count("status <= " . Supplier::ACTIVATED);
     }
 
 }

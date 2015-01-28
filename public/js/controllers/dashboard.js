@@ -9,28 +9,26 @@ angular.module('controllers.dashboard', [])
     ];
     $scope.options = {
         bezierCurve: false,
-        scaleBeginAtZero: false,
-        // legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+        scaleBeginAtZero: false
     };
     $scope.onClick = function (points, evt) {
         console.log(points, evt);
     };
 
-    $scope.removals = [];
-    $scope.storages = [];
-
-    $http.post(Config.BASE_URL + 'quoteAjax/search', {})
-    .success(function(response){
-        if(response.results && response.results.length > 0) {
-            response.results.forEach(function(quote){
-                if (quote.removal) {
-                    $scope.removals.push(quote);
-                } else {
-                    $scope.storages.push(quote);
-                }
-            });
-        }
-    }).error(function(error){
-        console.log("ERROR: ", error);
+    $scope.$watch('time', function(val) {
+        console.log(val);
+        loadStats(val);
     });
+
+    $scope.time = 'month';
+
+    function loadStats(time) {
+        $http.post(Config.BASE_URL + 'dashboardajax/getStats', {
+            time: time
+        }).success(function(response){
+            $scope.stats = response;
+        }).error(function(error){
+            console.log("ERROR: ", error);
+        });
+    };
 })
