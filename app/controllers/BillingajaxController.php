@@ -41,10 +41,12 @@ class BillingajaxController extends ControllerAjax
         $this->view->invoices = $results;
     }
 
-    public function processInvoiceAction($id)
+    public function processInvoiceAction()
     {
-        if (!$id) { return; }
-        $invoice = Invoice::findFirst($id);
+        $request = $this->request->getJsonRawBody();
+
+        if (!isset($request->$id)) { return; }
+        $invoice = Invoice::findFirst($request->id);
         if (!$invoice) { return; }
         $invoice->status = Invoice::PAID;
         $invoice->paid_on = date('Y-m-d H:i:s');

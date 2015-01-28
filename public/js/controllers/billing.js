@@ -12,7 +12,7 @@ angular.module('controllers.billing', [])
     });
 
     $scope.processInvoice = function(id) {
-        $http.put(Config.BASE_URL + 'billingajax/processInvoice/' + id)
+        $http.post(Config.BASE_URL + 'billingajax/processInvoice', {id: id})
         .success(function(response){
             var updated_invoices = [];
             $scope.invoices.forEach(function(invoice){
