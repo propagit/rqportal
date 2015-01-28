@@ -45,7 +45,7 @@ class BillingajaxController extends ControllerAjax
     {
         $request = $this->request->getJsonRawBody();
 
-        if (!isset($request->$id)) { return; }
+        if (!isset($request->id)) { return; }
         $invoice = Invoice::findFirst($request->id);
         if (!$invoice) { return; }
         $invoice->status = Invoice::PAID;
