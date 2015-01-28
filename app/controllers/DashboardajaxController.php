@@ -44,7 +44,7 @@ class DashboardajaxController extends ControllerAjax
 
     public function getSalesAction()
     {
-        $series = array("Billed", "Predicted");
+        $series = array("Revenue", "Forecast");
         $labels = array();
         $billed = array();
         $predicted = array();
@@ -59,7 +59,9 @@ class DashboardajaxController extends ControllerAjax
                     " AND paid_on LIKE '" . date('Y-m', $month) . "%'"
             ));
             $billed[] = ($sales) ? $sales : 0;
-            $predicted[] = 0;
+
+            $quotes = Quote::count("invoice_id is NULL AND created_on LIKE '" . date('Y-m', $month) . "%'");
+            $predicted[] = $quotes * 10 + $sales;
         }
 
         $this->view->series = $series;

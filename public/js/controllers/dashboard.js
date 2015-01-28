@@ -12,7 +12,9 @@ angular.module('controllers.dashboard', [])
     });
     $scope.options = {
         bezierCurve: false,
-        scaleBeginAtZero: false
+        scaleBeginAtZero: false,
+        tooltipTemplate: "<%if (label){%><%=label%>: <%}%>$<%= value %>",
+        multiTooltipTemplate: "$<%= value %>",
     };
 
     $scope.$watch('time', function(val) {
