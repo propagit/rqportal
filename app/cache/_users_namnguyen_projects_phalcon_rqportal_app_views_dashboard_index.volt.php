@@ -13,7 +13,7 @@
                         </select> <i></i> </label>
                 </section>
             </div><!-- /btn-group -->
-            <ul id="sparks" class="" ng-if="stats.income">
+            <ul id="sparks" class="" ng-if="stats">
                 <li class="sparks-info">
                     <h5> Income <span class="txt-color-blue">[[ stats.income | currency ]]</span></h5>
                 </li>
