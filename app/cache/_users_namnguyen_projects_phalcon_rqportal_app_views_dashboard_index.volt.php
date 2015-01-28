@@ -13,9 +13,9 @@
                         </select> <i></i> </label>
                 </section>
             </div><!-- /btn-group -->
-            <ul id="sparks" class="">
+            <ul id="sparks" class="" ng-if="stats.income">
                 <li class="sparks-info">
-                    <h5> Income <span class="txt-color-blue">[[ stats.today_income | currency ]]</span></h5>
+                    <h5> Income <span class="txt-color-blue">[[ stats.income | currency ]]</span></h5>
                 </li>
                 <li class="sparks-info">
                     <a ng-if="stats.unpaid_invoice > 0" href="<?php echo $baseUrl; ?>billing/invoice" class="badge bg-color-red">[[ stats.unpaid_invoice ]]</a>

@@ -23,12 +23,14 @@ class DashboardajaxController extends ControllerAjax
 
 
 
-        $this->view->today_income = Invoice::sum(array(
+        $income = Invoice::sum(array(
             "column" => "amount",
             "conditions" => "status = " . Invoice::PAID .
                 " AND paid_on LIKE '" . date('Y-m') . "%'" .
                 ($condition ? " AND $condition" : "")
         ));
+        if (!$income) { $income = 0; }
+        $this->view->income = $income;
 
         $this->view->total_invoice = Invoice::count($condition);
         $this->view->unpaid_invoice = Invoice::count("status = " . Invoice::UNPAID .
