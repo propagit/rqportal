@@ -13,15 +13,11 @@ class DashboardajaxController extends ControllerAjax
             $time = $request->time;
         }
 
-
-
         $condition = '';
         if ($time == 'month')
         {
             $condition = "created_on LIKE '" . date('Y-m') . "%'";
         }
-
-
 
         $income = Invoice::sum(array(
             "column" => "amount",
@@ -44,6 +40,31 @@ class DashboardajaxController extends ControllerAjax
             ($condition ? " AND $condition" : ""));
         $this->view->incompleted_supplier = Supplier::count("status <= " . Supplier::ACTIVATED .
             ($condition ? " AND $condition" : ""));
+    }
+
+    public function getSalesAction()
+    {
+        $series = array("Billed", "Predicted");
+        $labels = array();
+        $billed = array();
+        $predicted = array();
+        for($i=12; $i >= 0; $i--)
+        {
+            $month = strtotime("-$i months");
+            $labels[] = date('M Y', $month);
+
+            $sales = Invoice::sum(array(
+                "column" => "amount",
+                "conditions" => "status = " . Invoice::PAID .
+                    " AND paid_on LIKE '" . date('Y-m', $month) . "%'"
+            ));
+            $billed[] = ($sales) ? $sales : 0;
+            $predicted[] = 0;
+        }
+
+        $this->view->series = $series;
+        $this->view->labels = $labels;
+        $this->view->data = array($billed, $predicted);
     }
 
 }
