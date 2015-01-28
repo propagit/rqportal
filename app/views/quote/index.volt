@@ -1,3 +1,4 @@
+<div  ng-init="query = '{{ query }}'">
 <div ng-controller="QuoteCtrl">
 
 <div class="row">
@@ -96,12 +97,12 @@
 
             <header>
                 <ul id="widget-tab-1" class="nav nav-tabs pull-left">
-                    <li class="active">
+                    <li class="active" ng-if="removals.length > 0">
                         <a data-toggle="tab" href="#removal"> Removal
                             <span class="badge">[[ removals.length ]]</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="[[ removals.length == 0 && storages.length > 0 ? 'active' : '' ]]">
                         <a data-toggle="tab" href="#storage"> Storage
                             <span class="badge">[[ storages.length ]]</span>
                         </a>
@@ -125,7 +126,7 @@
                     </div>
 
                     <div class="tab-content">
-                        <div class="tab-pane fade in active" id="removal">
+                        <div class="tab-pane fade in active" id="removal" ng-if="removals.length > 0">
 
                             <div class="table-responsive">
                                 <table class="table">
@@ -155,7 +156,7 @@
                             </div>
 
                         </div>
-                        <div class="tab-pane fade" id="storage">
+                        <div class="tab-pane fade[[ removals.length == 0 && storages.length > 0 ? 'in active' : '' ]]" id="storage">
 
                             <div class="table-responsive">
                                 <table class="table">
@@ -356,29 +357,31 @@
                                               description-field="business"
                                               input-class="form-control"
                                               match-class="highlight"
-                                              field-required="true"></angucomplete-alt>
+                                              field-required="true"
+                                              disable-input="all_suppliers == 'YES'"></angucomplete-alt>
 
                                             <span class="input-group-addon">
                                                 Free &nbsp;
                                                 <span class="onoffswitch">
-                                                    <input type="checkbox" name="start_interval" class="onoffswitch-checkbox" id="st3">
+                                                    <input type="checkbox" ng-model="free" ng-true-value="'YES'" ng-false-value="'NO'" name="start_interval" class="onoffswitch-checkbox" id="st3">
                                                     <label class="onoffswitch-label" for="st3">
                                                         <span class="onoffswitch-inner" data-swchon-text="YES" data-swchoff-text="NO"></span>
                                                         <span class="onoffswitch-switch"></span>
                                                     </label>
                                                 </span>
                                             </span>
+
                                             <span class="input-group-addon">
                                                 All &nbsp;
                                                 <span class="onoffswitch">
-                                                    <input type="checkbox" name="start_interval" class="onoffswitch-checkbox" id="st32">
+                                                    <input type="checkbox" ng-model="all_suppliers" ng-true-value="'YES'" ng-false-value="'NO'" name="start_interval" class="onoffswitch-checkbox" id="st32">
                                                     <label class="onoffswitch-label" for="st32">
                                                         <span class="onoffswitch-inner" data-swchon-text="YES" data-swchoff-text="NO"></span>
                                                         <span class="onoffswitch-switch"></span>
                                                     </label>
                                                 </span>
                                             </span>
-                                            <a class="input-group-addon" ng-click="addSupplier(new_supplier)">
+                                            <a class="input-group-addon" ng-click="addSupplier(new_supplier, free, all_suppliers)">
                                                 <i class="fa fa-plus"></i> &nbsp; Send Quote
                                             </a>
                                         </div>
@@ -443,4 +446,4 @@
 
 </div>
 
-
+</div>

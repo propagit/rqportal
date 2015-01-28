@@ -39,12 +39,25 @@
             <div>
                 <div class="widget-body no-padding smart-form">
                     <!-- content goes here -->
-                    <h5 class="todo-group-title">Unpaid Invoices (<small class="num-of-tasks">1</small>)</h5>
-                    <h5 class="todo-group-title">Outstanding Quotes (<small class="num-of-tasks">85</small>)</h5>
+                    <?php if ($unpaid_invoice > 0) { ?>
+                    <h5 class="todo-group-title"><a href="<?php echo $baseUrl; ?>billing/invoice">Unpaid Invoices</a> (<small class="num-of-tasks"><?php echo $unpaid_invoice; ?></small>)</h5>
+                    <?php } ?>
 
-                    <h5 class="todo-group-title">Un-allocated Quotes (<small class="num-of-tasks">3</small>)</h5>
-                    <h5 class="todo-group-title">Applied Suppliers (<small class="num-of-tasks">3</small>)</h5>
-                    <h5 class="todo-group-title">Incomplete Suppliers (<small class="num-of-tasks">3</small>)</h5>
+                    <?php if ($outstanding_quote > 0) { ?>
+                    <h5 class="todo-group-title"><a href="<?php echo $baseUrl; ?>billing/quote">Outstanding Quotes</a> (<small class="num-of-tasks"><?php echo $outstanding_quote; ?></small>)</h5>
+                    <?php } ?>
+
+                    <?php if ($unallocated_quote > 0) { ?>
+                    <h5 class="todo-group-title"><a href="<?php echo $baseUrl; ?>quote?q=un-allocated">Un-allocated Quotes</a> (<small class="num-of-tasks"><?php echo $unallocated_quote; ?></small>)</h5>
+                    <?php } ?>
+
+                    <?php if ($applied_supplier > 0) { ?>
+                    <h5 class="todo-group-title"><a href="<?php echo $baseUrl; ?>supplier">Applied Suppliers</a> (<small class="num-of-tasks"><?php echo $applied_supplier; ?></small>)</h5>
+                    <?php } ?>
+
+                    <?php if ($incompleted_supplier > 0) { ?>
+                    <h5 class="todo-group-title"><a href="<?php echo $baseUrl; ?>supplier">Incomplete Suppliers</a> (<small class="num-of-tasks"><?php echo $incompleted_supplier; ?></small>)</h5>
+                    <?php } ?>
 
                     <!-- end content -->
                 </div>

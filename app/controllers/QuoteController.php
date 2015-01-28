@@ -6,6 +6,9 @@ class QuoteController extends ControllerBase
     public function indexAction()
     {
         $this->tag->setTitle('Search Quote');
+
+        $this->view->query = $this->request->get("q");
+
     }
 
     public function ajaxGetAllAction()

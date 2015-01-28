@@ -5,9 +5,19 @@ angular.module('controllers.quote', [])
     $scope.removals = [];
     $scope.storages = [];
 
-    $scope.params = {
-        from_date: moment().format("YYYY-MM-DD"),
-    };
+    if ($scope.query != 'un-allocated')
+    {
+        $scope.params = {
+            from_date: moment().format("YYYY-MM-DD"),
+        };
+    }
+    else
+    {
+        $scope.params = {
+            allocated: 'not_allocated'
+        };
+    }
+
     angular.element(document).ready(function () {
         $scope.searchQuotes($scope.params);
     });
@@ -108,21 +118,25 @@ angular.module('controllers.quote', [])
         });
     };
 
-    $scope.addSupplier = function(supplier) {
-        $http.post(Config.BASE_URL + 'quoteajax/addSupplier', {
-            quote_id: $scope.current_quote.id,
-            supplier_id: supplier.originalObject.id
-        })
-        .success(function(response){
-            $scope.current_quote.suppliers.push(response.supplier);
-        }).error(function(error){
-            $scope.error = error.message;
-            $timeout(function(){
-                $scope.error = null;
-            }, 4000);
+    $scope.addSupplier = function(supplier, free, all_suppliers) {
+        // console.log(supplier, free, all_suppliers); return;
+        if (supplier && all_suppliers != 'YES') {
+            $http.post(Config.BASE_URL + 'quoteajax/addSupplier', {
+                quote_id: $scope.current_quote.id,
+                supplier_id: supplier.originalObject.id
+            })
+            .success(function(response){
+                $scope.current_quote.suppliers.push(response.supplier);
+            }).error(function(error){
+                $scope.error = error.message;
+                $timeout(function(){
+                    $scope.error = null;
+                }, 4000);
 
-            console.log("ERROR: ", error);
-        });
+                console.log("ERROR: ", error);
+            });
+        }
+
     };
 
 
