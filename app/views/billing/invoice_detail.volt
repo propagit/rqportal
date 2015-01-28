@@ -239,11 +239,9 @@
                                     <td>[[ removal.created_on | date : 'dd MMM yyyy' ]]</td>
                                     <td align="center">
                                         [[ removal.status == {{ constant("Quote::WON") }} ? 'Won' : (removal.status == {{ constant("Quote::LOST") }} ? 'Lost' : 'Open') ]]</td>
-                                    <td align="right">$10.00</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>TOTAL</strong></td>
-                                    <td colspan="6" align="right"><strong>[[ current_invoice.removals.length * 10 | currency ]]</strong></td>
+                                    <td align="right">
+                                        [[ removal.free == 1 ? 'Free' : current_invoice.price_per_quote ]]
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -269,10 +267,6 @@
                                     <td>[[ storage.created_on | date : 'dd MMM yyyy' ]]</td>
                                     <td align="center">[[ storage.status == {{ constant("Quote::WON") }} ? 'Won' : 'Lost' ]]</td>
                                     <td align="right">$10.00</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>TOTAL</strong></td>
-                                    <td colspan="6" align="right"><strong>[[ current_invoice.storages.length * 10 | currency ]]</strong></td>
                                 </tr>
                             </tbody>
                         </table>

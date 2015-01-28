@@ -19,6 +19,12 @@ class Invoice extends \Phalcon\Mvc\Model
      *
      * @var double
      */
+    public $price_per_quote;
+
+    /**
+     *
+     * @var double
+     */
     public $amount;
 
     /**
@@ -63,6 +69,7 @@ class Invoice extends \Phalcon\Mvc\Model
         return array(
             'id' => 'id',
             'user_id' => 'user_id',
+            'price_per_quote' => 'price_per_quote',
             'amount' => 'amount',
             'status' => 'status',
             'created_on' => 'created_on',
@@ -87,6 +94,7 @@ class Invoice extends \Phalcon\Mvc\Model
             {
                 $removal = $quote->getRemoval();
                 $removal['status'] = $quote->status;
+                $removal['free'] = $quote->free;
                 $removal['created_on'] = strtotime($quote->created_on) * 1000;
                 $removals[] = $removal;
             }
@@ -94,6 +102,7 @@ class Invoice extends \Phalcon\Mvc\Model
             {
                 $storage = $quote->getStorage();
                 $storage['status'] = $quote->status;
+                $removal['free'] = $quote->free;
                 $storage['created_on'] = strtotime($quote->created_on) * 1000;
                 $storages[] = $storage;
             }

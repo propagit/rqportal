@@ -118,6 +118,7 @@ class BillingajaxController extends ControllerAjax
         $price_per_quote = Setting::findFirst("name = 'price_per_quote'");
         $invoice = new Invoice();
         $invoice->user_id = $user_id;
+        $invoice->price_per_quote = $price_per_quote->value;
         $invoice->amount = count($quotes) * floatval($price_per_quote->value);
         $invoice->status = Invoice::UNPAID;
         $invoice->created_on = date('Y-m-d H:i:s');
@@ -128,7 +129,13 @@ class BillingajaxController extends ControllerAjax
             {
                 $quote->invoice_id = $invoice->id;
                 $quote->save();
+                if ($quote->free)
+                {
+                    $invoice->amount = $invoice->amount - floatval($price_per_quote->value);
+                }
+
             }
+            $invoice->save();
             $this->response->setStatusCode(200, 'OK');
         }
         else

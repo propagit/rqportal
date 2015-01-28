@@ -36,7 +36,11 @@ class Quote extends \Phalcon\Mvc\Model
      */
     public $invoice_id;
 
-
+    /**
+     *
+     * @var integer
+     */
+    public $free;
 
     /**
      *
@@ -66,6 +70,7 @@ class Quote extends \Phalcon\Mvc\Model
             'job_id' => 'job_id',
             'user_id' => 'user_id',
             'invoice_id' => 'invoice_id',
+            'free' => 'free',
             'status' => 'status',
             'created_on' => 'created_on'
         );

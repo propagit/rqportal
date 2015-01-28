@@ -348,7 +348,7 @@
                                             <span class="input-group-addon"><i class="fa fa-search"></i></span>
                                             <angucomplete-alt id="supplier"
                                               minlength="1"
-                                              placeholder="Enter supplier name, company, business to search..."
+                                              placeholder="Enter supplier name, company to search..."
                                               pause="400"
                                               selected-object="new_supplier"
                                               remote-url="{{ baseUrl }}supplierajax/search/"

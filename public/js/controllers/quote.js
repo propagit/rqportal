@@ -123,7 +123,8 @@ angular.module('controllers.quote', [])
         if (supplier && all_suppliers != 'YES') {
             $http.post(Config.BASE_URL + 'quoteajax/addSupplier', {
                 quote_id: $scope.current_quote.id,
-                supplier_id: supplier.originalObject.id
+                supplier_id: supplier.originalObject.id,
+                free: free
             })
             .success(function(response){
                 $scope.current_quote.suppliers.push(response.supplier);
@@ -135,8 +136,18 @@ angular.module('controllers.quote', [])
 
                 console.log("ERROR: ", error);
             });
+        } else if (all_suppliers == 'YES') {
+            $http.post(Config.BASE_URL + 'quoteajax/addAllSuppliers', {
+                quote_id: $scope.current_quote.id,
+                free: free
+            }).success(function(response){
+                response.suppliers.forEach(function(supplier){
+                    $scope.current_quote.suppliers.push(supplier);
+                });
+            }).error(function(error){
+                console.log("ERROR: ", error);
+            });
         }
-
     };
 
 
