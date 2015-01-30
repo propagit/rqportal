@@ -24,9 +24,9 @@ $config = include __DIR__ . "/../app/config/config.php";
 include __DIR__ . "/../app/config/loader.php";
 
 /**
- * Read auto-loader
+ * Include composer autoloader
  */
-include __DIR__ . "/../app/config/loader.php";
+include __DIR__ . "/../vendor/autoload.php";
 
 /**
  * Read services
