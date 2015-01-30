@@ -44,14 +44,14 @@ class DistributePool extends Injectable
         $id = $data['id'];
         if (!$id) { return false; }
         $invoice = Invoice::findFirst($id)->toArray();
-        $email = $invoice->supplier->email;
+        $email = $invoice['supplier']['email'];
         if (isset($data['email'])) { $email = $data['email']; }
 
         $this->mail->send(
-            array($email => $invoice->supplier->name),
+            array($email => $invoice['supplier']['name']),
                 'Invoice From Removalist Quote',
                 'invoice',
-                array('name' => $invoice->supplier->name)
+                array('name' => $invoice['supplier']['name'])
         );
     }
 
