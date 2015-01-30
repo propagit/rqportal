@@ -39,16 +39,16 @@ class DistributePool extends Injectable
 
     public function emailInvoice($data)
     {
-        $id = $data['id'];
-        $email = $data['email'];
-        if (!$id || !$email) { return false; }
-        $invoice = Invoice::findFirst($id);
-        $this->mail->send(
-            array($email => $email),
-                'Invoice #' . $invoice->id,
-                'invoice',
-                array('invoice' => $invoice->toArray())
-        );
+        // $id = $data['id'];
+        // $email = $data['email'];
+        // if (!$id || !$email) { return false; }
+        // $invoice = Invoice::findFirst($id);
+        // $this->mail->send(
+        //     array($email => $email),
+        //         'Invoice #' . $invoice->id,
+        //         'invoice',
+        //         array('invoice' => '')
+        // );
     }
 
     public function sendActivation($supplierId)
