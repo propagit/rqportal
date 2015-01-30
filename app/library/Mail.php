@@ -3,8 +3,6 @@
 use Phalcon\Mvc\User\Component;
 use Phalcon\Mvc\View;
 
-require_once __DIR__ . "/../../vendor/Swift/swift_required.php";
-
 /**
  *
  * Send email based on pre-defined templates

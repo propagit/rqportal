@@ -96,13 +96,14 @@ class Invoice extends \Phalcon\Mvc\Model
                 $removal['status'] = $quote->status;
                 $removal['free'] = $quote->free;
                 $removal['created_on'] = strtotime($quote->created_on) * 1000;
+                $removal['moving_date'] = strtotime($removal['moving_date']) * 1000;
                 $removals[] = $removal;
             }
             else
             {
                 $storage = $quote->getStorage();
                 $storage['status'] = $quote->status;
-                $removal['free'] = $quote->free;
+                $storage['free'] = $quote->free;
                 $storage['created_on'] = strtotime($quote->created_on) * 1000;
                 $storages[] = $storage;
             }

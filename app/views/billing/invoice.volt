@@ -75,7 +75,7 @@
                                         &nbsp;
                                         <a class="btn btn-xs btn-info"><i class="fa fa-envelope-o"></i> Email</a>
                                         &nbsp;
-                                        <a class="btn btn-xs btn-info"><i class="fa fa-download"></i> Download</a>
+                                        <a href="{{ baseUrl }}billing/download/[[ invoice.id ]]" class="btn btn-xs btn-info"><i class="fa fa-download"></i> Download</a>
                                         &nbsp;
                                         <div class="btn-group">
                                             <button class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown">

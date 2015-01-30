@@ -24,6 +24,11 @@ try {
     include __DIR__ . "/../app/config/loader.php";
 
     /**
+     * Include composer autoloader
+     */
+    include __DIR__ . "/../vendor/autoload.php";
+
+    /**
      * Read services
      */
     include __DIR__ . "/../app/config/services.php";

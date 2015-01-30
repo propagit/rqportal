@@ -53,7 +53,7 @@
                                     </div>
                                     &nbsp;
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-info">
+                                        <a href="{{ baseUrl }}billing/download/[[ current_invoice.id ]]" class="btn btn-sm btn-info">
                                             <i class="fa fa-download"></i> Download
                                         </a>
                                     </div>
@@ -224,8 +224,8 @@
                                     <th>CUSTOMER</th>
                                     <th>FROM</th>
                                     <th>TO</th>
+                                    <th>MOVING DATE</th>
                                     <th class="text-center">ROOMS</th>
-                                    <th>DATE</th>
                                     <th class="text-center">STATUS</th>
                                     <th class="text-right">COST</th>
                                 </tr>
@@ -235,8 +235,8 @@
                                     <td><strong>[[ removal.customer_name ]]</strong></td>
                                     <td>[[ removal.from_postcode ]]</td>
                                     <td>[[ removal.to_postcode ]]</td>
+                                    <td>[[ removal.moving_date | date : 'dd MMM yyyy' ]]</td>
                                     <td align="center">[[ removal.bedrooms ]]</td>
-                                    <td>[[ removal.created_on | date : 'dd MMM yyyy' ]]</td>
                                     <td align="center">
                                         [[ removal.status == {{ constant("Quote::WON") }} ? 'Won' : (removal.status == {{ constant("Quote::LOST") }} ? 'Lost' : 'Open') ]]</td>
                                     <td align="right">
