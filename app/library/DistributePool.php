@@ -29,7 +29,9 @@ class DistributePool extends Injectable
                         break;
                     case 'activation': $this->sendActivation($job_id);
                         break;
-                    case 'invoice': $this->emailInvoice($job_id);
+                    case 'generate_invoice': $this->generateInvoice($job_id);
+                        break;
+                    case 'email_invoice': $this->emailInvoice($job_id);
                         break;
                 }
             }
@@ -40,15 +42,29 @@ class DistributePool extends Injectable
     public function emailInvoice($data)
     {
         $id = $data['id'];
-        $email = $data['email'];
-        if (!$id || !$email) { return false; }
-        $invoice = Invoice::findFirst($id);
+        if (!$id) { return false; }
+        $invoice = Invoice::findFirst($id)->toArray();
+        $email = $invoice->supplier->email;
+        if (isset($data['email'])) { $email = $data['email']; }
+
         $this->mail->send(
-            array($email => $email),
-                'Invoice #' . $invoice->id,
+            array($email => $invoice->supplier->name),
+                'Invoice From Removalist Quote',
                 'invoice',
-                array('invoice' => '')
+                array('name' => $invoice->supplier->name)
         );
+    }
+
+    public function generateInvoice($id)
+    {
+        // $this->view->disable();
+        $data['invoice'] = Invoice::findFirst($id)->toArray();
+        $html = $this->view->getRender('billing', 'invoice_pdf', $data);
+        $pdf = new mPDF();
+        $stylesheet = file_get_contents(__DIR__ . '/../../public/css/app.min.css');
+        $pdf->WriteHTML($stylesheet,1);
+        $pdf->WriteHTML($html, 2);
+        $pdf->Output(__DIR__ . '/../../public/files/invoice' . $id . '.pdf', "F");
     }
 
     public function sendActivation($supplierId)

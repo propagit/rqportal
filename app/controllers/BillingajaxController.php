@@ -138,6 +138,9 @@ class BillingajaxController extends ControllerAjax
 
             }
             $invoice->save();
+            $job_id = $this->queue->put(array(
+                'generate_invoice' => $invoice->id
+            ));
             $this->response->setStatusCode(200, 'OK');
         }
         else
