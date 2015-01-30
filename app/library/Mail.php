@@ -48,7 +48,7 @@ class Mail extends Component
         $template = $this->getTemplate($name, $params);
 
         # Create the message
-        $message = Swift_Message::newInstance()
+        $message = \Swift_Message::newInstance()
             ->setSubject($subject)
             ->setTo($to)
             ->setFrom(array(
@@ -57,7 +57,7 @@ class Mail extends Component
             ->setBody($template, 'text/html');
 
         if (!$this->_transport) {
-            $this->_transport = Swift_SmtpTransport::newInstance(
+            $this->_transport = \Swift_SmtpTransport::newInstance(
                 $mailSettings->smtp->server,
                 $mailSettings->smtp->port,
                 $mailSettings->smtp->security
@@ -67,7 +67,7 @@ class Mail extends Component
         }
 
         # Create the Mailer using created Transport
-        $mailer = Swift_Mailer::newInstance($this->_transport);
+        $mailer = \Swift_Mailer::newInstance($this->_transport);
 
         return $mailer->send($message);
     }
