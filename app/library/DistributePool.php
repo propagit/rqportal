@@ -51,7 +51,10 @@ class DistributePool extends Injectable
             array($email => $invoice['supplier']['name']),
                 'Invoice From Removalist Quote',
                 'invoice',
-                array('name' => $invoice['supplier']['name'])
+                array(
+                    'name' => $invoice['supplier']['name'],
+                    'attachment' => __DIR__ . '/../../public/files/invoice' . $id . '.pdf'
+                )
         );
     }
 

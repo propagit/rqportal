@@ -56,6 +56,11 @@ class Mail extends Component
             ))
             ->setBody($template, 'text/html');
 
+        if (isset($params['attachment']))
+        {
+            $message->attach(Swift_Attachment::fromPath($params['attachment']));
+        }
+
         if (!$this->_transport) {
             $this->_transport = Swift_SmtpTransport::newInstance(
                 $mailSettings->smtp->server,
