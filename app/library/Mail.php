@@ -2,9 +2,9 @@
 
 use Phalcon\Mvc\User\Component;
 use Phalcon\Mvc\View;
-use Swift_Message;
-use Swift_SmtpTransport;
-use Swift_Mailer;
+use Swift\Swift_Message;
+use Swift\Swift_SmtpTransport;
+use Swift\Swift_Mailer;
 
 /**
  *
