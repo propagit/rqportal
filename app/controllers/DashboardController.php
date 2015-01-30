@@ -21,7 +21,7 @@ class DashboardController extends ControllerBase
         $this->tag->setTitle('Dashboard');
     }
 
-    public function testActivation()
+    public function testAction()
     {
         $this->mail->send(
             array('nam@propagate.com.au' => 'Nam Nguyen'),
