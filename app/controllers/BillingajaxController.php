@@ -157,7 +157,7 @@ class BillingajaxController extends ControllerAjax
     {
         $errors = array();
         #$request = $this->request->getJsonRawBody();
-        $request = array(
+        $request = (object) array(
             'id' => '10023',
             'email' => 'nam@propagate.com.au'
         );
