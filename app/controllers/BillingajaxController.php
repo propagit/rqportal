@@ -153,5 +153,41 @@ class BillingajaxController extends ControllerAjax
 
     }
 
+    public function emailInvoiceAction()
+    {
+        $errors = array();
+        $request = $this->request->getJsonRawBody();
+        if (!isset($request->id) || !isset($request->email))
+        {
+            $errors[] = "Invalid request";
+        }
+        else if (!$this->mail->valid_email($request->email))
+        {
+            $errors[] = "Invalid email address";
+        }
+        else
+        {
+            $job_id = $this->queue->put(array('invoice' => array(
+                'id' => $request->id,
+                'email' => $request->email
+            )));
+            if (!$job_id)
+            {
+                $errors[] = "System error";
+            }
+        }
+        if (count($errors) > 0)
+        {
+            $this->response->setStatusCode(400, 'ERROR');
+            $this->view->message = implode(', ', $errors);
+        }
+        else
+        {
+            $this->response->setStatusCode(200, 'OK');
+        }
+
+
+    }
+
 }
 

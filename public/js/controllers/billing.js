@@ -1,6 +1,6 @@
 angular.module('controllers.billing', [])
 
-.controller('BillingInvoiceCtrl', function($scope, $http, Config){
+.controller('BillingInvoiceCtrl', function($rootScope, $scope, $http, Config, $modal){
 
     $scope.current_invoice = {};
 
@@ -32,6 +32,35 @@ angular.module('controllers.billing', [])
     };
     $scope.listInvoices = function() {
         $scope.current_invoice = {};
+    };
+
+    $scope.emailInvoice = function(index){
+        $rootScope.invoice = $scope.invoices[index];
+        $rootScope.modalInstance = $modal.open({
+            templateUrl: 'emailForm',
+            controller: 'EmailInvoiceCtrl'
+        });
+    };
+
+})
+.controller('EmailInvoiceCtrl', function($rootScope, $scope, $http, Config){
+    $scope.invoice = $rootScope.invoice;
+    $scope.success = 0;
+    $scope.send = function() {
+        $http.post(Config.BASE_URL + 'billingajax/emailInvoice',{
+            id: $scope.invoice.id,
+            email: $scope.invoice.supplier.email
+        }).success(function(response){
+            $scope.success = 2;
+        }).error(function(error){
+            $scope.success = 1;
+            $scope.error = error.message;
+            console.log("ERROR: ", error);
+        });
+    };
+
+    $scope.cancel = function() {
+        $rootScope.modalInstance.dismiss('cancel');
     };
 })
 

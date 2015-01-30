@@ -1,5 +1,4 @@
 <form class="form-horizontal">
-
     <div class="form-group">
         <div class="col-md-6">
             <div class="input-group">
@@ -37,10 +36,18 @@
     <div class="form-group">
         <div class="col-md-3">
             <?php echo $this->tag->selectStatic(array(
-                'status', Quote::getStatus(),
+                'status', Invoice::getStatus(),
                 'class' => 'form-control',
                 'ng-model' => 'params.status'
             )); ?>
         </div>
     </div>
 </form>
+
+<div class="row">
+    <section class="col-lg-6">
+        <a class="btn btn-labeled btn-danger" ng-click="searchInvoices(params)">
+            <span class="btn-label"><i class="fa fa-search"></i></span>Search
+        </a>
+    </section>
+</div>

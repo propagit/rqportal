@@ -53,7 +53,7 @@
                                     </div>
                                     &nbsp;
                                     <div class="btn-group">
-                                        <a href="{{ baseUrl }}billing/download/[[ current_invoice.id ]]" class="btn btn-sm btn-info">
+                                        <a href="{{ baseUrl }}billing/download/[[ current_invoice.id ]]" target="_blank" class="btn btn-sm btn-info">
                                             <i class="fa fa-download"></i> Download
                                         </a>
                                     </div>

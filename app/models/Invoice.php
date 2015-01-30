@@ -113,4 +113,11 @@ class Invoice extends \Phalcon\Mvc\Model
         return $invoice;
     }
 
+    public static function getStatus()
+    {
+        return array(
+            Invoice::UNPAID => 'Unpaid',
+            Invoice::PAID => 'Paid'
+        );
+    }
 }

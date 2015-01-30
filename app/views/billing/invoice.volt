@@ -73,9 +73,11 @@
                                     <td width="261">
                                         <a ng-click="viewInvoice([[ $index ]])" class="btn btn-xs btn-primary"><i class="fa fa-search"></i> View</a>
                                         &nbsp;
-                                        <a class="btn btn-xs btn-info"><i class="fa fa-envelope-o"></i> Email</a>
+                                        <a class="btn btn-xs btn-info" ng-click="emailInvoice([[ $index ]])"><i class="fa fa-envelope-o"></i> Email</a>
+
+
                                         &nbsp;
-                                        <a href="{{ baseUrl }}billing/download/[[ invoice.id ]]" class="btn btn-xs btn-info"><i class="fa fa-download"></i> Download</a>
+                                        <a href="{{ baseUrl }}billing/download/[[ invoice.id ]]" class="btn btn-xs btn-info" target="_blank"><i class="fa fa-download"></i> Download</a>
                                         &nbsp;
                                         <div class="btn-group">
                                             <button class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -111,4 +113,23 @@
     {% include 'billing/invoice_detail.volt' %}
 </div>
 
+</div>
+
+
+<div ng-controller="EmailInvoiceCtrl">
+    <script type="text/ng-template" id="emailForm">
+        <div class="modal-header">
+            <h3 class="modal-title">Send the Invoice to Email</h3>
+        </div>
+        <div class="modal-body">
+            <div ng-if="success == 2" class="alert alert-success">Invoice sent successfully!</div>
+            <div ng-if="success == 1" class="alert alert-danger">Error: [[ error ]]</div>
+            <input type="text" class="form-control" ng-model="invoice.supplier.email" placeholder="Enter email address..." />
+        </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="send()">Send</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
 </div>

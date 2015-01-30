@@ -16,33 +16,31 @@ class BillingController extends ControllerBase
 
     public function downloadAction($id)
     {
-        $this->view->disable();
-        $data['invoice'] = Invoice::findFirst($id)->toArray();
-        $html = $this->view->getRender('billing', 'invoice_pdf', $data);
-        $pdf = new mPDF();
-        $stylesheet = file_get_contents(__DIR__ . '/../../public/css/app.min.css');
-        $pdf->WriteHTML($stylesheet,1);
-        $pdf->WriteHTML($html, 2);
-        $pdf->Output("invoice$id.pdf", "I");
-        $this->response->setHeader("Content-Type", "application/pdf");
-        $this->response->setHeader("Content-Disposition", 'attachment; filename="invoice' . $id . '.pdf"');
-
-
+        $this->_generatePdf($id);
+        return $this->response->redirect('public/files/invoice' . $id . '.pdf');
     }
 
-    public function generatePdfAction()
+    public function emailAction($id)
     {
-        $this->view->disable();
+        $this->_generatePdf($id);
+        # Add to the Queue
+        $job_id = $this->queue->put(array('invoice' => $id));
+    }
 
-        $html = 'just a test';
-        $pdf = new mPDF();
-        $pdf->WriteHTML($html, 2);
-
-        $pdf->Output("invoice.pdf", "I");
-        $this->response->setHeader("Content-Type", "application/pdf");
-        $this->response->setHeader("Content-Disposition", 'attachment; filename="invoice.pdf"');
-        #$pdf->Output(__DIR__ . "/../../public/files/Test.pdf", "F");
-
+    private function _generatePdf($id)
+    {
+        $file = __DIR__ . '/../../public/files/invoice' . $id . '.pdf';
+        if (!file_exists($file))
+        {
+            $this->view->disable();
+            $data['invoice'] = Invoice::findFirst($id)->toArray();
+            $html = $this->view->getRender('billing', 'invoice_pdf', $data);
+            $pdf = new mPDF();
+            $stylesheet = file_get_contents(__DIR__ . '/../../public/css/app.min.css');
+            $pdf->WriteHTML($stylesheet,1);
+            $pdf->WriteHTML($html, 2);
+            $pdf->Output($file, "F");
+        }
     }
 }
 
