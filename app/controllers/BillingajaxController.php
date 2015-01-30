@@ -138,9 +138,17 @@ class BillingajaxController extends ControllerAjax
 
             }
             $invoice->save();
-            $job_id = $this->queue->put(array(
+            # Generate invoice in PDF
+            $this->queue->put(array(
                 'generate_invoice' => $invoice->id
             ));
+            # Send email to supplier
+            $this->queue->put(array(
+                'email_invoice' => array(
+                    'id' => $invoice->id
+                )
+            ));
+
             $this->response->setStatusCode(200, 'OK');
         }
         else
@@ -174,14 +182,10 @@ class BillingajaxController extends ControllerAjax
         }
         else
         {
-            $job_id = $this->queue->put(array('invoice' => array(
+            $this->queue->put(array('email_invoice' => array(
                 'id' => $request->id,
                 'email' => $request->email
             )));
-            if (!$job_id)
-            {
-                $errors[] = "System error";
-            }
         }
         if (count($errors) > 0)
         {
