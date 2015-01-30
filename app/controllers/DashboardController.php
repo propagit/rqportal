@@ -21,5 +21,15 @@ class DashboardController extends ControllerBase
         $this->tag->setTitle('Dashboard');
     }
 
+    public function testActivation()
+    {
+        $this->mail->send(
+            array('nam@propagate.com.au' => 'Nam Nguyen'),
+                'Account Activation',
+                'activation',
+                array('name' => 'Nam',
+                    'activationUrl' => '/applicant/register')
+        );
+    }
 }
 
