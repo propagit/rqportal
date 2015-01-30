@@ -20,13 +20,6 @@ class BillingController extends ControllerBase
         return $this->response->redirect('public/files/invoice' . $id . '.pdf');
     }
 
-    public function emailAction($id)
-    {
-        $this->_generatePdf($id);
-        # Add to the Queue
-        $job_id = $this->queue->put(array('invoice' => $id));
-    }
-
     private function _generatePdf($id)
     {
         $file = __DIR__ . '/../../public/files/invoice' . $id . '.pdf';
