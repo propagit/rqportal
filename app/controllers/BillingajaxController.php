@@ -156,7 +156,11 @@ class BillingajaxController extends ControllerAjax
     public function emailInvoiceAction()
     {
         $errors = array();
-        $request = $this->request->getJsonRawBody();
+        #$request = $this->request->getJsonRawBody();
+        $request = array(
+            'id' => '10023',
+            'email' => 'nam@propagate.com.au'
+        );
         if (!isset($request->id) || !isset($request->email))
         {
             $errors[] = "Invalid request";
