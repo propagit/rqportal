@@ -123,7 +123,7 @@
         </div>
         <div class="modal-body">
             <div ng-if="success == 2" class="alert alert-success">Invoice sent successfully!</div>
-            <div ng-if="success == 1" class="alert alert-danger">Error: [[ error ]]</div>
+            <div ng-if="success == 1" class="alert alert-danger">Error: [[ error.message ]]</div>
             <input type="text" class="form-control" ng-model="invoice.supplier.email" placeholder="Enter email address..." />
         </div>
         </div>

@@ -54,7 +54,7 @@ angular.module('controllers.billing', [])
             $scope.success = 2;
         }).error(function(error){
             $scope.success = 1;
-            $scope.error = error.message;
+            $scope.error = error;
             console.log("ERROR: ", error);
         });
     };
