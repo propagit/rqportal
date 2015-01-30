@@ -140,6 +140,9 @@ class DistributePool extends Injectable
         # Get the removal
         $removal = Removal::findFirst($id);
 
+        $from = Postcodes::findFirstByPostcode($removal->from_postcode);
+        $to = Postcodes::findFirstByPostcode($removal->from_postcode);
+
         # Check suppliers who are able to provide this removal
         $users = array();
 
@@ -197,6 +200,18 @@ class DistributePool extends Injectable
                 $quote->status = 0;
                 $quote->created_on = new Phalcon\Db\RawValue('now()');
                 if ($quote->save()) {
+                    $supplier = Supplier::findFirstByUserId($user_id);
+                    $this->mail->send(
+                        array($supplier->email => $supplier->name),
+                        'New Removalist Job',
+                        'new_removal',
+                        array(
+                            'removal' => $removal,
+                            'from' => $from,
+                            'to' => $to
+                        )
+                    );
+
                     $count++;
                     echo 'Removal quote sent to ' . $user_id . PHP_EOL;
                 } else {
@@ -230,6 +245,7 @@ class DistributePool extends Injectable
         }
         # Get the storage
         $storage = Storage::findFirst($id);
+        $pickup = Postcodes::findFirstByPostcode($storage->pickup_postcode);
 
         # Check suppliers who are able to provide this storage
         $users = array();
@@ -265,6 +281,16 @@ class DistributePool extends Injectable
                 $quote->status = 0;
                 $quote->created_on = new Phalcon\Db\RawValue('now()');
                 if ($quote->save()) {
+                    $supplier = Supplier::findFirstByUserId($user_id);
+                    $this->mail->send(
+                        array($supplier->email => $supplier->name),
+                        'New Removalist Job',
+                        'new_storage',
+                        array(
+                            'storage' => $storage,
+                            'pickup' => $pickup
+                        )
+                    );
                     $count++;
                     echo 'Storage quote sent to ' . $user_id . PHP_EOL;
                 } else {
