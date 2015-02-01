@@ -250,11 +250,11 @@ class DistributePool extends Injectable
     public function distributeStorage($id)
     {
         # First check if auto allocate quote option is ON
-        $auto_allocate_quote = Setting::findFirstByName(Setting::AUTO_ALLOCATE_QUOTE);
-        if ($auto_allocate_quote->value == 0)
-        {
-            return false;
-        }
+        // $auto_allocate_quote = Setting::findFirstByName(Setting::AUTO_ALLOCATE_QUOTE);
+        // if ($auto_allocate_quote->value == 0)
+        // {
+        //     return false;
+        // }
 
         # Second check if the storage ID is passed
         if (!$id) {
