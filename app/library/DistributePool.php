@@ -135,7 +135,7 @@ class DistributePool extends Injectable
     {
         # First check if auto allocate quote option is ON
         $auto_allocate_quote = Setting::findFirstByName(Setting::AUTO_ALLOCATE_QUOTE);
-        if (!$auto_allocate_quote->value)
+        if ($auto_allocate_quote->value == 0)
         {
             return false;
         }
@@ -251,7 +251,7 @@ class DistributePool extends Injectable
     {
         # First check if auto allocate quote option is ON
         $auto_allocate_quote = Setting::findFirstByName(Setting::AUTO_ALLOCATE_QUOTE);
-        if (!$auto_allocate_quote->value)
+        if ($auto_allocate_quote->value == 0)
         {
             return false;
         }
