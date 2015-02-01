@@ -60,7 +60,6 @@ class DistributePool extends Injectable
 
     public function generateInvoice($id)
     {
-        // $this->view->disable();
         $data['invoice'] = Invoice::findFirst($id)->toArray();
         $html = $this->view->getRender('billing', 'invoice_pdf', $data);
         $pdf = new mPDF();
@@ -134,12 +133,19 @@ class DistributePool extends Injectable
 
     public function distributeRemoval($id)
     {
+        # First check if auto allocate quote option is ON
+        $auto_allocate_quote = Setting::findFirstByName(Setting::AUTO_ALLOCATE_QUOTE);
+        if (!$auto_allocate_quote->value)
+        {
+            return false;
+        }
+
+        # Second, check if removal ID is passed
         if (!$id) {
             return false;
         }
         # Get the removal
         $removal = Removal::findFirst($id);
-
         $from = Postcodes::findFirstByPostcode($removal->from_postcode);
         $to = Postcodes::findFirstByPostcode($removal->from_postcode);
 
@@ -190,9 +196,10 @@ class DistributePool extends Injectable
 
 
         $count = 0;
+        $supplier_per_quote = Setting::findFirstByName(Setting::SUPPLIER_PER_QUOTE);
         foreach($users_with_quote as $user_id => $quote_number) {
 
-            if ($count < $this->config->supplierPerQuote) {
+            if ($count < $supplier_per_quote->value) {
                 $quote = new Quote();
                 $quote->job_type = Quote::REMOVAL;
                 $quote->job_id = $removal->id;
@@ -201,6 +208,8 @@ class DistributePool extends Injectable
                 $quote->created_on = new Phalcon\Db\RawValue('now()');
                 if ($quote->save()) {
                     $supplier = Supplier::findFirstByUserId($user_id);
+
+                    # Send new quote notification to supplier
                     $this->mail->send(
                         array($supplier->email => $supplier->name),
                         'New Removalist Job',
@@ -240,6 +249,14 @@ class DistributePool extends Injectable
 
     public function distributeStorage($id)
     {
+        # First check if auto allocate quote option is ON
+        $auto_allocate_quote = Setting::findFirstByName(Setting::AUTO_ALLOCATE_QUOTE);
+        if (!$auto_allocate_quote->value)
+        {
+            return false;
+        }
+
+        # Second check if the storage ID is passed
         if (!$id) {
             return false;
         }
@@ -271,9 +288,10 @@ class DistributePool extends Injectable
 
 
         $count = 0;
+        $supplier_per_quote = Setting::findFirstByName(Setting::SUPPLIER_PER_QUOTE);
         foreach($users_with_quote as $user_id => $quote_number) {
 
-            if ($count < $this->config->supplierPerQuote) {
+            if ($count < $supplier_per_quote->value) {
                 $quote = new Quote();
                 $quote->job_type = Quote::STORAGE;
                 $quote->job_id = $storage->id;
@@ -282,6 +300,8 @@ class DistributePool extends Injectable
                 $quote->created_on = new Phalcon\Db\RawValue('now()');
                 if ($quote->save()) {
                     $supplier = Supplier::findFirstByUserId($user_id);
+
+                    # Send new quote notification to supplier
                     $this->mail->send(
                         array($supplier->email => $supplier->name),
                         'New Removalist Job',

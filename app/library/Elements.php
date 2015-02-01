@@ -74,7 +74,7 @@ class Elements extends Component
                 unset($this->_menu['admin']);
             }
             $this->_menu['billing'] = array(
-                'icon' => 'fa-bank',
+                'icon' => 'fa-file-text-o',
                 'label' => 'Manage Invoices',
                 'action' => 'billing/invoice'
             );
@@ -94,7 +94,7 @@ class Elements extends Component
                 echo '<li>';
             }
             $url = ($option['action'] == '#') ? '#' : $baseUrl . $option['action'];
-            echo '<a href="' . $url . '"><i class="fa fa-2x fa-fw ' . $option['icon'] . '"></i> ' . $option['label'] . '</a>';
+            echo '<a href="' . $url . '"><i class="fa fa-2x fa-fw ' . $option['icon'] . '"></i> <span class="menu-item-parent">' . $option['label'] . '</span></a>';
             if (isset($option['children'])) {
                 echo '<ul>';
                 foreach($option['children'] as $action => $label) {

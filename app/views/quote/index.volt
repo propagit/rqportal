@@ -19,7 +19,7 @@
                 </span></span>
                 <angucomplete-alt id="pickup"
                               minlength="1"
-                              placeholder="Enter supplier name, company, business to search..."
+                              placeholder="Enter supplier name, company to search..."
                               pause="400"
                               selected-object="params.supplier"
                               remote-url="{{ baseUrl }}supplierajax/search/"
