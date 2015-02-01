@@ -205,6 +205,7 @@ class DistributePool extends Injectable
                 $quote->job_id = $removal->id;
                 $quote->user_id = $user_id;
                 $quote->status = 0;
+                $quote->free = 0;
                 $quote->created_on = new Phalcon\Db\RawValue('now()');
                 if ($quote->save()) {
                     $supplier = Supplier::findFirstByUserId($user_id);
@@ -236,6 +237,7 @@ class DistributePool extends Injectable
             $quote->job_id = $removal->id;
             $quote->user_id = 0;
             $quote->status = 0;
+            $quote->free = 0;
             $quote->created_on = new Phalcon\Db\RawValue('now()');
             if ($quote->save()) {
                 $count++;
@@ -250,11 +252,11 @@ class DistributePool extends Injectable
     public function distributeStorage($id)
     {
         # First check if auto allocate quote option is ON
-        // $auto_allocate_quote = Setting::findFirstByName(Setting::AUTO_ALLOCATE_QUOTE);
-        // if ($auto_allocate_quote->value == 0)
-        // {
-        //     return false;
-        // }
+        $auto_allocate_quote = Setting::findFirstByName(Setting::AUTO_ALLOCATE_QUOTE);
+        if ($auto_allocate_quote->value == 0)
+        {
+            return false;
+        }
 
         # Second check if the storage ID is passed
         if (!$id) {
@@ -297,6 +299,7 @@ class DistributePool extends Injectable
                 $quote->job_id = $storage->id;
                 $quote->user_id = $user_id;
                 $quote->status = 0;
+                $quote->free = 0;
                 $quote->created_on = new Phalcon\Db\RawValue('now()');
                 if ($quote->save()) {
                     $supplier = Supplier::findFirstByUserId($user_id);
@@ -326,6 +329,7 @@ class DistributePool extends Injectable
             $quote->job_id = $storage->id;
             $quote->user_id = 0;
             $quote->status = 0;
+            $quote->free = 0;
             $quote->created_on = new Phalcon\Db\RawValue('now()');
             if ($quote->save()) {
                 $count++;
