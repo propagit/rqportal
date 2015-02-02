@@ -228,12 +228,12 @@
                             <thead>
                                 <tr>
                                     <th>CUSTOMER</th>
-                                    <th>FROM</th>
+                                    <th width="100">FROM</th>
                                     <th width="100">TO</th>
                                     <th width="100">MOVING DATE</th>
                                     <th width="100" class="text-center">ROOMS</th>
-                                    <th width="50" class="text-center">STATUS</th>
-                                    <th width="50" class="text-right">COST</th>
+                                    <th width="100" class="text-center">STATUS</th>
+                                    <th width="100" class="text-right">COST</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -261,8 +261,8 @@
                                     <th width="100">PICKUP</th>
                                     <th width="100">PERIOD</th>
                                     <th width="100" class="text-center">CONTAINERS</th>
-                                    <th width="50" class="text-center">STATUS</th>
-                                    <th width="50" class="text-right">COST</th>
+                                    <th width="100" class="text-center">STATUS</th>
+                                    <th width="100" class="text-right">COST</th>
                                 </tr>
                             </thead>
                             <tbody>
