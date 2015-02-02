@@ -85,7 +85,7 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-right">
                                                 <li>
-                                                    <a ng-click="deleteInvoice([[invoice.id]])">Delete this invoice</a>
+                                                    <a ng-click="deleteInvoice([[ $index ]])">Delete this invoice</a>
                                                 </li>
                                             </ul>
                                         </div>

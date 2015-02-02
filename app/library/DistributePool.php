@@ -29,6 +29,8 @@ class DistributePool extends Injectable
                         break;
                     case 'activation': $this->sendActivation($job_id);
                         break;
+                    case 'reject': $this->rejectSupplier($job_id);
+                        break;
                     case 'generate_invoice': $this->generateInvoice($job_id);
                         break;
                     case 'email_invoice': $this->emailInvoice($job_id);
@@ -67,6 +69,19 @@ class DistributePool extends Injectable
         $pdf->WriteHTML($stylesheet,1);
         $pdf->WriteHTML($html, 2);
         $pdf->Output(__DIR__ . '/../../public/files/invoice' . $id . '.pdf', "F");
+    }
+
+    public function rejectSupplier($id)
+    {
+        if (!$id) { return false; }
+        $supplier = Supplier::findFirst($id);
+        if (!$supplier) { return false; }
+        $this->mail->send(
+            array($supplier->email => $supplier->name),
+            'Member Application - Rejected',
+            'reject',
+            array('name' => $supplier->name)
+        );
     }
 
     public function sendActivation($supplierId)

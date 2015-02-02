@@ -42,6 +42,16 @@ angular.module('controllers.billing', [])
         });
     };
 
+    $scope.deleteInvoice = function(index) {
+        $http.delete(Config.BASE_URL + 'billingajax/deleteInvoice/' + $scope.invoices[index].id)
+        .success(function(response){
+            $scope.invoices.splice(index,1);
+            console.log(response);
+        }).error(function(error){
+            console.log("ERROR: ", error);
+        });
+    };
+
 })
 .controller('EmailInvoiceCtrl', function($rootScope, $scope, $http, Config){
     $scope.invoice = $rootScope.invoice;

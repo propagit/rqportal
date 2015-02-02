@@ -212,7 +212,7 @@
                         </button>
                         <ul class="dropdown-menu pull-right">
                             <li>
-                                <a href="javascript:void(0);">Delete this quote</a>
+                                <a ng-click="deleteQuote()">Delete this quote</a>
                             </li>
                         </ul>
                     </div>

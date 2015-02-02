@@ -181,4 +181,40 @@ class Supplier extends \Phalcon\Mvc\Model
             )
         );
     }
+
+    public function beforeDelete()
+    {
+        if ($this->user_id)
+        {
+            $user = User::findFirst($this->user_id);
+            if ($user)
+            {
+                # Delete invoice
+                $conditions = "user_id = " . $user->id;
+                foreach(Invoice::find($conditions) as $invoice)
+                {
+                    $invoice->delete();
+                }
+                foreach(Quote::find($conditions) as $quote)
+                {
+                    $quote->delete();
+                }
+                foreach(ZoneCountry::find($conditions) as $zone)
+                {
+                    $zone->delete();
+                }
+                foreach(ZoneInterstate::find($conditions) as $zone)
+                {
+                    $zone->delete();
+                }
+                foreach(ZoneLocal::find($conditions) as $zone)
+                {
+                    $zone->delete();
+                }
+                $user->delete();
+            }
+        }
+
+        return true;
+    }
 }

@@ -196,5 +196,21 @@ class QuoteajaxController extends ControllerAjax
 
     }
 
+    public function deleteQuoteAction($id)
+    {
+        $quote = Quote::findFirst($id);
+
+        if ($quote->job_type == Quote::REMOVAL)
+        {
+            $removal = Removal::findFirst($quote->job_id);
+            $removal->delete();
+        }
+        else
+        {
+            $storage = Storage::findFirst($quote->job_id);
+            $storage->delete();
+        }
+    }
+
 }
 

@@ -118,6 +118,36 @@ angular.module('controllers.quote', [])
         });
     };
 
+
+
+    $scope.deleteQuote = function() {
+        var quote = $scope.current_quote;
+        $http.delete(Config.BASE_URL + 'quoteajax/deleteQuote/' + quote.id)
+        .success(function(response){
+            console.log(response);
+            if (quote.job_type == 'removal') {
+                var updated_removals = [];
+                $scope.removals.forEach(function(removal_quote){
+                    if (removal_quote.id != quote.id) {
+                        updated_removals.push(removal_quote);
+                    }
+                });
+                $scope.removals = updated_removals;
+            } else { // Storage
+                var updated_storages = [];
+                $scope.storages.forEach(function(storage_quote) {
+                    if (storage_quote.id != quote.id) {
+                        updated_storages.push(storage_quote);
+                    }
+                });
+                $scope.storages = updated_storages;
+            }
+            $scope.current_quote = {};
+        }).error(function(error){
+            console.log("ERROR: ", error);
+        });
+    };
+
     $scope.addSupplier = function(supplier, free, all_suppliers) {
         // console.log(supplier, free, all_suppliers); return;
         if (supplier && all_suppliers != 'YES') {
@@ -150,18 +180,6 @@ angular.module('controllers.quote', [])
         }
     };
 
-
-    $scope.deleteQuote = function() {
-        var confirmModal = $modal.open({
-            templateUrl: 'deleteQuote',
-            size: 'sm',
-            resolve: {
-                items: function () {
-                    return $scope.current_quote;
-                }
-            }
-        });
-    };
 
     // Private function, calculate zoom level
     function getBoundsZoomLevel(bounds, mapDim) {

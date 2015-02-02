@@ -200,5 +200,11 @@ class BillingajaxController extends ControllerAjax
 
     }
 
+    public function deleteInvoiceAction($id)
+    {
+        $invoice = Invoice::findFirst($id);
+        $invoice->delete();
+    }
+
 }
 

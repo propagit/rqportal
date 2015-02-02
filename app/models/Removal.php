@@ -190,4 +190,14 @@ class Removal extends \Phalcon\Mvc\Model
             )
         );
     }
+
+    public function beforeDelete()
+    {
+        $conditions = "job_type = '" . Quote::REMOVAL . "' AND job_id = " . $this->id;
+        foreach(Quote::find($conditions) as $quote)
+        {
+            $quote->delete();
+        }
+        return true;
+    }
 }
