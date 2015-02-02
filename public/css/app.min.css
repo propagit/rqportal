@@ -146,6 +146,12 @@ hr {
       width: 300px;
       padding: 3px 5px; }
 
+.header-search #search-invoice_value {
+  margin-top: 10px;
+  height: 30px; }
+.header-search #search-invoice_dropdown {
+  margin-top: -2px; }
+
 .form-block div {
   margin-bottom: 10px; }
   .form-block div label {

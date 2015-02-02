@@ -42,7 +42,18 @@
 
         <!-- input: search field -->
         <form action="search.html" class="header-search pull-right">
-            <input id="search-fld"  type="text" name="param" placeholder="Find reports and more">
+            <angucomplete-alt id="search-invoice"
+                  minlength="1"
+                  placeholder="Search for invoice..."
+                  pause="400"
+                  selected-object="invoice_id"
+                  remote-url="<?php echo $baseUrl; ?>billingajax/search/"
+                  remote-url-data-field="invoices"
+                  title-field="id"
+                  description-field="supplier"
+                  input-class="form-control"
+                  match-class="highlight"
+                  field-required="true"></angucomplete-alt>
             <button type="submit">
                 <i class="fa fa-search"></i>
             </button>
