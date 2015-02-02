@@ -22,10 +22,10 @@ angular.module('controllers.quote', [])
         $scope.searchQuotes($scope.params);
     });
 
-
     $scope.searchQuotes = function(params) {
         $scope.removals = [];
         $scope.storages = [];
+        $rootScope.loading++;
         $http.post(Config.BASE_URL + 'quoteAjax/search', params)
         .success(function(response){
             if(response.results && response.results.length > 0) {
@@ -44,6 +44,8 @@ angular.module('controllers.quote', [])
             }
         }).error(function(error){
             console.log("ERROR: ", error);
+        }).finally(function(){
+            $rootScope.loading--;
         });
     };
     $scope.removalDetails = function(quote) {
@@ -52,6 +54,7 @@ angular.module('controllers.quote', [])
         $scope.paths = [];
         $scope.updateQuoteStatus(quote.id, 1);
 
+        $rootScope.loading++;
         uiGmapGoogleMapApi.then(function(maps) {
             // Calculate Zoom
             var latlngList = [];
@@ -73,6 +76,7 @@ angular.module('controllers.quote', [])
             $scope.paths.push(removal.path);
             $scope.from_marker = removal.from_marker;
             $scope.to_marker = removal.to_marker;
+            $rootScope.loading--;
         });
     };
     $scope.storageDetails = function(quote) {
@@ -80,15 +84,18 @@ angular.module('controllers.quote', [])
         $scope.current_quote = quote;
         $scope.updateQuoteStatus(quote.id, 1);
 
+        $rootScope.loading++;
         uiGmapGoogleMapApi.then(function(maps) {
             $scope.map = { center: { latitude: storage.pickup_lat, longitude: storage.pickup_lon }, zoom: 10 };
             $scope.paths = [];
             $scope.from_marker = storage.pickup_marker;
             $scope.to_marker = {};
+            $rootScope.loading--;
         });
     };
 
     $scope.updateQuoteStatus = function(id, status) {
+        $rootScope.loading++;
         $http.post(Config.BASE_URL + 'quote/ajaxUpdate/' + id , {status: status })
         .success(function(quote){
             if (quote.job_type == 'removal') {
@@ -115,6 +122,8 @@ angular.module('controllers.quote', [])
             $scope.current_quote = quote;
         }).error(function(error){
             console.log("ERROR: ", error);
+        }).finally(function(){
+            $rootScope.loading--;
         });
     };
 
@@ -122,6 +131,7 @@ angular.module('controllers.quote', [])
 
     $scope.deleteQuote = function() {
         var quote = $scope.current_quote;
+        $rootScope.loading++;
         $http.post(Config.BASE_URL + 'quoteajax/deleteQuote/' + quote.id)
         .success(function(response){
             console.log(response);
@@ -145,12 +155,15 @@ angular.module('controllers.quote', [])
             $scope.current_quote = {};
         }).error(function(error){
             console.log("ERROR: ", error);
+        }).finally(function(){
+            $rootScope.loading--;
         });
     };
 
     $scope.addSupplier = function(supplier, free, all_suppliers) {
         // console.log(supplier, free, all_suppliers); return;
         if (supplier && all_suppliers != 'YES') {
+            $rootScope.loading++;
             $http.post(Config.BASE_URL + 'quoteajax/addSupplier', {
                 quote_id: $scope.current_quote.id,
                 supplier_id: supplier.originalObject.id,
@@ -165,8 +178,11 @@ angular.module('controllers.quote', [])
                 }, 4000);
 
                 console.log("ERROR: ", error);
+            }).finally(function(){
+                $rootScope.loading--;
             });
         } else if (all_suppliers == 'YES') {
+            $rootScope.loading++;
             $http.post(Config.BASE_URL + 'quoteajax/addAllSuppliers', {
                 quote_id: $scope.current_quote.id,
                 free: free
@@ -176,6 +192,8 @@ angular.module('controllers.quote', [])
                 });
             }).error(function(error){
                 console.log("ERROR: ", error);
+            }).finally(function(){
+                $rootScope.loading--;
             });
         }
     };

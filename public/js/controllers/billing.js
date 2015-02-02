@@ -4,14 +4,19 @@ angular.module('controllers.billing', [])
 
     $scope.current_invoice = {};
 
+
+    $rootScope.loading++;
     $http.post(Config.BASE_URL + 'billingajax/searchInvoices')
     .success(function(response){
         $scope.invoices = response.invoices;
     }).error(function(error){
         console.log("ERROR: ", error);
+    }).finally(function(){
+        $rootScope.loading--;
     });
 
     $scope.processInvoice = function(id) {
+        $rootScope.loading++;
         $http.post(Config.BASE_URL + 'billingajax/processInvoice', {id: id})
         .success(function(response){
             var updated_invoices = [];
@@ -24,6 +29,8 @@ angular.module('controllers.billing', [])
             $scope.invoices = updated_invoices;
         }).error(function(error){
             console.log("ERROR: ", error);
+        }).finally(function(){
+            $rootScope.loading--;
         });
     };
 
@@ -43,12 +50,15 @@ angular.module('controllers.billing', [])
     };
 
     $scope.deleteInvoice = function(index) {
+        $rootScope.loading++;
         $http.post(Config.BASE_URL + 'billingajax/deleteInvoice/' + $scope.invoices[index].id)
         .success(function(response){
             $scope.invoices.splice(index,1);
             console.log(response);
         }).error(function(error){
             console.log("ERROR: ", error);
+        }).finally(function(){
+            $rootScope.loading--;
         });
     };
 
@@ -57,6 +67,7 @@ angular.module('controllers.billing', [])
     $scope.invoice = $rootScope.invoice;
     $scope.success = 0;
     $scope.send = function() {
+        $rootScope.loading++;
         $http.post(Config.BASE_URL + 'billingajax/emailInvoice',{
             id: $scope.invoice.id,
             email: $scope.invoice.supplier.email
@@ -66,6 +77,8 @@ angular.module('controllers.billing', [])
             $scope.success = 1;
             $scope.error = error;
             console.log("ERROR: ", error);
+        }).finally(function(){
+            $rootScope.loading--;
         });
     };
 
@@ -77,24 +90,32 @@ angular.module('controllers.billing', [])
 .controller('BillingQuoteCtrl', function($scope, $http, Config){
 
     $scope.current_user_id = null;
+
+    $rootScope.loading++;
     $http.get(Config.BASE_URL + 'billingajax/getSuppliers')
     .success(function(response){
         $scope.suppliers = response.suppliers;
     }).error(function(error){
         console.log("ERROR: ", error);
+    }).finally(function(){
+        $rootScope.loading--;
     });
 
     $scope.listQuotes = function(user_id) {
+        $rootScope.loading++;
         $http.get(Config.BASE_URL + 'billingajax/getQuotes/' + user_id)
         .success(function(response){
             $scope.quotes = response.quotes;
             $scope.current_user_id = user_id;
         }).error(function(error){
             console.log("ERROR: ", error);
+        }).finally(function(){
+            $rootScope.loading--;
         });
     };
 
     $scope.deleteQuote = function(quote_id) {
+        $rootScope.loading++;
         $http.post(Config.BASE_URL + 'billingajax/deleteQuote/' + quote_id)
         .success(function(response){
             var updated_suppliers = [];
@@ -108,10 +129,13 @@ angular.module('controllers.billing', [])
             $scope.listQuotes($scope.current_user_id);
         }).error(function(error){
             console.log("ERROR: ", error);
+        }).finally(function(){
+            $rootScope.loading--;
         });
     };
 
     $scope.generateInvoice = function(user_id) {
+        $rootScope.loading++;
         $http.post(Config.BASE_URL + 'billingajax/createInvoice/' + user_id)
         .success(function(response){
             console.log(response);
@@ -126,6 +150,8 @@ angular.module('controllers.billing', [])
             $scope.quotes = {};
         }).error(function(error){
             console.log("ERROR: ", error);
+        }).finally(function(){
+            $rootScope.loading--;
         });
     };
 })

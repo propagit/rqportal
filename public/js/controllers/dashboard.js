@@ -1,6 +1,9 @@
 angular.module('controllers.dashboard', [])
 
 .controller('DashboardCtrl', function($rootScope, $scope, $http, Config){
+
+
+    $rootScope.loading++;
     $http.get(Config.BASE_URL + 'dashboardajax/getSales')
     .success(function(response){
         $scope.labels = response.labels;
@@ -9,7 +12,10 @@ angular.module('controllers.dashboard', [])
         console.log(response);
     }).error(function(error){
         console.log("ERROR: ", error);
+    }).finally(function(){
+        $rootScope.loading--;
     });
+
     $scope.options = {
         bezierCurve: false,
         scaleBeginAtZero: false,
@@ -25,12 +31,15 @@ angular.module('controllers.dashboard', [])
     $scope.time = 'month';
 
     function loadStats(time) {
+        $rootScope.loading++;
         $http.post(Config.BASE_URL + 'dashboardajax/getStats', {
             time: time
         }).success(function(response){
             $scope.stats = response;
         }).error(function(error){
             console.log("ERROR: ", error);
+        }).finally(function(){
+            $rootScope.loading--;
         });
     };
 })
