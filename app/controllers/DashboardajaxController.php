@@ -60,7 +60,7 @@ class DashboardajaxController extends ControllerAjax
             ));
             $billed[] = ($sales) ? $sales : 0;
 
-            $quotes = Quote::count("invoice_id is NULL AND created_on LIKE '" . date('Y-m', $month) . "%'");
+            $quotes = Quote::count("invoice_id is NULL AND free = 0 AND created_on LIKE '" . date('Y-m', $month) . "%'");
             $predicted[] = $quotes * 10 + $sales;
         }
 

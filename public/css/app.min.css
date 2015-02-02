@@ -216,6 +216,9 @@ hr {
   right: 20px;
   z-index: 100; }
 
+th .form-control {
+  font-weight: 300; }
+
 .btn-red {
   background-color: #8d0c1e;
   /* Fallback Color */

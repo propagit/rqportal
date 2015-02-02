@@ -1,12 +1,25 @@
 angular.module('controllers.supplier', [])
 
 .controller('SupplierCtrl', function($rootScope, $scope, $http, Config){
-    $http.get(Config.BASE_URL + 'supplierajax/getAll')
+    $http.post(Config.BASE_URL + 'supplierajax/getAll')
     .success(function(response){
         $scope.suppliers = response.suppliers;
         console.log(response);
     }).error(function(error){
         console.log("ERROR: ", error);
+    });
+
+    $scope.$watch('status', function(value){
+        if (value)
+        {
+            $http.post(Config.BASE_URL + 'supplierajax/getAll', { status: value })
+            .success(function(response){
+                $scope.suppliers = response.suppliers;
+                console.log(response);
+            }).error(function(error){
+                console.log("ERROR: ", error);
+            });
+        }
     });
 
     $scope.reject = function(index) {
