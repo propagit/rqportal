@@ -43,7 +43,7 @@ angular.module('controllers.billing', [])
     };
 
     $scope.deleteInvoice = function(index) {
-        $http.delete(Config.BASE_URL + 'billingajax/deleteInvoice/' + $scope.invoices[index].id)
+        $http.post(Config.BASE_URL + 'billingajax/deleteInvoice/' + $scope.invoices[index].id)
         .success(function(response){
             $scope.invoices.splice(index,1);
             console.log(response);
@@ -95,7 +95,7 @@ angular.module('controllers.billing', [])
     };
 
     $scope.deleteQuote = function(quote_id) {
-        $http.delete(Config.BASE_URL + 'billingajax/deleteQuote/' + quote_id)
+        $http.post(Config.BASE_URL + 'billingajax/deleteQuote/' + quote_id)
         .success(function(response){
             var updated_suppliers = [];
             $scope.suppliers.forEach(function(supplier){

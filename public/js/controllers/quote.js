@@ -122,7 +122,7 @@ angular.module('controllers.quote', [])
 
     $scope.deleteQuote = function() {
         var quote = $scope.current_quote;
-        $http.delete(Config.BASE_URL + 'quoteajax/deleteQuote/' + quote.id)
+        $http.post(Config.BASE_URL + 'quoteajax/deleteQuote/' + quote.id)
         .success(function(response){
             console.log(response);
             if (quote.job_type == 'removal') {
