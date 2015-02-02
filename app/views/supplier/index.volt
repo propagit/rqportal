@@ -78,7 +78,7 @@
 
                                 <a ng-if="supplier.status == {{ constant("Supplier::APPROVED") }}" href="{{ baseUrl }}supplier/login/[[ supplier.user_id ]]" class="btn btn-xs btn-success">Login as supplier</a>
                                 &nbsp;
-                                <div class="btn-group" ng-if="supplier.status == {{ constant("Supplier::APPROVED") }}">
+                                <div class="btn-group" ng-if="supplier.status >= {{ constant("Supplier::ACTIVATED") }}">
                                     <button class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown">
                                         <i class="fa fa-times"></i>
                                     </button>
