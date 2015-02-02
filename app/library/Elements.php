@@ -68,6 +68,7 @@ class Elements extends Component
         $auth = $this->session->get('auth');
 
         if ($auth['level'] == User::SUPPLIER) {
+            unset($this->_menu['dashboard']);
             unset($this->_menu['supplier']);
             unset($this->_menu['setting']);
             if (!isset($auth['is_admin'])) {

@@ -61,6 +61,10 @@
                                 <span ng-if="supplier.status == {{ constant("Supplier::ACTIVATED") }}" class="text-primary">Activated</span>
 
                                 <span ng-if="supplier.status == {{ constant("Supplier::APPROVED") }}" class="text-success">Approved</span>
+
+                                <span ng-if="supplier.status == {{ constant("Supplier::INACTIVED") }}" class="text-muted">In-actived</span>
+
+                                <span ng-if="supplier.status == {{ constant("Supplier::REJECTED") }}" class="text-danger">Rejected</span>
                             </td>
                             <td align="left">
                                 <a ng-if="supplier.status == {{ constant("Supplier::APPLIED") }}"  href="{{ baseUrl }}supplier/activate/[[ supplier.id ]]" class="btn btn-xs btn-warning">Activate</a>
