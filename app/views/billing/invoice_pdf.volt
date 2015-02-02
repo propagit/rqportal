@@ -20,7 +20,7 @@
                     <h1 class="font-400">tax invoice</h1>
                     {% if invoice['status'] == constant("Invoice::PAID") %}
                     <br><br>
-                    <img src="{{ baseUrl}}img/badge-paid.png" />
+                    <img src="{{ baseUrl }}img/badge-paid.png" />
                     {% endif %}
                 </td>
             </tr>
@@ -77,12 +77,21 @@
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="2" style="border-bottom:1px solid #ccc;"><strong>{{ invoice['removals']|length  + invoice['storages']|length }}</strong></td>
-                    <td colspan="2" style="border-bottom:1px solid #ccc;">$10.00</td>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;"><strong>{{ invoice['removals']|length  + invoice['storages']|length - invoice['free'] }}</strong></td>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;">${{ invoice['price_per_quote'] }}</td>
                     <td colspan="2" style="border-bottom:1px solid #ccc;">Quotes Received<br><small>Full breakdown of received quotes below</small></td>
 
                     <td align="right" style="border-bottom:1px solid #ccc;"><strong>${{ invoice['amount'] }}</strong></td>
                 </tr>
+                {% if invoice['free'] > 0 %}
+                <tr>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;"><strong>{{ invoice['free'] }}</strong></td>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;">$0.00</td>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;">FREE</td>
+
+                    <td align="right" style="border-bottom:1px solid #ccc;"><strong>$0.00</strong></td>
+                </tr>
+                {% endif %}
                 <tr>
                     <td colspan="2" style="border-bottom:1px solid #ccc;">GST</td>
                     <td colspan="4" style="border-bottom:1px solid #ccc;">10%</td>
@@ -116,12 +125,12 @@
                 <thead>
                     <tr style="background:#eee;">
                         <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">CUSTOMER</th>
-                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">FROM</th>
-                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">TO</th>
-                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">MOVING DATE</th>
-                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">ROOMS</th>
-                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">STATUS</th>
-                        <th align="right" style="padding-top:10px;border-bottom:2px solid #ccc;">COST</th>
+                        <th width="12%" align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">FROM</th>
+                        <th width="12%" align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">TO</th>
+                        <th width="12%" align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">MOVING DATE</th>
+                        <th width="12%" align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">ROOMS</th>
+                        <th width="12%" align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">STATUS</th>
+                        <th width="12%" align="right" style="padding-top:10px;border-bottom:2px solid #ccc;">COST</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -161,11 +170,11 @@
                 <thead>
                     <tr style="background:#eee;">
                         <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">CUSTOMER</th>
-                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">PICKUP</th>
-                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">PERIOD</th>
-                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">CONTAINERS</th>
-                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">STATUS</th>
-                        <th align="right" style="padding-top:10px;border-bottom:2px solid #ccc;">COST</th>
+                        <th width="12%" align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">PICKUP</th>
+                        <th width="12%" align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">PERIOD</th>
+                        <th width="12%" align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">CONTAINERS</th>
+                        <th width="12%" align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">STATUS</th>
+                        <th width="12%" align="right" style="padding-top:10px;border-bottom:2px solid #ccc;">COST</th>
                     </tr>
                 </thead>
                 <tbody>

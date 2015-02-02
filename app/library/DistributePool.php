@@ -65,6 +65,7 @@ class DistributePool extends Injectable
     public function generateInvoice($id)
     {
         $data['invoice'] = Invoice::findFirst($id)->toArray();
+        $data['baseUrl'] = $this->config->application->publicUrl;
         $html = $this->view->getRender('billing', 'invoice_pdf', $data);
         $pdf = new mPDF();
         $stylesheet = file_get_contents(__DIR__ . '/../../public/css/app.min.css');
