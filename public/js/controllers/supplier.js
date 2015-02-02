@@ -28,7 +28,7 @@ angular.module('controllers.supplier', [])
     };
 
     $scope.delete = function(index) {
-        $http.delete(Config.BASE_URL + 'supplierajax/delete/' + $scope.suppliers[index].id)
+        $http.post(Config.BASE_URL + 'supplierajax/delete/' + $scope.suppliers[index].id)
         .success(function(response){
             $scope.suppliers.splice(index, 1);
         }).error(function(error){
