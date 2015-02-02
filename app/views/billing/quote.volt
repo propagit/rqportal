@@ -45,7 +45,7 @@
                                 <td>[[ supplier.business ]]</td>
                                 <td>[[ supplier.quotes ]]</td>
                                 <td>
-                                    <a ng-click="listQuotes(supplier.user_id)" class="btn btn-xs btn-primary">List <i class="fa fa-chevron-right"></i></a>
+                                    <a ng-if="supplier.user_id != current_user_id" ng-click="listQuotes(supplier.user_id)" class="btn btn-xs btn-primary">List <i class="fa fa-chevron-right"></i></a>
                                 </td>
                             </tr>
                         </tbody>
