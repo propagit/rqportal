@@ -88,6 +88,7 @@ class Invoice extends \Phalcon\Mvc\Model
         $removals = array();
         $storages = array();
         $quotes = Quote::find("invoice_id = $this->id");
+        $free = 0;
         foreach($quotes as $quote)
         {
             if ($quote->job_type == 'removal')
@@ -107,7 +108,12 @@ class Invoice extends \Phalcon\Mvc\Model
                 $storage['created_on'] = strtotime($quote->created_on) * 1000;
                 $storages[] = $storage;
             }
+            if ($quote->free)
+            {
+                $free++;
+            }
         }
+        $invoice['free'] = $free;
         $invoice['removals'] = $removals;
         $invoice['storages'] = $storages;
         return $invoice;

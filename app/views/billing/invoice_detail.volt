@@ -152,11 +152,17 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><strong>[[ current_invoice.removals.length + current_invoice.storages.length ]]</strong></td>
-                                        <td>$10.00</td>
+                                        <td><strong>[[ current_invoice.removals.length + current_invoice.storages.length - current_invoice.free ]]</strong></td>
+                                        <td>[[ current_invoice.price_per_quote | currency ]]</td>
                                         <td>Quotes Received (Full breakdown of received quotes below)</td>
 
                                         <td align="right"><strong>[[ current_invoice.amount | currency ]]</strong></td>
+                                    </tr>
+                                    <tr ng-if="current_invoice.free > 0">
+                                        <td><strong>[[ current_invoice.free ]]</strong></td>
+                                        <td>$0.00</td>
+                                        <td>FREE</td>
+                                        <td>$0.00</td>
                                     </tr>
                                     <tr>
                                         <td>GST</td>
@@ -240,7 +246,7 @@
                                     <td align="center">
                                         [[ removal.status == {{ constant("Quote::WON") }} ? 'Won' : (removal.status == {{ constant("Quote::LOST") }} ? 'Lost' : 'Open') ]]</td>
                                     <td align="right">
-                                        [[ removal.free == 1 ? 'Free' : current_invoice.price_per_quote ]]
+                                        [[ removal.free == 1 ? 'Free' : current_invoice.price_per_quote | currency ]]
                                     </td>
                                 </tr>
                             </tbody>
@@ -266,7 +272,9 @@
                                     <td align="center">[[ storage.containers ]]</td>
                                     <td>[[ storage.created_on | date : 'dd MMM yyyy' ]]</td>
                                     <td align="center">[[ storage.status == {{ constant("Quote::WON") }} ? 'Won' : 'Lost' ]]</td>
-                                    <td align="right">$10.00</td>
+                                    <td align="right">
+                                        [[ storage.free == 1 ? 'Free' : current_invoice.price_per_quote | currency ]]
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
