@@ -87,7 +87,7 @@ angular.module('controllers.billing', [])
     };
 })
 
-.controller('BillingQuoteCtrl', function($scope, $http, Config){
+.controller('BillingQuoteCtrl', function($rootScope, $scope, $http, Config){
 
     $scope.current_user_id = null;
 
