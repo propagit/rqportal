@@ -60,8 +60,16 @@ class DashboardajaxController extends ControllerAjax
             ));
             $billed[] = ($sales) ? $sales : 0;
 
+            $unpaid = Invoice::sum(array(
+                "column" => "amount",
+                "conditions" => "status = " . Invoice::UNPAID .
+                    " AND created_on LIKE '" . date('Y-m', $month) . "%'"
+            ));
+
+            $unpaid = ($unpaid) ? $unpaid : 0;
+
             $quotes = Quote::count("invoice_id is NULL AND free = 0 AND created_on LIKE '" . date('Y-m', $month) . "%'");
-            $predicted[] = $quotes * 10 + $sales;
+            $predicted[] = $quotes * 10 + $sales + $unpaid;
         }
 
         $this->view->series = $series;
