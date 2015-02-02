@@ -69,7 +69,7 @@
 
                                 <span ng-if="supplier.status == {{ constant("Supplier::APPROVED") }}" class="text-success">Approved</span>
                             </td>
-                            <td>
+                            <td align="left">
                                 <a ng-if="supplier.status == {{ constant("Supplier::APPLIED") }}"  href="{{ baseUrl }}supplier/activate/[[ supplier.id ]]" class="btn btn-xs btn-warning">Activate</a>
                                 &nbsp;
                                 <a ng-if="supplier.status == {{ constant("Supplier::APPLIED") }}" ng-click="reject([[ $index ]])" class="btn btn-xs btn-danger">Reject</a>
@@ -79,7 +79,7 @@
 
                                 <a ng-if="supplier.status == {{ constant("Supplier::APPROVED") }}" href="{{ baseUrl }}supplier/login/[[ supplier.user_id ]]" class="btn btn-xs btn-success">Login as supplier</a>
                                 &nbsp;
-                                <div class="btn-group">
+                                <div class="btn-group" ng-if="supplier.status == {{ constant("Supplier::APPROVED") }}">
                                     <button class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown">
                                         <i class="fa fa-times"></i>
                                     </button>
