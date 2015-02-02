@@ -125,12 +125,12 @@
                 <thead>
                     <tr style="background:#eee;">
                         <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">CUSTOMER</th>
-                        <th width="12%" align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">FROM</th>
-                        <th width="12%" align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">TO</th>
-                        <th width="12%" align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">MOVING DATE</th>
-                        <th width="12%" align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">ROOMS</th>
-                        <th width="12%" align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">STATUS</th>
-                        <th width="12%" align="right" style="padding-top:10px;border-bottom:2px solid #ccc;">COST</th>
+                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">FROM</th>
+                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">TO</th>
+                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">MOVING DATE</th>
+                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">ROOMS</th>
+                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">STATUS</th>
+                        <th align="right" style="padding-top:10px;border-bottom:2px solid #ccc;">COST</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -170,11 +170,11 @@
                 <thead>
                     <tr style="background:#eee;">
                         <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">CUSTOMER</th>
-                        <th width="12%" align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">PICKUP</th>
-                        <th width="12%" align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">PERIOD</th>
-                        <th width="12%" align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">CONTAINERS</th>
-                        <th width="12%" align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">STATUS</th>
-                        <th width="12%" align="right" style="padding-top:10px;border-bottom:2px solid #ccc;">COST</th>
+                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">PICKUP</th>
+                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">PERIOD</th>
+                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">CONTAINERS</th>
+                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">STATUS</th>
+                        <th align="right" style="padding-top:10px;border-bottom:2px solid #ccc;">COST</th>
                     </tr>
                 </thead>
                 <tbody>
