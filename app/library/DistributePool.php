@@ -82,7 +82,6 @@ class DistributePool extends Injectable
             'reject',
             array('name' => $supplier->name)
         );
-        $supplier->delete();
     }
 
     public function sendActivation($supplierId)
