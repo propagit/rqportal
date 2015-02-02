@@ -7,7 +7,7 @@ class SupplierajaxController extends ControllerAjax
     {
         $request = $this->request->getJsonRawBody();
         $conditions = "status >= 0";
-        if ($request->status)
+        if (isset($request->status))
         {
             $conditions = "status = '$request->status'";
         }
