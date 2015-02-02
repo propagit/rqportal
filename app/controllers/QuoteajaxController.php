@@ -38,7 +38,7 @@ class QuoteajaxController extends ControllerAjax
 
         $params = array(
             $conditions,
-            "order" => "created_on ASC, status ASC",
+            "order" => "created_on DESC, status ASC",
         );
         $params['group'] = array('job_id', 'job_type');
         #$this->view->params = $params; return;
