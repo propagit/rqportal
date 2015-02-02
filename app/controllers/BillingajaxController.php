@@ -5,7 +5,7 @@ class BillingajaxController extends ControllerAjax
 
     public function searchAction($keyword)
     {
-        $query = "SELECT i.*, s.name, s.business FROM Invoice i
+        $query = "SELECT i.id, s.name, s.business FROM Invoice i
                         LEFT JOIN Supplier s ON s.user_id = i.user_id
                     WHERE i.id LIKE '%$keyword%'
                         OR s.name LIKE '%$keyword%'
