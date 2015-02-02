@@ -269,8 +269,8 @@
                                 <tr ng-repeat="storage in current_invoice.storages">
                                     <td><strong>[[ storage.customer_name ]]</strong></td>
                                     <td>[[ storage.pickup_postcode ]]</td>
-                                    <td align="center">[[ storage.containers ]]</td>
                                     <td>[[ storage.created_on | date : 'dd MMM yyyy' ]]</td>
+                                    <td align="center">[[ storage.containers ]]</td>
                                     <td align="center">[[ storage.status == {{ constant("Quote::WON") }} ? 'Won' : 'Lost' ]]</td>
                                     <td align="right">
                                         [[ storage.free == 1 ? 'Free' : '$' + current_invoice.price_per_quote ]]
