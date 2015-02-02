@@ -71,7 +71,6 @@
                             </td>
                             <td align="left">
                                 <a ng-if="supplier.status == {{ constant("Supplier::APPLIED") }}"  href="{{ baseUrl }}supplier/activate/[[ supplier.id ]]" class="btn btn-xs btn-warning">Activate</a>
-                                &nbsp;
                                 <a ng-if="supplier.status == {{ constant("Supplier::APPLIED") }}" ng-click="reject([[ $index ]])" class="btn btn-xs btn-danger">Reject</a>
 
 
