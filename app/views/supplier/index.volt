@@ -9,21 +9,9 @@
 </div>
 
 <div ng-controller="SupplierCtrl">
+
     <!-- Widget ID (each widget will need unique ID)-->
     <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-        <!-- widget options:
-        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-        data-widget-colorbutton="false"
-        data-widget-editbutton="false"
-        data-widget-togglebutton="false"
-        data-widget-deletebutton="false"
-        data-widget-fullscreenbutton="false"
-        data-widget-custombutton="false"
-        data-widget-collapsed="true"
-        data-widget-sortable="false"
-
-        -->
         <header>
             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
             <h2>Suppliers </h2>
@@ -33,18 +21,23 @@
         <!-- widget div-->
         <div>
 
-            <!-- widget edit box -->
-            <div class="jarviswidget-editbox">
-                <!-- This area used as dropdown edit box -->
-
-            </div>
-            <!-- end widget edit box -->
-
             <!-- widget content -->
             <div class="widget-body no-padding">
 
                 <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
                     <thead>
+                        <tr>
+                            <th class="hasinput" colspan="5">
+                                <input type="text" ng-model="keyword" class="form-control" placeholder="Keyword" />
+                            </th>
+                            <th colspan="2">
+                                <?php echo $this->tag->selectStatic(array(
+                                    'status', Supplier::getStatus(),
+                                    'class' => 'form-control',
+                                    'ng-model' => 'status'
+                                )); ?>
+                            </th>
+                        </tr>
                         <tr>
                             <th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>Name</th>
                             <th>Business</th>
@@ -56,7 +49,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="supplier in suppliers">
+                        <tr ng-repeat="supplier in suppliers | filter: keyword">
                             <td>[[ supplier.name ]]</td>
                             <td>[[ supplier.business ]]</td>
                             <td>[[ supplier.address ]]</td>

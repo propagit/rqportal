@@ -217,4 +217,15 @@ class Supplier extends \Phalcon\Mvc\Model
 
         return true;
     }
+
+    public static function getStatus()
+    {
+        return array(
+            Supplier::REJECTED => 'Rejected',
+            Supplier::INACTIVED => 'In-actived',
+            Supplier::APPLIED => 'Applied',
+            Supplier::ACTIVATED => 'Activated',
+            Supplier::APPROVED => 'Approved'
+        );
+    }
 }
