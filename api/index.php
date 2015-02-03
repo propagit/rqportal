@@ -133,9 +133,6 @@ $app->post('/quote/removal', function() use($app, $config) {
     ));
 
     if ($status->success() == true) {
-
-        #$url = $config->application->publicUrl . 'distribute/removal/' . $status->getModel()->id;;
-        #exec("curl $url > /dev/null 2>&1 &");
         # Add to queue
         $job_id = $app->queue->put(array('removal' => $status->getModel()->id));
 
@@ -208,9 +205,6 @@ $app->post('/quote/storage', function() use($app, $config) {
     ));
 
     if ($status->success() == true) {
-        #$url = $config->application->publicUrl . 'distribute/storage/' . $status->getModel()->id;;
-        #exec("curl $url > /dev/null 2>&1 &");
-
         # Add to queue
         $job_id = $app->queue->put(array('storage' => $status->getModel()->id));
 

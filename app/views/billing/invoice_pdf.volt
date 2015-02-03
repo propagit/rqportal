@@ -20,7 +20,7 @@
                     <h1 class="font-400">tax invoice</h1>
                     {% if invoice['status'] == constant("Invoice::PAID") %}
                     <br><br>
-                    <img src="{{ baseUrl}}img/badge-paid.png" />
+                    <img src="{{ baseUrl }}img/badge-paid.png" />
                     {% endif %}
                 </td>
             </tr>
@@ -77,12 +77,21 @@
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="2" style="border-bottom:1px solid #ccc;"><strong>{{ invoice['removals']|length  + invoice['storages']|length }}</strong></td>
-                    <td colspan="2" style="border-bottom:1px solid #ccc;">$10.00</td>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;"><strong>{{ invoice['removals']|length  + invoice['storages']|length - invoice['free'] }}</strong></td>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;">${{ invoice['price_per_quote'] }}</td>
                     <td colspan="2" style="border-bottom:1px solid #ccc;">Quotes Received<br><small>Full breakdown of received quotes below</small></td>
 
                     <td align="right" style="border-bottom:1px solid #ccc;"><strong>${{ invoice['amount'] }}</strong></td>
                 </tr>
+                {% if invoice['free'] > 0 %}
+                <tr>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;"><strong>{{ invoice['free'] }}</strong></td>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;">$0.00</td>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;">FREE</td>
+
+                    <td align="right" style="border-bottom:1px solid #ccc;"><strong>$0.00</strong></td>
+                </tr>
+                {% endif %}
                 <tr>
                     <td colspan="2" style="border-bottom:1px solid #ccc;">GST</td>
                     <td colspan="4" style="border-bottom:1px solid #ccc;">10%</td>

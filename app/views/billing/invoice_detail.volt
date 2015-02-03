@@ -152,11 +152,17 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><strong>[[ current_invoice.removals.length + current_invoice.storages.length ]]</strong></td>
-                                        <td>$10.00</td>
+                                        <td><strong>[[ current_invoice.removals.length + current_invoice.storages.length - current_invoice.free ]]</strong></td>
+                                        <td>[[ current_invoice.price_per_quote | currency ]]</td>
                                         <td>Quotes Received (Full breakdown of received quotes below)</td>
 
                                         <td align="right"><strong>[[ current_invoice.amount | currency ]]</strong></td>
+                                    </tr>
+                                    <tr ng-if="current_invoice.free > 0">
+                                        <td><strong>[[ current_invoice.free ]]</strong></td>
+                                        <td>$0.00</td>
+                                        <td>FREE</td>
+                                        <td align="right">$0.00</td>
                                     </tr>
                                     <tr>
                                         <td>GST</td>
@@ -222,12 +228,12 @@
                             <thead>
                                 <tr>
                                     <th>CUSTOMER</th>
-                                    <th>FROM</th>
-                                    <th>TO</th>
-                                    <th>MOVING DATE</th>
-                                    <th class="text-center">ROOMS</th>
-                                    <th class="text-center">STATUS</th>
-                                    <th class="text-right">COST</th>
+                                    <th width="100">FROM</th>
+                                    <th width="100">TO</th>
+                                    <th width="100">MOVING DATE</th>
+                                    <th width="100" class="text-center">ROOMS</th>
+                                    <th width="100" class="text-center">STATUS</th>
+                                    <th width="100" class="text-right">COST</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -240,7 +246,7 @@
                                     <td align="center">
                                         [[ removal.status == {{ constant("Quote::WON") }} ? 'Won' : (removal.status == {{ constant("Quote::LOST") }} ? 'Lost' : 'Open') ]]</td>
                                     <td align="right">
-                                        [[ removal.free == 1 ? 'Free' : current_invoice.price_per_quote ]]
+                                        [[ removal.free == 1 ? 'Free' : '$' + current_invoice.price_per_quote ]]
                                     </td>
                                 </tr>
                             </tbody>
@@ -252,21 +258,23 @@
                             <thead>
                                 <tr>
                                     <th>CUSTOMER</th>
-                                    <th>PICKUP</th>
-                                    <th class="text-center">CONTAINERS</th>
-                                    <th>PERIOD</th>
-                                    <th class="text-center">STATUS</th>
-                                    <th class="text-right">COST</th>
+                                    <th width="100">PICKUP</th>
+                                    <th width="100">PERIOD</th>
+                                    <th width="100" class="text-center">CONTAINERS</th>
+                                    <th width="100" class="text-center">STATUS</th>
+                                    <th width="100" class="text-right">COST</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="storage in current_invoice.storages">
                                     <td><strong>[[ storage.customer_name ]]</strong></td>
                                     <td>[[ storage.pickup_postcode ]]</td>
-                                    <td align="center">[[ storage.containers ]]</td>
                                     <td>[[ storage.created_on | date : 'dd MMM yyyy' ]]</td>
+                                    <td align="center">[[ storage.containers ]]</td>
                                     <td align="center">[[ storage.status == {{ constant("Quote::WON") }} ? 'Won' : 'Lost' ]]</td>
-                                    <td align="right">$10.00</td>
+                                    <td align="right">
+                                        [[ storage.free == 1 ? 'Free' : '$' + current_invoice.price_per_quote ]]
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

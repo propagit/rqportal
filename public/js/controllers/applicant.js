@@ -58,7 +58,7 @@ angular.module('controllers.applicant', [])
 
     $scope.deleteZone = function(id) {
         $rootScope.loading++;
-        $http.delete(Config.BASE_URL + 'applicantajax/deleteLocal/' + id)
+        $http.post(Config.BASE_URL + 'applicantajax/deleteLocal/' + id)
         .success(function(response){
             for(var i=0; i<$scope.zones.length; i++) {
                 if ($scope.zones[i].id == id) {
@@ -116,7 +116,7 @@ angular.module('controllers.applicant', [])
     };
     $scope.deleteZone = function(id) {
         $rootScope.loading++;
-        $http.delete(Config.BASE_URL + 'applicantajax/deleteCountry/' + id)
+        $http.post(Config.BASE_URL + 'applicantajax/deleteCountry/' + id)
         .success(function(response){
             for(var i=0; i<$scope.zones.length; i++) {
                 if ($scope.zones[i].id == id) {
@@ -192,7 +192,7 @@ angular.module('controllers.applicant', [])
     };
 
     $scope.deleteZone = function(id) {
-        $http.delete(Config.BASE_URL + 'applicantajax/deleteInterstate/' + id)
+        $http.post(Config.BASE_URL + 'applicantajax/deleteInterstate/' + id)
         .success(function(response){
             for(var i=0; i<$scope.zones.length; i++) {
                 if ($scope.zones[i].id == id) {

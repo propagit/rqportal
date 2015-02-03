@@ -55,6 +55,9 @@ class LoginController extends \Phalcon\Mvc\Controller
             return false;
         }
         if ($auth['status'] == User::APPROVED) {
+            if ($auth['level'] == User::SUPPLIER) {
+                return $this->response->redirect('quote');
+            }
             return $this->response->redirect('dashboard');
         } else if ($auth['level'] == User::SUPPLIER) {
             return $this->response->redirect('applicant/profile');

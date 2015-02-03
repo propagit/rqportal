@@ -38,7 +38,7 @@ class QuoteajaxController extends ControllerAjax
 
         $params = array(
             $conditions,
-            "order" => "created_on ASC, status ASC",
+            "order" => "created_on DESC, status ASC",
         );
         $params['group'] = array('job_id', 'job_type');
         #$this->view->params = $params; return;
@@ -194,6 +194,22 @@ class QuoteajaxController extends ControllerAjax
             $this->view->supplier = $supplier->toArray();
         }
 
+    }
+
+    public function deleteQuoteAction($id)
+    {
+        $quote = Quote::findFirst($id);
+
+        if ($quote->job_type == Quote::REMOVAL)
+        {
+            $removal = Removal::findFirst($quote->job_id);
+            $removal->delete();
+        }
+        else
+        {
+            $storage = Storage::findFirst($quote->job_id);
+            $storage->delete();
+        }
     }
 
 }

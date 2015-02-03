@@ -18,6 +18,7 @@ class User extends Model
      */
     public $status;
 
+    const INACTIVED = -1;
     const PENDING = 0;
     const APPROVED = 1;
 

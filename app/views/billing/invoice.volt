@@ -40,6 +40,26 @@
 
                             <thead>
                                 <tr>
+                                    <th class="hasinput" colspan="2">
+                                        <input type="text" class="form-control" placeholder="Invoice number of supplier name..." ng-model="keyword" />
+                                    </th>
+                                    <th class="hasinput" width="120">
+                                        <ng-bs3-datepicker data-ng-model='billed_date' language="en-ca" date-format="YYYY-MM-DD" placeholder="Billed Date" required style="width:120px;"></ng-bs3-datepicker>
+                                    </th>
+                                    <th></th>
+                                    <th>
+                                        <?php echo $this->tag->selectStatic(array(
+                                            'status', Invoice::getStatus(),
+                                            'class' => 'form-control',
+                                            'ng-model' => 'params.status'
+                                        )); ?>
+                                    </th>
+                                    <th class="hasinput" width="120">
+                                        <ng-bs3-datepicker data-ng-model='paid_date' language="en-ca" date-format="YYYY-MM-DD" placeholder="Paid Date" required style="width:120px;"></ng-bs3-datepicker>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                                <tr>
                                     <th data-class="expand">Invoice #</th>
                                     <th><i class="fa fa-user"></i> Supplier</th>
                                     <th><i class="fa fa-calendar"></i> Billed Date</th>
@@ -51,7 +71,7 @@
                             </thead>
 
                             <tbody>
-                                <tr ng-repeat="invoice in invoices">
+                                <tr ng-repeat="invoice in invoices | filter: keyword">
                                     <td align="center">[[ invoice.id ]]</td>
                                     <td><b>[[ invoice.supplier.name ]]</b> - [[ invoice.supplier.business ]]</td>
                                     <td>[[ invoice.created_on | date:'dd/MM/yyyy' ]]</td>
@@ -85,7 +105,7 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-right">
                                                 <li>
-                                                    <a ng-click="deleteInvoice([[invoice.id]])">Delete this invoice</a>
+                                                    <a ng-click="deleteInvoice([[ $index ]])">Delete this invoice</a>
                                                 </li>
                                             </ul>
                                         </div>

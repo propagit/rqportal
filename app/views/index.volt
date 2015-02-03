@@ -45,6 +45,7 @@
         {{ javascript_include('js/app.js') }}
         {{ javascript_include('js/controllers/dashboard.js') }}
         {{ javascript_include('js/controllers/applicant.js') }}
+        {{ javascript_include('js/controllers/supplier.js') }}
         {{ javascript_include('js/controllers/quote.js') }}
         {{ javascript_include('js/controllers/billing.js') }}
         {{ javascript_include('js/config.js') }}

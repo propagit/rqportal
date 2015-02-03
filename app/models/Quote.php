@@ -129,4 +129,23 @@ class Quote extends \Phalcon\Mvc\Model
         );
     }
 
+    # Check if the new invoice should be generated once reaching the threshold
+    public function afterCreate()
+    {
+        if ($this->user_id > 0)
+        {
+            $conditions = "user_id = $this->user_id AND invoice_id IS NULL AND free = 0";
+            $outstanding_quotes = Quote::count($conditions);
+            $price_per_quote = Setting::findFirstByName(Setting::PRICE_PER_QUOTE);
+            $invoice_threshold = Setting::findFirstByName(Setting::INVOICE_THRESHOLD);
+            if ($outstanding_quotes * floatval($price_per_quote->value) >= floatval($invoice_threshold->value))
+            {
+                $this->getDI()->getQueue()->put(array(
+                    'create_invoice' => $this->user_id
+                ));
+            }
+        }
+        return true;
+    }
+
 }

@@ -29,6 +29,10 @@ class DistributePool extends Injectable
                         break;
                     case 'activation': $this->sendActivation($job_id);
                         break;
+                    case 'reject': $this->rejectSupplier($job_id);
+                        break;
+                    case 'create_invoice': $this->createInvoice($job_id);
+                        break;
                     case 'generate_invoice': $this->generateInvoice($job_id);
                         break;
                     case 'email_invoice': $this->emailInvoice($job_id);
@@ -60,14 +64,71 @@ class DistributePool extends Injectable
 
     public function generateInvoice($id)
     {
-        // $this->view->disable();
         $data['invoice'] = Invoice::findFirst($id)->toArray();
+        $data['baseUrl'] = $this->config->application->publicUrl;
         $html = $this->view->getRender('billing', 'invoice_pdf', $data);
         $pdf = new mPDF();
         $stylesheet = file_get_contents(__DIR__ . '/../../public/css/app.min.css');
         $pdf->WriteHTML($stylesheet,1);
         $pdf->WriteHTML($html, 2);
         $pdf->Output(__DIR__ . '/../../public/files/invoice' . $id . '.pdf', "F");
+    }
+
+    public function createInvoice($user_id)
+    {
+        if (!$user_id) { return false; }
+        $quotes = Quote::find("user_id = $user_id AND invoice_id is NULL");
+        $price_per_quote = Setting::findFirstByName(Setting::PRICE_PER_QUOTE);
+        $invoice = new Invoice();
+        $invoice->user_id = $user_id;
+        $invoice->price_per_quote = $price_per_quote->value;
+        $invoice->amount = count($quotes) * floatval($price_per_quote->value);
+        $invoice->status = Invoice::UNPAID;
+        $invoice->created_on = date('Y-m-d H:i:s');
+        $invoice->due_date = date('Y-m-d H:i:s');
+        if ($invoice->save())
+        {
+            foreach($quotes as $quote)
+            {
+                $quote->invoice_id = $invoice->id;
+                $quote->save();
+                if ($quote->free)
+                {
+                    $invoice->amount = $invoice->amount - floatval($price_per_quote->value);
+                }
+
+            }
+            $invoice->save();
+            # Generate invoice in PDF
+            $this->queue->put(array(
+                'generate_invoice' => $invoice->id
+            ));
+            # Send email to supplier
+            $this->queue->put(array(
+                'email_invoice' => array(
+                    'id' => $invoice->id
+                )
+            ));
+
+            echo "Invoice $invoice->id created automatically";
+        }
+        else
+        {
+            var_dump($invoice->getMessages());
+        }
+    }
+
+    public function rejectSupplier($id)
+    {
+        if (!$id) { return false; }
+        $supplier = Supplier::findFirst($id);
+        if (!$supplier) { return false; }
+        $this->mail->send(
+            array($supplier->email => $supplier->name),
+            'Member Application - Rejected',
+            'reject',
+            array('name' => $supplier->name)
+        );
     }
 
     public function sendActivation($supplierId)
@@ -134,14 +195,21 @@ class DistributePool extends Injectable
 
     public function distributeRemoval($id)
     {
+        # First check if auto allocate quote option is ON
+        $auto_allocate_quote = Setting::findFirstByName(Setting::AUTO_ALLOCATE_QUOTE);
+        if ($auto_allocate_quote->value == 0)
+        {
+            return false;
+        }
+
+        # Second, check if removal ID is passed
         if (!$id) {
             return false;
         }
         # Get the removal
         $removal = Removal::findFirst($id);
-
         $from = Postcodes::findFirstByPostcode($removal->from_postcode);
-        $to = Postcodes::findFirstByPostcode($removal->from_postcode);
+        $to = Postcodes::findFirstByPostcode($removal->to_postcode);
 
         # Check suppliers who are able to provide this removal
         $users = array();
@@ -190,17 +258,22 @@ class DistributePool extends Injectable
 
 
         $count = 0;
-        foreach($users_with_quote as $user_id => $quote_number) {
+        $supplier_per_quote = Setting::findFirstByName(Setting::SUPPLIER_PER_QUOTE);
 
-            if ($count < $this->config->supplierPerQuote) {
+        foreach($users_with_quote as $user_id => $quote_number) {
+            $supplier = Supplier::findFirstByUserId($user_id);
+            if ($supplier->status == Supplier::APPROVED
+                && $count < $supplier_per_quote->value) {
                 $quote = new Quote();
                 $quote->job_type = Quote::REMOVAL;
                 $quote->job_id = $removal->id;
                 $quote->user_id = $user_id;
                 $quote->status = 0;
+                $quote->free = 0;
                 $quote->created_on = new Phalcon\Db\RawValue('now()');
                 if ($quote->save()) {
-                    $supplier = Supplier::findFirstByUserId($user_id);
+
+                    # Send new quote notification to supplier
                     $this->mail->send(
                         array($supplier->email => $supplier->name),
                         'New Removalist Job',
@@ -218,7 +291,6 @@ class DistributePool extends Injectable
                     var_dump($quote->getMessages());
                 }
             }
-
         }
 
         if ($count == 0) { # The quote has not been sent to any supplier
@@ -227,6 +299,7 @@ class DistributePool extends Injectable
             $quote->job_id = $removal->id;
             $quote->user_id = 0;
             $quote->status = 0;
+            $quote->free = 0;
             $quote->created_on = new Phalcon\Db\RawValue('now()');
             if ($quote->save()) {
                 $count++;
@@ -240,6 +313,14 @@ class DistributePool extends Injectable
 
     public function distributeStorage($id)
     {
+        # First check if auto allocate quote option is ON
+        $auto_allocate_quote = Setting::findFirstByName(Setting::AUTO_ALLOCATE_QUOTE);
+        if ($auto_allocate_quote->value == 0)
+        {
+            return false;
+        }
+
+        # Second check if the storage ID is passed
         if (!$id) {
             return false;
         }
@@ -271,17 +352,22 @@ class DistributePool extends Injectable
 
 
         $count = 0;
+        $supplier_per_quote = Setting::findFirstByName(Setting::SUPPLIER_PER_QUOTE);
         foreach($users_with_quote as $user_id => $quote_number) {
-
-            if ($count < $this->config->supplierPerQuote) {
+            $supplier = Supplier::findFirstByUserId($user_id);
+            if ($supplier->status == Supplier::APPROVED &&
+                    $count < $supplier_per_quote->value) {
                 $quote = new Quote();
                 $quote->job_type = Quote::STORAGE;
                 $quote->job_id = $storage->id;
                 $quote->user_id = $user_id;
                 $quote->status = 0;
+                $quote->free = 0;
                 $quote->created_on = new Phalcon\Db\RawValue('now()');
                 if ($quote->save()) {
-                    $supplier = Supplier::findFirstByUserId($user_id);
+
+
+                    # Send new quote notification to supplier
                     $this->mail->send(
                         array($supplier->email => $supplier->name),
                         'New Removalist Job',
@@ -297,7 +383,6 @@ class DistributePool extends Injectable
                     var_dump($quote->getMessages());
                 }
             }
-
         }
 
         if ($count == 0) { # The quote has not been sent to any supplier
@@ -306,6 +391,7 @@ class DistributePool extends Injectable
             $quote->job_id = $storage->id;
             $quote->user_id = 0;
             $quote->status = 0;
+            $quote->free = 0;
             $quote->created_on = new Phalcon\Db\RawValue('now()');
             if ($quote->save()) {
                 $count++;

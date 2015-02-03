@@ -130,6 +130,7 @@ class Removal extends \Phalcon\Mvc\Model
         $removal['from_marker'] = $this->drawFromMarker();
         $removal['to_marker'] = $this->drawToMarker();
         $removal['path'] = $this->drawPath();
+        $removal['moving_date'] = strtotime($removal['moving_date']) * 1000;
         return $removal;
     }
 
@@ -189,5 +190,15 @@ class Removal extends \Phalcon\Mvc\Model
                 )
             )
         );
+    }
+
+    public function beforeDelete()
+    {
+        $conditions = "job_type = '" . Quote::REMOVAL . "' AND job_id = " . $this->id;
+        foreach(Quote::find($conditions) as $quote)
+        {
+            $quote->delete();
+        }
+        return true;
     }
 }

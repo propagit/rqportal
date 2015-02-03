@@ -3,6 +3,26 @@
 class BillingajaxController extends ControllerAjax
 {
 
+    public function searchAction($keyword)
+    {
+        $query = "SELECT i.id, s.name, s.business FROM Invoice i
+                        LEFT JOIN Supplier s ON s.user_id = i.user_id
+                    WHERE i.id LIKE '%$keyword%'
+                        OR s.name LIKE '%$keyword%'
+                        OR s.business LIKE '%$keyword%'";
+        $invoices = $this->modelsManager->executeQuery($query);
+        $results = array();
+        foreach($invoices as $invoice)
+        {
+            $results[] = array(
+                'id' => $invoice->id,
+                'supplier' => $invoice->name . ' (' . $invoice->business . ')'
+            );
+        }
+        $this->view->invoices = $results;
+
+    }
+
     public function getInvoicesAction()
     {
         $invoices = Invoice::find(array(
@@ -70,7 +90,7 @@ class BillingajaxController extends ControllerAjax
     public function getSuppliersAction()
     {
         $quotes = Quote::count(array(
-            "invoice_id is NULL AND user_id > 0",
+            "invoice_id is NULL AND free = 0 AND user_id > 0",
             "group" => "user_id"
         ));
         $suppliers = array();
@@ -86,7 +106,7 @@ class BillingajaxController extends ControllerAjax
 
     public function getQuotesAction($userId)
     {
-        $quotes = Quote::find("user_id = $userId AND invoice_id is NULL");
+        $quotes = Quote::find("user_id = $userId AND free = 0 AND invoice_id is NULL");
         $results = array();
         foreach($quotes as $quote) {
             $q = $quote->toArray();
@@ -115,53 +135,8 @@ class BillingajaxController extends ControllerAjax
 
     public function createInvoiceAction($user_id)
     {
-        if (!$user_id) { return; }
-        $quotes = Quote::find("user_id = $user_id AND invoice_id is NULL");
-        $price_per_quote = Setting::findFirst("name = 'price_per_quote'");
-        $invoice = new Invoice();
-        $invoice->user_id = $user_id;
-        $invoice->price_per_quote = $price_per_quote->value;
-        $invoice->amount = count($quotes) * floatval($price_per_quote->value);
-        $invoice->status = Invoice::UNPAID;
-        $invoice->created_on = date('Y-m-d H:i:s');
-        $invoice->due_date = date('Y-m-d H:i:s', strtotime("+1 month"));
-        if ($invoice->save())
-        {
-            foreach($quotes as $quote)
-            {
-                $quote->invoice_id = $invoice->id;
-                $quote->save();
-                if ($quote->free)
-                {
-                    $invoice->amount = $invoice->amount - floatval($price_per_quote->value);
-                }
-
-            }
-            $invoice->save();
-            # Generate invoice in PDF
-            $this->queue->put(array(
-                'generate_invoice' => $invoice->id
-            ));
-            # Send email to supplier
-            $this->queue->put(array(
-                'email_invoice' => array(
-                    'id' => $invoice->id
-                )
-            ));
-
-            $this->response->setStatusCode(200, 'OK');
-        }
-        else
-        {
-            $errors = array();
-            foreach($invoice->getMessages() as $message)
-            {
-                $errors[] = (string) $message;
-            }
-            $this->response->setStatusCode(400, 'ERROR');
-            $this->view->message = implode(', ', $errors);
-        }
-
+        $this->queue->put(array('create_invoice' => $user_id));
+        $this->response->setStatusCode(200, 'OK');
     }
 
     public function emailInvoiceAction()
@@ -198,6 +173,12 @@ class BillingajaxController extends ControllerAjax
         }
 
 
+    }
+
+    public function deleteInvoiceAction($id)
+    {
+        $invoice = Invoice::findFirst($id);
+        $invoice->delete();
     }
 
 }

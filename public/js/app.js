@@ -8,6 +8,7 @@ angular.module('rqportal', [
     'uiGmapgoogle-maps',
     'controllers.dashboard',
     'controllers.applicant',
+    'controllers.supplier',
     'controllers.quote',
     'controllers.billing'
 ])

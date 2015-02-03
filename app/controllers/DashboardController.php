@@ -13,6 +13,8 @@ class DashboardController extends ControllerBase
             $this->response->redirect('login');
         } else if ($auth['status'] == User::PENDING) {
             $this->response->redirect('applicant');
+        } else if ($auth['level'] == User::SUPPLIER) {
+            $this->response->redirect('quote');
         }
     }
 

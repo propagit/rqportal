@@ -19,7 +19,7 @@
                 </span></span>
                 <angucomplete-alt id="pickup"
                               minlength="1"
-                              placeholder="Enter supplier name, company, business to search..."
+                              placeholder="Enter supplier name, company to search..."
                               pause="400"
                               selected-object="params.supplier"
                               remote-url="{{ baseUrl }}supplierajax/search/"
@@ -146,7 +146,7 @@
                                             <td>[[ quote.removal.from_postcode ]]</td>
                                             <td>[[ quote.removal.to_postcode ]]</td>
                                             <td align="center">[[ quote.removal.bedrooms ]]</td>
-                                            <td>[[ quote.removal.moving_date ]]</td>
+                                            <td>[[ quote.removal.moving_date | date: 'dd MMM yyyy' ]]</td>
                                             <td align="right">
                                                 <a ng-if="current_quote.id != quote.id" class="btn btn-xs btn-danger" ng-click="removalDetails(quote)"><i class="fa fa-search"></i></a>
                                             </td>
@@ -212,7 +212,7 @@
                         </button>
                         <ul class="dropdown-menu pull-right">
                             <li>
-                                <a href="javascript:void(0);">Delete this quote</a>
+                                <a ng-click="deleteQuote()">Delete this quote</a>
                             </li>
                         </ul>
                     </div>
@@ -264,7 +264,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-3">Job Date</div>
-                                            <div class="col-lg-3"><b>[[ current_quote.removal.moving_date ]]</b></div>
+                                            <div class="col-lg-3"><b>[[ current_quote.removal.moving_date | date: 'd MMM yy' ]]</b></div>
                                             <div class="col-lg-3">Rooms</div>
                                             <div class="col-lg-3"><b>[[ current_quote.removal.bedrooms ]]</b></div>
                                         </div>
