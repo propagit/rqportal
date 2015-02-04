@@ -47,7 +47,9 @@ class DistributePool extends Injectable
     {
         $id = $data['id'];
         if (!$id) { return false; }
-        $invoice = Invoice::findFirst($id)->toArray();
+        $invoice = Invoice::findFirst($id);
+        if (!$invoice) { return false; }
+        $invoice = $invoice->toArray();
         $email = $invoice['supplier']['email'];
         if (isset($data['email'])) { $email = $data['email']; }
 
