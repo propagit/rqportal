@@ -206,7 +206,7 @@
                 {% if elements.isAdmin() %}
                 <div class="widget-toolbar pull-right">
 
-                    <div ng-if="current_quote.invoiced == 0" class="btn-group">
+                    <div ng-show="current_quote.invoiced == 0" class="btn-group">
                         <button class="btn dropdown-toggle btn-xs btn-danger" data-toggle="dropdown">
                             <i class="fa fa-times"></i>
                         </button>
@@ -216,7 +216,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div ng-if="current_quote.invoiced > 0" class="btn-group">
+                    <div ng-show="current_quote.invoiced > 0" class="btn-group">
                         <button class="btn dropdown-toggle btn-xs btn-warning" data-toggle="dropdown">
                             <i class="fa fa-times"></i>
                         </button>
