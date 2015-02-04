@@ -90,10 +90,10 @@
                     {% for line in invoice['lines'] %}
                 <tr>
                     <td colspan="2" style="border-bottom:1px solid #ccc;"><strong>{{ line.qty }}</strong></td>
-                    <td colspan="2" style="border-bottom:1px solid #ccc;">${{ line['cost'] }}</td>
-                    <td colspan="2" style="border-bottom:1px solid #ccc;">{{ line['description'] }}</td>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;">${{ line.cost }}</td>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;">{{ line.description }}</td>
 
-                    <td align="right" style="border-bottom:1px solid #ccc;"><strong>${{ "%01.2f" | format(line['qty'] * line['cost']) }}</strong></td>
+                    <td align="right" style="border-bottom:1px solid #ccc;"><strong>${{ "%01.2f" | format(line.qty * line.cost) }}</strong></td>
                 </tr>
                     {% endfor %}
                 {% endif %}
