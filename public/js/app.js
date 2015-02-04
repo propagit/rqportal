@@ -24,7 +24,12 @@ angular.module('rqportal', [
         libraries: 'places,weather,geometry,visualization,drawing'
     });
 })
-.controller('AppCtrl', function($rootScope){
+.controller('AppCtrl', function($rootScope, $window, Config){
     $rootScope.loading = 0;
+    $rootScope.$watch('search_invoice_id', function(val){
+        if(val) {
+            $window.location = Config.BASE_URL + 'billing/invoice?id=' + val.originalObject.id;
+        }
+    });
 })
 

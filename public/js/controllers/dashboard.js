@@ -9,7 +9,7 @@ angular.module('controllers.dashboard', [])
         $scope.labels = response.labels;
         $scope.series = response.series;
         $scope.data = response.data;
-        console.log(response);
+        // console.log(response);
     }).error(function(error){
         console.log("ERROR: ", error);
     }).finally(function(){
@@ -24,7 +24,7 @@ angular.module('controllers.dashboard', [])
     };
 
     $scope.$watch('time', function(val) {
-        console.log(val);
+        // console.log(val);
         loadStats(val);
     });
 

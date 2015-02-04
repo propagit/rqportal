@@ -1,3 +1,4 @@
+<div ng-init="id = '{{ id }}'">
 <div ng-controller="BillingInvoiceCtrl">
 
 <div class="row">
@@ -9,9 +10,9 @@
 
 <div ng-show="!current_invoice.id">
 
-    {% include 'billing/search.volt' %}
+    <!-- {% include 'billing/search.volt' %}
 
-    <div class="section-divider"></div>
+    <div class="section-divider"></div> -->
 
     <div class="row">
         <div class="col-lg-12">
@@ -41,38 +42,38 @@
                             <thead>
                                 <tr>
                                     <th class="hasinput" colspan="2">
-                                        <input type="text" class="form-control" placeholder="Invoice number of supplier name..." ng-model="keyword" />
+                                        <input type="text" class="form-control" placeholder="Invoice number of supplier name..." value="{{ id }}" ng-model="keyword" />
                                     </th>
-                                    <th class="hasinput" width="120">
-                                        <ng-bs3-datepicker data-ng-model='billed_date' language="en-ca" date-format="YYYY-MM-DD" placeholder="Billed Date" required style="width:120px;"></ng-bs3-datepicker>
+                                    <th class="hasinput" width="100">
+                                        <ng-bs3-datepicker data-ng-model='filter_date' language="en-ca" date-format="YYYY-MM-DD" placeholder="Billed Date" required style="width:100px;"></ng-bs3-datepicker>
                                     </th>
-                                    <th></th>
+                                    <th width="80"></th>
                                     <th>
                                         <?php echo $this->tag->selectStatic(array(
                                             'status', Invoice::getStatus(),
                                             'class' => 'form-control',
-                                            'ng-model' => 'params.status'
+                                            'ng-model' => 'filter_status'
                                         )); ?>
                                     </th>
-                                    <th class="hasinput" width="120">
-                                        <ng-bs3-datepicker data-ng-model='paid_date' language="en-ca" date-format="YYYY-MM-DD" placeholder="Paid Date" required style="width:120px;"></ng-bs3-datepicker>
-                                    </th>
+                                    <!-- <th class="hasinput" width="100">
+                                        <ng-bs3-datepicker data-ng-model='paid_date' language="en-ca" date-format="YYYY-MM-DD" placeholder="Paid Date" required style="width:100px;"></ng-bs3-datepicker>
+                                    </th> -->
                                     <th></th>
                                 </tr>
                                 <tr>
-                                    <th data-class="expand">Invoice #</th>
+                                    <th data-class="expand" class="text-center">Invoice</th>
                                     <th><i class="fa fa-user"></i> Supplier</th>
                                     <th><i class="fa fa-calendar"></i> Billed Date</th>
                                     <th><i class="fa fa-dollar"></i> Amount</th>
-                                    <th width="80">Status</th>
-                                    <th><i class="fa fa-calendar"></i> Paid On</th>
+                                    <th width="80" class="text-center">Status</th>
+                                    <!-- <th><i class="fa fa-calendar"></i> Paid On</th> -->
                                     <th width="268"></th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                <tr ng-repeat="invoice in invoices | filter: keyword">
-                                    <td align="center">[[ invoice.id ]]</td>
+                                <tr ng-repeat="invoice in invoices | filter: filterInvoice">
+                                    <td align="center">#[[ invoice.id ]]</td>
                                     <td><b>[[ invoice.supplier.name ]]</b> - [[ invoice.supplier.business ]]</td>
                                     <td>[[ invoice.created_on | date:'dd/MM/yyyy' ]]</td>
                                     <td class="text-[[ invoice.status == {{ constant("Invoice::UNPAID") }} ? 'warning' : 'success' ]]">[[ invoice.amount | currency ]]</td>
@@ -89,7 +90,7 @@
                                         </div>
                                         <span class="btn btn-xs btn-block btn-success" ng-if="invoice.status == {{ constant("Invoice::PAID") }}"><i class="fa fa-check"></i>  Paid</span>
                                     </td>
-                                    <td>[[ invoice.paid_on ]]</td>
+                                    <!-- <td>[[ invoice.paid_on ]]</td> -->
                                     <td width="261">
                                         <a ng-click="viewInvoice([[ $index ]])" class="btn btn-xs btn-primary"><i class="fa fa-search"></i> View</a>
                                         &nbsp;
@@ -152,4 +153,5 @@
             <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
         </div>
     </script>
+</div>
 </div>

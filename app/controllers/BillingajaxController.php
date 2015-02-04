@@ -7,15 +7,20 @@ class BillingajaxController extends ControllerAjax
     {
         $query = "SELECT i.id, s.name, s.business FROM Invoice i
                         LEFT JOIN Supplier s ON s.user_id = i.user_id
-                    WHERE i.id LIKE '%$keyword%'
+                    WHERE (i.id LIKE '%$keyword%'
                         OR s.name LIKE '%$keyword%'
-                        OR s.business LIKE '%$keyword%'";
+                        OR s.business LIKE '%$keyword%')";
+        if ($this->user->level == User::SUPPLIER)
+        {
+            $query .= " AND i.user_id = " . $this->user->id;
+        }
         $invoices = $this->modelsManager->executeQuery($query);
         $results = array();
         foreach($invoices as $invoice)
         {
             $results[] = array(
                 'id' => $invoice->id,
+                'name' => 'Invoice #' . $invoice->id,
                 'supplier' => $invoice->name . ' (' . $invoice->business . ')'
             );
         }

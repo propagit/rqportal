@@ -1,4 +1,4 @@
-<div  ng-init="query = '{{ query }}'">
+<div ng-init="query = '{{ query }}'">
 <div ng-controller="QuoteCtrl">
 
 <div class="row">

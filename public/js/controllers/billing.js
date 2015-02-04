@@ -4,6 +4,41 @@ angular.module('controllers.billing', [])
 
     $scope.current_invoice = {};
 
+    if ($scope.id)
+    {
+        $scope.keyword = $scope.id;
+    }
+
+    $scope.$watch('filter.status', function(val){
+        if (val == 1)
+        {
+
+        }
+    });
+    $scope.filterInvoice = function(invoice) {
+        if ($scope.keyword) {
+            if (invoice.id.indexOf($scope.keyword) != -1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if ($scope.filter_status) {
+            if (invoice.status == $scope.filter_status) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if ($scope.filter_date) {
+            if (moment(invoice.created_on).format("YYYY-MM-DD") == $scope.filter_date) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    };
 
     $rootScope.loading++;
     $http.post(Config.BASE_URL + 'billingajax/searchInvoices')
@@ -63,6 +98,8 @@ angular.module('controllers.billing', [])
     };
 
 })
+
+
 .controller('EmailInvoiceCtrl', function($rootScope, $scope, $http, Config){
     $scope.invoice = $rootScope.invoice;
     $scope.success = 0;

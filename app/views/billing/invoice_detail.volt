@@ -102,7 +102,7 @@
                             <br>
                             <br>
                             <div class="row">
-                                <div class="col-sm-9">
+                                <div class="col-sm-8">
                                     <h4 class="semi-bold">[[ current_invoice.supplier.business ]]</h4>
                                     <address>
                                         <strong>[[ current_invoice.supplier.name ]]</strong>
@@ -114,7 +114,7 @@
                                         Tel: [[ current_invoice.supplier.phone ]]
                                     </address>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-4">
                                     <div>
                                         <div>
                                             <strong>INVOICE NO :</strong>

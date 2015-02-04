@@ -6,6 +6,8 @@ class BillingController extends ControllerBase
     public function invoiceAction()
     {
         $this->tag->setTitle('Search Invoices');
+
+        $this->view->id = $this->request->get('id');
     }
 
 
