@@ -93,7 +93,7 @@
                     <td colspan="2" style="border-bottom:1px solid #ccc;">{{ line.cost | money_format }}</td>
                     <td colspan="2" style="border-bottom:1px solid #ccc;">{{ line.description }}</td>
 
-                    <td align="right" style="border-bottom:1px solid #ccc;"><strong>{{ line.qty * line.cost | money_format }}</strong></td>
+                    <td align="right" style="border-bottom:1px solid #ccc;"><strong>{{ (line.qty * line.cost) | money_format }}</strong></td>
                 </tr>
                     {% endfor %}
                 {% endif %}
@@ -110,11 +110,11 @@
                 <tr>
                     <td colspan="2" style="border-bottom:1px solid #ccc;">GST</td>
                     <td colspan="4" style="border-bottom:1px solid #ccc;">10%</td>
-                    <td align="right" style="border-bottom:1px solid #ccc;">${{ invoice['amount']/11 | money_format }}</td>
+                    <td align="right" style="border-bottom:1px solid #ccc;">${{ (invoice['amount']/11) | money_format }}</td>
                 </tr>
                 <tr>
                     <td colspan="6">SUBTOTAL</td>
-                    <td align="right">${{ invoice['amount'] * 10/11 | money_format }}</td>
+                    <td align="right">${{ (invoice['amount'] * 10/11) | money_format }}</td>
                 </tr>
             </tbody>
         </table>
