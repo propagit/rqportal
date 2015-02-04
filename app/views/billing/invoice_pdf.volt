@@ -56,7 +56,7 @@
                         <tr style="background:#555;">
                             <td style="color:#fff;padding:8px;">Total Due:</td>
                             <td></td>
-                            <td align="right" style="color:#fff;padding:8px;">${{ invoice['amount'] }}</td>
+                            <td align="right" style="color:#fff;padding:8px;">{{ invoice['amount'] | money_format }}</td>
                         </tr>
                     </table>
                 </td>
@@ -79,10 +79,10 @@
                 {% if invoice['price_per_quote'] > 0 %}
                 <tr>
                     <td colspan="2" style="border-bottom:1px solid #ccc;"><strong>{{ invoice['removals']|length  + invoice['storages']|length - invoice['free'] }}</strong></td>
-                    <td colspan="2" style="border-bottom:1px solid #ccc;">${{ invoice['price_per_quote'] }}</td>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;">{{ invoice['price_per_quote'] | money_format }}</td>
                     <td colspan="2" style="border-bottom:1px solid #ccc;">Quotes Received<br><small>Full breakdown of received quotes below</small></td>
 
-                    <td align="right" style="border-bottom:1px solid #ccc;"><strong>${{ invoice['amount'] }}</strong></td>
+                    <td align="right" style="border-bottom:1px solid #ccc;"><strong>{{ invoice['amount'] | money_format }}</strong></td>
                 </tr>
                 {% endif %}
 
@@ -90,10 +90,10 @@
                     {% for line in invoice['lines'] %}
                 <tr>
                     <td colspan="2" style="border-bottom:1px solid #ccc;"><strong>{{ line.qty }}</strong></td>
-                    <td colspan="2" style="border-bottom:1px solid #ccc;">${{ line.cost }}</td>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;">{{ line.cost | money_format }}</td>
                     <td colspan="2" style="border-bottom:1px solid #ccc;">{{ line.description }}</td>
 
-                    <td align="right" style="border-bottom:1px solid #ccc;"><strong>${{ "%01.2f" | format(line.qty * line.cost) }}</strong></td>
+                    <td align="right" style="border-bottom:1px solid #ccc;"><strong>{{ line.qty * line.cost | money_format }}</strong></td>
                 </tr>
                     {% endfor %}
                 {% endif %}
@@ -110,11 +110,11 @@
                 <tr>
                     <td colspan="2" style="border-bottom:1px solid #ccc;">GST</td>
                     <td colspan="4" style="border-bottom:1px solid #ccc;">10%</td>
-                    <td align="right" style="border-bottom:1px solid #ccc;">${{ "%01.2f" | format(invoice['amount']/11) }}</td>
+                    <td align="right" style="border-bottom:1px solid #ccc;">${{ invoice['amount']/11 | money_format }}</td>
                 </tr>
                 <tr>
                     <td colspan="6">SUBTOTAL</td>
-                    <td align="right">${{ "%01.2f" | format(invoice['amount'] * 10/11) }}</td>
+                    <td align="right">${{ invoice['amount'] * 10/11 | money_format }}</td>
                 </tr>
             </tbody>
         </table>
@@ -124,6 +124,7 @@
         <img src="{{ baseUrl }}img/visa.png" width="64" height="64" alt="visa">
         <p><small>**To avoid any excess penalty charges, please make payments within 30 days of the due date. There will be a 2% interest charge per month on all late invoices.</small></p>
 
+        {% if invoice['removals']|length > 0 or invoice['storage']|length > 0 %}
         <pagebreak />
 
         <address>
@@ -219,6 +220,8 @@
                     {% endfor %}
                 </tbody>
             </table>
+        {% endif %}
+
         {% endif %}
     </body>
 </html>

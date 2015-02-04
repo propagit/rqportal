@@ -84,6 +84,10 @@ $di->set('view', function () use ($config) {
             $compiler = $volt->getCompiler();
             $compiler->addFunction('is_a', 'is_a');
 
+            $compiler->addFilter('money_format', function($amount){
+                return 'Helper::money_format(' . $amount . ');';
+            });
+
             return $volt;
         },
         '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
