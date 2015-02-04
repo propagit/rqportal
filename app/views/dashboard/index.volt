@@ -18,7 +18,7 @@
                     <h5> Income <span class="txt-color-blue">[[ stats.income | currency ]]</span></h5>
                 </li>
                 <li class="sparks-info">
-                    <a ng-if="stats.unpaid_invoice > 0" href="{{ baseUrl }}billing/invoice" class="badge bg-color-red">[[ stats.unpaid_invoice ]]</a>
+                    <a ng-if="stats.unpaid_invoice > 0" href="{{ baseUrl }}billing/invoice?q=unpaid" class="badge bg-color-red">[[ stats.unpaid_invoice ]]</a>
 
                     <h5> Invoice <span class="txt-color-greenDark"><i class="fa fa-file-text-o"></i>&nbsp;[[ stats.total_invoice ]]</span></h5>
                 </li>
@@ -28,7 +28,7 @@
                     <h5> Quotes <span class="txt-color-purple"><i class="fa fa-comment-o"></i>&nbsp;[[ stats.total_quotes ]]</span></h5>
                 </li>
                 <li class="sparks-info">
-                    <a ng-if="stats.incompleted_supplier > 0" href="{{ baseUrl }}supplier" class="badge bg-color-red">[[ stats.incompleted_supplier ]]</a>
+                    <a ng-if="stats.incompleted_supplier > 0" href="{{ baseUrl }}supplier?q=incomplete" class="badge bg-color-red">[[ stats.incompleted_supplier ]]</a>
 
                     <h5> Supplier <span class="txt-color-greenDark"><i class="fa fa-user"></i>&nbsp;[[ stats.total_suppliers ]]</span></h5>
                 </li>

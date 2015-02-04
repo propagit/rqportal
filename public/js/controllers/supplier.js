@@ -2,6 +2,30 @@ angular.module('controllers.supplier', [])
 
 .controller('SupplierCtrl', function($rootScope, $scope, $http, Config){
 
+    $scope.filterSupplier = function(supplier) {
+        if ($scope.query) {
+            if (supplier.status == 0 || supplier.status == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if ($scope.filter_status) {
+            if (supplier.status == $scope.filter_status) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    $scope.$watch('filter_status', function(val) {
+        if (val) {
+            $scope.query = null;
+        }
+    });
+
     $rootScope.loading++;
     $http.post(Config.BASE_URL + 'supplierajax/getAll')
     .success(function(response){

@@ -66,7 +66,11 @@ class DistributePool extends Injectable
 
     public function generateInvoice($id)
     {
-        $data['invoice'] = Invoice::findFirst($id)->toArray();
+        if (!$id) { return false; }
+        $invoice = Invoice::findFirst($id);
+        if (!$invoice) { return false; }
+
+        $data['invoice'] = $invoice->toArray();
         $data['baseUrl'] = $this->config->application->publicUrl;
         $html = $this->view->getRender('billing', 'invoice_pdf', $data);
         $pdf = new mPDF();
@@ -80,6 +84,7 @@ class DistributePool extends Injectable
     {
         if (!$user_id) { return false; }
         $quotes = Quote::find("user_id = $user_id AND invoice_id is NULL");
+        if (!$quotes || count($quotes) == 0) { return false; }
         $price_per_quote = Setting::findFirstByName(Setting::PRICE_PER_QUOTE);
         $invoice = new Invoice();
         $invoice->user_id = $user_id;

@@ -1,3 +1,4 @@
+<div ng-init="query = '{{ query }}'">
 <div class="row">
     <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
         <h1 class="page-title txt-color-blueDark fw300"><i class="fa-fw fa fa-user"></i> Supplier
@@ -33,8 +34,10 @@
                             <th colspan="2">
                                 <?php echo $this->tag->selectStatic(array(
                                     'status', Supplier::getStatus(),
+                                    'useEmpty'  => true,
+                                    'emptyText' => 'Any',
                                     'class' => 'form-control',
-                                    'ng-model' => 'status'
+                                    'ng-model' => 'filter_status'
                                 )); ?>
                             </th>
                         </tr>
@@ -49,7 +52,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="supplier in suppliers | filter: keyword">
+                        <tr ng-repeat="supplier in suppliers | filter: keyword | filter: filterSupplier">
                             <td>[[ supplier.name ]]</td>
                             <td>[[ supplier.business ]]</td>
                             <td>[[ supplier.address ]]</td>
@@ -104,3 +107,4 @@
 </div>
 
 
+</div>

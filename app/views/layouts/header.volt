@@ -1,7 +1,7 @@
 <header id="header">
     <div id="logo-group">
         <!-- PLACE YOUR LOGO HERE -->
-        <span id="logo2"><img src="{{ baseUrl }}img/logo.png" width="110" alt="Removalist Quote"> </span>
+        <span id="logo2"><a href="{{ baseUrl }}"><img src="{{ baseUrl }}img/logo.png" width="110" alt="Removalist Quote"></a> </span>
         <!-- END LOGO PLACEHOLDER -->
 
         <!-- Note: The activity badge color changes when clicked and resets the number to 0
@@ -41,7 +41,7 @@
         <!-- end search mobile button -->
 
         <!-- input: search field -->
-        <form action="search.html" class="header-search pull-right">
+        <form class="header-search pull-right">
             <angucomplete-alt id="search-invoice"
                   minlength="1"
                   placeholder="Search for invoice..."
@@ -54,7 +54,7 @@
                   input-class="form-control"
                   match-class="highlight"
                   field-required="true"></angucomplete-alt>
-            <button type="submit">
+            <button type="button">
                 <i class="fa fa-search"></i>
             </button>
             <a href="javascript:void(0);" id="cancel-search-js" title="Cancel Search"><i class="fa fa-times"></i></a>

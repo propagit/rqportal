@@ -8,13 +8,10 @@ angular.module('controllers.billing', [])
     {
         $scope.keyword = $scope.id;
     }
-
-    $scope.$watch('filter.status', function(val){
-        if (val == 1)
-        {
-
-        }
-    });
+    if ($scope.query)
+    {
+        $scope.filter_status = 0;
+    }
     $scope.filterInvoice = function(invoice) {
         if ($scope.keyword) {
             if (invoice.id.indexOf($scope.keyword) != -1) {
@@ -23,7 +20,7 @@ angular.module('controllers.billing', [])
                 return false;
             }
         }
-        if ($scope.filter_status) {
+        if ($scope.filter_status != null) {
             if (invoice.status == $scope.filter_status) {
                 return true;
             } else {

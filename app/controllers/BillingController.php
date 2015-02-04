@@ -8,6 +8,7 @@ class BillingController extends ControllerBase
         $this->tag->setTitle('Search Invoices');
 
         $this->view->id = $this->request->get('id');
+        $this->view->query = $this->request->get('q');
     }
 
 

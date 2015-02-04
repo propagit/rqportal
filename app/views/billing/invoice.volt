@@ -1,4 +1,4 @@
-<div ng-init="id = '{{ id }}'">
+<div ng-init="id = '{{ id }}'; query = '{{ query }}'">
 <div ng-controller="BillingInvoiceCtrl">
 
 <div class="row">
@@ -52,6 +52,8 @@
                                         <?php echo $this->tag->selectStatic(array(
                                             'status', Invoice::getStatus(),
                                             'class' => 'form-control',
+                                            'useEmpty'  => true,
+                                            'emptyText' => 'Any',
                                             'ng-model' => 'filter_status'
                                         )); ?>
                                     </th>

@@ -17,6 +17,8 @@ class SupplierController extends ControllerBase
             $conditions
         ));
         $this->view->child = 'search';
+
+        $this->view->query = $this->request->get('q');
     }
 
     public function activateAction($supplierId)
