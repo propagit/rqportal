@@ -17,8 +17,6 @@ class QuoteajaxController extends ControllerAjax
             }
         }
 
-
-
         if ($this->user->level == User::SUPPLIER) {
             $conditions .= " AND user_id = " . $this->user->id;
         }
@@ -48,6 +46,8 @@ class QuoteajaxController extends ControllerAjax
             $q = $quote->toArray();
             $q['removal'] = $quote->getRemoval();
             $q['storage'] = $quote->getStorage();
+            $q['invoiced'] = Quote::count("job_type = '$quote->job_type' AND job_id = $quote->job_id
+                AND invoice_id is NOT NULL");
             $results[] = $q;
         }
         $this->view->results = $results;
