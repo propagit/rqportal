@@ -44,11 +44,15 @@
                                     <th class="hasinput" colspan="2">
                                         <input type="text" class="form-control" placeholder="Invoice number of supplier name..." value="{{ id }}" ng-model="keyword" />
                                     </th>
-                                    <th class="hasinput" width="100">
-                                        <ng-bs3-datepicker data-ng-model='filter_date' language="en-ca" date-format="YYYY-MM-DD" placeholder="Billed Date" required style="width:100px;"></ng-bs3-datepicker>
+                                    <th colspan="2" class="hasinput" width="212">
+                                        <div class="row" style="margin-left:0px;"><div class="pull-left">
+                                        <ng-bs3-datepicker data-ng-model='filter_from_date' language="en-ca" date-format="YYYY-MM-DD" placeholder="From Date" required style="width:100px;"></ng-bs3-datepicker>
+                                        </div>
+                                        <div class="pull-left" style="margin-left:-1px;">
+                                        <ng-bs3-datepicker data-ng-model='filter_to_date' language="en-ca" date-format="YYYY-MM-DD" placeholder="To Date" required style="width:100px;"></ng-bs3-datepicker>
+                                        </div></div>
                                     </th>
-                                    <th width="80"></th>
-                                    <th>
+                                    <th width="80">
                                         <?php echo $this->tag->selectStatic(array(
                                             'status', Invoice::getStatus(),
                                             'class' => 'form-control',

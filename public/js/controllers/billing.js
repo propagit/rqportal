@@ -13,28 +13,42 @@ angular.module('controllers.billing', [])
         $scope.filter_status = 0;
     }
     $scope.filterInvoice = function(invoice) {
+        var c1 = true;
+        var c2 = true;
+        var c3 = true;
+        var c4 = true;
         if ($scope.keyword) {
             if (invoice.id.indexOf($scope.keyword) != -1) {
-                return true;
+                c1 = true;
             } else {
-                return false;
+                c1 = false;
             }
         }
-        if ($scope.filter_status != null) {
+        if ($scope.filter_status != null && $scope.filter_status != '') {
             if (invoice.status == $scope.filter_status) {
-                return true;
+                c2 = true;
             } else {
-                return false;
+                c2 = false;
             }
         }
-        if ($scope.filter_date) {
-            if (moment(invoice.created_on).format("YYYY-MM-DD") == $scope.filter_date) {
-                return true;
+        if ($scope.filter_from_date) {
+            var from_ts = moment($scope.filter_from_date).unix() * 1000;
+            if (invoice.created_on >= from_ts) {
+                c3 = true;
             } else {
-                return false;
+                c3 = false;
             }
         }
-        return true;
+        if ($scope.filter_to_date) {
+            var to_ts = moment($scope.filter_to_date + " 23:59:59").unix() * 1000;
+            console.log(to_ts);
+            if (invoice.created_on <= to_ts) {
+                c4 = true;
+            } else {
+                c4 = false;
+            }
+        }
+        return true && c1 && c2 && c3 && c4;
     };
 
     $rootScope.loading++;
