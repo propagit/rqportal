@@ -110,11 +110,11 @@
                 <tr>
                     <td colspan="2" style="border-bottom:1px solid #ccc;">GST</td>
                     <td colspan="4" style="border-bottom:1px solid #ccc;">10%</td>
-                    <td align="right" style="border-bottom:1px solid #ccc;">${{ (invoice['amount']/11) | money_format }}</td>
+                    <td align="right" style="border-bottom:1px solid #ccc;">{{ (invoice['amount']/11) | money_format }}</td>
                 </tr>
                 <tr>
                     <td colspan="6">SUBTOTAL</td>
-                    <td align="right">${{ (invoice['amount'] * 10/11) | money_format }}</td>
+                    <td align="right">{{ (invoice['amount'] * 10/11) | money_format }}</td>
                 </tr>
             </tbody>
         </table>
@@ -124,7 +124,7 @@
         <img src="{{ baseUrl }}img/visa.png" width="64" height="64" alt="visa">
         <p><small>**To avoid any excess penalty charges, please make payments within 30 days of the due date. There will be a 2% interest charge per month on all late invoices.</small></p>
 
-        {% if invoice['removals']|length > 0 or invoice['storage']|length > 0 %}
+        {% if invoice['removals']|length > 0 or invoice['storages']|length > 0 %}
         <pagebreak />
 
         <address>
