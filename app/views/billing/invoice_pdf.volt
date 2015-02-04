@@ -89,7 +89,7 @@
                 {% if invoice['lines']|length > 0 %}
                     {% for line in invoice['lines'] %}
                 <tr>
-                    <td colspan="2" style="border-bottom:1px solid #ccc;"><strong>{{ line['qty'] }}</strong></td>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;"><strong>{{ line.qty }}</strong></td>
                     <td colspan="2" style="border-bottom:1px solid #ccc;">${{ line['cost'] }}</td>
                     <td colspan="2" style="border-bottom:1px solid #ccc;">{{ line['description'] }}</td>
 
