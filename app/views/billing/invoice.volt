@@ -136,7 +136,7 @@
 </div>
 
 
-<div ng-if="current_invoice.id">
+<div ng-show="current_invoice.id">
     {% include 'billing/invoice_detail.volt' %}
 </div>
 

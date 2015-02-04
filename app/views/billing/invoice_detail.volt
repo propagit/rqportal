@@ -35,9 +35,20 @@
                                 <div class="col-sm-4">
 
                                     <div class="input-group">
-                                        <input class="form-control" type="text" placeholder="Type invoice number or date...">
+                                        <angucomplete-alt id="search-invoice"
+                                          minlength="1"
+                                          placeholder="Type invoice number or date..."
+                                          pause="400"
+                                          selected-object="invoice_id"
+                                          remote-url="{{ baseUrl }}billingajax/search/"
+                                          remote-url-data-field="invoices"
+                                          title-field="name"
+                                          description-field="supplier"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          field-required="true"></angucomplete-alt>
                                         <div class="input-group-btn">
-                                            <button class="btn btn-default" type="button">
+                                            <button class="btn btn-default" ng-click="loadInvoice(invoice_id)" type="button">
                                                 <i class="fa fa-search"></i> Search
                                             </button>
                                         </div>
@@ -129,6 +140,13 @@
                                         </div>
 
                                     </div>
+                                    <div>
+                                        <div class="font-md">
+                                            <strong>DUE DATE :</strong>
+                                            <span class="pull-right"> <i class="fa fa-calendar"></i> [[ current_invoice.created_on | date: 'dd/MM/yyyy']] </span>
+                                        </div>
+
+                                    </div>
                                     <br>
                                     <div class="well well-sm  bg-color-darken txt-color-white no-border">
                                         <div class="fa-lg">
@@ -151,13 +169,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr ng-if="current_invoice.price_per_quote">
                                         <td><strong>[[ current_invoice.removals.length + current_invoice.storages.length - current_invoice.free ]]</strong></td>
                                         <td>[[ current_invoice.price_per_quote | currency ]]</td>
                                         <td>Quotes Received (Full breakdown of received quotes below)</td>
 
                                         <td align="right"><strong>[[ current_invoice.amount | currency ]]</strong></td>
                                     </tr>
+
+                                    <tr ng-if="current_invoice.lines" ng-repeat="line in current_invoice.lines">
+                                        <td><strong>[[ line.qty ]]</strong></td>
+                                        <td>[[ line.cost | customCurrency ]]</td>
+                                        <td>[[ line.description ]]</td>
+                                        <td align="right"><strong>[[ line.qty * line.cost | customCurrency ]]</strong>
+                                    </tr>
+
                                     <tr ng-if="current_invoice.free > 0">
                                         <td><strong>[[ current_invoice.free ]]</strong></td>
                                         <td>$0.00</td>
@@ -213,7 +239,7 @@
             </div>
             <!-- end widget -->
 
-            <div class="jarviswidget well jarviswidget-color-darken" id="wid-id-5" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-colorbutton="false">
+            <div ng-if="current_invoice.removals.length > 0 || current_invoice.storages.length > 0" class="jarviswidget well jarviswidget-color-darken" id="wid-id-5" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-colorbutton="false">
                 <div class="padding-10">
                     <address>
                         <br>

@@ -33,3 +33,21 @@ angular.module('rqportal', [
     });
 })
 
+.filter('customCurrency', ["$filter", function ($filter) {
+    return function(amount, currencySymbol){
+        amount = parseFloat(amount);
+        var currency = $filter('currency');
+        if(amount < 0){
+            return currency(amount, currencySymbol).replace("(", "-").replace(")", "").replace(".00", "");
+        }
+        return currency(amount, currencySymbol).replace(".00", "");
+    };
+}])
+
+.filter('roundCurrency', ["$filter", function ($filter) {
+    return function(amount, currencySymbol){
+        amount = parseFloat(amount);
+        var currency = $filter('currency');
+        return currency(amount, currencySymbol).replace(".00", "");
+    };
+}])

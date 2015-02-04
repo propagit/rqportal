@@ -144,6 +144,33 @@ class BillingajaxController extends ControllerAjax
         $this->response->setStatusCode(200, 'OK');
     }
 
+    public function createManualInvoiceAction()
+    {
+        $request = $this->request->getJsonRawBody();
+        $invoice = new Invoice();
+        $invoice->user_id = $request->user_id;
+        $invoice->lines = json_encode($request->lines);
+        $invoice->amount = $request->amount;
+        $invoice->status = Invoice::UNPAID;
+        $invoice->created_on = date('Y-m-d H:i:s');
+        $invoice->due_date = $request->due_date;
+        if ($invoice->save())
+        {
+            $this->response->setStatusCode(200, 'OK');
+            $this->view->id = $invoice->id;
+        }
+        else
+        {
+            $errors = array();
+            foreach($invoice->getMessages() as $message)
+            {
+                $errors[] = (string) $message;
+            }
+            $this->response->setStatusCode(400, 'ERROR');
+            $this->view->message = implode(', ', $errors);
+        }
+    }
+
     public function emailInvoiceAction()
     {
         $errors = array();

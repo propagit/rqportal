@@ -47,7 +47,8 @@ class Elements extends Component
             'action' => '#',
             'children' => array(
                 'invoice' => 'Search Invoices',
-                'quote' => 'Outstanding Quotes'
+                'quote' => 'Outstanding Quotes',
+                'create' => 'Create Invoice'
             )
         ),
         'setting' => array(

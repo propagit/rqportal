@@ -17,6 +17,11 @@ class BillingController extends ControllerBase
         $this->tag->setTitle('Outstanding Quotes');
     }
 
+    public function createAction()
+    {
+        $this->tag->setTitle('Create Manual Invoice');
+    }
+
     public function downloadAction($id)
     {
         $this->_generatePdf($id);

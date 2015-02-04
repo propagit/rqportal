@@ -83,6 +83,18 @@ angular.module('controllers.billing', [])
     $scope.viewInvoice = function(index) {
         $scope.current_invoice = $scope.invoices[index];
     };
+    $scope.$watch('invoice_id', function(val){
+        if (val)
+        {
+            $scope.invoices.forEach(function(invoice){
+                if (invoice.id == val.originalObject.id) {
+                    $scope.current_invoice = invoice;
+                    return;
+                }
+            });
+        }
+    });
+
     $scope.listInvoices = function() {
         $scope.current_invoice = {};
     };
@@ -202,4 +214,78 @@ angular.module('controllers.billing', [])
             $rootScope.loading--;
         });
     };
+})
+
+.controller('CreateInvoiceCtrl', function($rootScope, $scope, $window, $http, Config){
+    $scope.supplier = {};
+    $scope.$watch('invoice_supplier', function(val){
+        if (val) {
+            $scope.supplier = val.originalObject;
+            console.log($scope.supplier);
+        }
+    });
+    $scope.lines = [];
+    $scope.line = {};
+    $scope.amount = 0;
+    $scope.addLine = function(line) {
+        if (!line.qty || !line.cost || !line.description) { return; }
+        $scope.lines.push(line);
+        $scope.amount += line.qty * line.cost;
+        $scope.line = {};
+    };
+    $scope.deleteLine = function(index) {
+        $scope.amount -= $scope.lines[index].qty * $scope.lines[index].cost;
+        $scope.lines.splice(index, 1);
+    };
+
+    $scope.billed_date = moment().format("YYYY-MM-DD");
+    $scope.due_date = moment().format("YYYY-MM-DD");
+    $scope.no_supplier = false;
+    $scope.no_line = false;
+    $scope.saveInvoice = function() {
+        console.log($scope.supplier);
+        if (!$scope.supplier.id) {
+            $scope.error = 'Please select a supplier';
+            $scope.no_supplier = true;
+            return;
+        }
+        $scope.no_supplier = false;
+        if ($scope.lines.length == 0) {
+            $scope.error = 'Please add a new line';
+            return;
+        }
+        $http.post(Config.BASE_URL + 'billingajax/createManualInvoice', {
+            user_id: $scope.supplier.user_id,
+            billed_date: $scope.billed_date,
+            due_date: $scope.due_date,
+            amount: $scope.amount,
+            lines: $scope.lines
+        }).success(function(response){
+            $window.location = Config.BASE_URL + 'billing/invoice?id=' + response.id;
+        }).error(function(error){
+            console.log("ERROR: ", error);
+        });
+    };
+
+    $scope.$watch('line.qty', function(val) {
+        if (!val && $scope.lines.length == 0) {
+            $scope.error_qty = true;
+        } else {
+            $scope.error_qty = false;
+        }
+    });
+    $scope.$watch('line.cost', function(val) {
+        if (!val && $scope.lines.length == 0) {
+            $scope.error_cost = true;
+        } else {
+            $scope.error_cost = false;
+        }
+    });
+    $scope.$watch('line.description', function(val) {
+        if (!val && $scope.lines.length == 0) {
+            $scope.error_description = true;
+        } else {
+            $scope.error_description = false;
+        }
+    });
 })

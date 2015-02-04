@@ -23,6 +23,12 @@ class Invoice extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var string
+     */
+    public $lines;
+
+    /**
+     *
      * @var double
      */
     public $amount;
@@ -70,6 +76,7 @@ class Invoice extends \Phalcon\Mvc\Model
             'id' => 'id',
             'user_id' => 'user_id',
             'price_per_quote' => 'price_per_quote',
+            'lines' => 'lines',
             'amount' => 'amount',
             'status' => 'status',
             'created_on' => 'created_on',
@@ -116,6 +123,7 @@ class Invoice extends \Phalcon\Mvc\Model
         $invoice['free'] = $free;
         $invoice['removals'] = $removals;
         $invoice['storages'] = $storages;
+        $invoice['lines'] = json_decode($invoice['lines']);
         return $invoice;
     }
 
