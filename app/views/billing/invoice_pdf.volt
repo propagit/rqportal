@@ -76,6 +76,7 @@
                 </tr>
             </thead>
             <tbody>
+                {% if invoice['price_per_quote'] > 0 %}
                 <tr>
                     <td colspan="2" style="border-bottom:1px solid #ccc;"><strong>{{ invoice['removals']|length  + invoice['storages']|length - invoice['free'] }}</strong></td>
                     <td colspan="2" style="border-bottom:1px solid #ccc;">${{ invoice['price_per_quote'] }}</td>
@@ -83,6 +84,20 @@
 
                     <td align="right" style="border-bottom:1px solid #ccc;"><strong>${{ invoice['amount'] }}</strong></td>
                 </tr>
+                {% endif %}
+
+                {% if invoice['lines']|length > 0 %}
+                    {% for line in invoice['lines'] %}
+                <tr>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;"><strong>{{ line['qty'] }}</strong></td>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;">${{ line['cost'] }}</td>
+                    <td colspan="2" style="border-bottom:1px solid #ccc;">{{ line['description'] }}</td>
+
+                    <td align="right" style="border-bottom:1px solid #ccc;"><strong>${{ "%01.2f" | format(line['qty'] * line['cost']) }}</strong></td>
+                </tr>
+                    {% endfor %}
+                {% endif %}
+
                 {% if invoice['free'] > 0 %}
                 <tr>
                     <td colspan="2" style="border-bottom:1px solid #ccc;"><strong>{{ invoice['free'] }}</strong></td>

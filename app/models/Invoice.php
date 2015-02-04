@@ -123,11 +123,7 @@ class Invoice extends \Phalcon\Mvc\Model
         $invoice['free'] = $free;
         $invoice['removals'] = $removals;
         $invoice['storages'] = $storages;
-        if ($invoice['lines'])
-        {
-            $invoice['lines'] = json_decode($invoice['lines']);
-        }
-
+        $invoice['lines'] = json_decode($invoice['lines']);
         return $invoice;
     }
 
