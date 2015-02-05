@@ -18,7 +18,9 @@ angular.module('controllers.billing', [])
         var c3 = true;
         var c4 = true;
         if ($scope.keyword) {
-            if (invoice.id.indexOf($scope.keyword) != -1) {
+            if (invoice.id.indexOf($scope.keyword) != -1
+                || invoice.supplier.name.toUpperCase().indexOf($scope.keyword.toUpperCase()) != -1
+                || invoice.supplier.business.toUpperCase().indexOf($scope.keyword.toUpperCase()) != -1) {
                 c1 = true;
             } else {
                 c1 = false;

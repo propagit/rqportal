@@ -51,6 +51,7 @@ angular.module('controllers.quote', [])
     $scope.removalDetails = function(quote) {
         var removal = quote.removal;
         $scope.current_quote = quote;
+        console.log($scope.current_quote.invoiced > 0);
         $scope.paths = [];
         $scope.updateQuoteStatus(quote.id, 1);
 
