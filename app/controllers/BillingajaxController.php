@@ -152,7 +152,7 @@ class BillingajaxController extends ControllerAjax
         $invoice->lines = json_encode($request->lines);
         $invoice->amount = $request->amount;
         $invoice->status = Invoice::UNPAID;
-        $invoice->created_on = date('Y-m-d H:i:s');
+        $invoice->created_on = $request->billed_date; #date('Y-m-d H:i:s');
         $invoice->due_date = $request->due_date;
         if ($invoice->save())
         {

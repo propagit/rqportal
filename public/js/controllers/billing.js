@@ -101,8 +101,13 @@ angular.module('controllers.billing', [])
         $scope.current_invoice = {};
     };
 
-    $scope.emailInvoice = function(index){
-        $rootScope.invoice = $scope.invoices[index];
+    $scope.emailInvoice = function(id){
+        $scope.invoices.forEach(function(invoice){
+            if (invoice.id == id) {
+                $rootScope.invoice = invoice;
+            }
+        });
+        console.log($rootScope.invoice);
         $rootScope.modalInstance = $modal.open({
             templateUrl: 'emailForm',
             controller: 'EmailInvoiceCtrl'
@@ -242,20 +247,21 @@ angular.module('controllers.billing', [])
 
     $scope.billed_date = moment().format("YYYY-MM-DD");
     $scope.due_date = moment().format("YYYY-MM-DD");
-    $scope.no_supplier = false;
-    $scope.no_line = false;
+    $scope.error_supplier = '';
+    $scope.error_lines = '';
     $scope.saveInvoice = function() {
         console.log($scope.supplier);
         if (!$scope.supplier.id) {
-            $scope.error = 'Please select a supplier';
-            $scope.no_supplier = true;
+            $scope.error_supplier = 'Please select a supplier';
             return;
         }
-        $scope.no_supplier = false;
+        $scope.error_supplier = '';
         if ($scope.lines.length == 0) {
-            $scope.error = 'Please add a new line';
+            $scope.error_lines = 'Please add a new line';
             return;
         }
+        $scope.error_lines = '';
+
         $http.post(Config.BASE_URL + 'billingajax/createManualInvoice', {
             user_id: $scope.supplier.user_id,
             billed_date: $scope.billed_date,
@@ -269,25 +275,4 @@ angular.module('controllers.billing', [])
         });
     };
 
-    $scope.$watch('line.qty', function(val) {
-        if (!val && $scope.lines.length == 0) {
-            $scope.error_qty = true;
-        } else {
-            $scope.error_qty = false;
-        }
-    });
-    $scope.$watch('line.cost', function(val) {
-        if (!val && $scope.lines.length == 0) {
-            $scope.error_cost = true;
-        } else {
-            $scope.error_cost = false;
-        }
-    });
-    $scope.$watch('line.description', function(val) {
-        if (!val && $scope.lines.length == 0) {
-            $scope.error_description = true;
-        } else {
-            $scope.error_description = false;
-        }
-    });
 })

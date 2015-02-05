@@ -49,8 +49,8 @@
                         </div>
 
                         <div class="padding-10">
-                            <div ng-if="error" class="alert alert-danger">
-                                [[ error ]]
+                            <div ng-if="error_supplier != ''" class="alert alert-danger">
+                                [[ error_supplier ]]
                             </div>
                             <br>
                             <div class="pull-left">
@@ -172,6 +172,11 @@
                                 </tbody>
                             </table>
 
+
+                            <div ng-if="error_lines != ''" class="alert alert-danger">
+                                [[ error_lines ]]
+                            </div>
+
                             <div class="invoice-footer">
 
                                 <div class="row">
@@ -183,11 +188,6 @@
                                             <img src="{{ baseUrl }}img/visa.png" width="64" height="64" alt="visa">
                                         </div>
                                     </div>
-                                    <!-- <div class="col-sm-5">
-                                        <div class="invoice-sum-total pull-right">
-                                            <h3><strong>Total: <span class="text-success">[[ current_invoice.amount | currency ]]</span></strong></h3>
-                                        </div>
-                                    </div> -->
 
                                 </div>
 

@@ -90,6 +90,7 @@ class Invoice extends \Phalcon\Mvc\Model
     {
         $invoice = parent::toArray();
         $invoice['created_on'] = strtotime($this->created_on) * 1000;
+        $invoice['due_date'] = strtotime($this->due_date) * 1000;
         $supplier = Supplier::findFirstByUserId($this->user_id);
         $invoice['supplier'] = $supplier->toArray();
         $removals = array();

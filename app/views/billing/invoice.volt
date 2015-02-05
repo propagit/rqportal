@@ -100,7 +100,7 @@
                                     <td width="261">
                                         <a ng-click="viewInvoice([[ $index ]])" class="btn btn-xs btn-primary"><i class="fa fa-search"></i> View</a>
                                         &nbsp;
-                                        <a class="btn btn-xs btn-info" ng-click="emailInvoice([[ $index ]])"><i class="fa fa-envelope-o"></i> Email</a>
+                                        <a class="btn btn-xs btn-info" ng-click="emailInvoice([[ invoice.id ]])"><i class="fa fa-envelope-o"></i> Email</a>
 
 
                                         &nbsp;

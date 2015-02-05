@@ -48,7 +48,12 @@
                         <tr>
                             <td><strong>INVOICE DATE:</strong></td>
                             <td></td>
-                            <td align="right">{{ date('d/m/Y', invoice['created_on']/1000) }}</td>
+                            <td align="right">{{ date('d M Y', invoice['created_on']/1000) }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DUE DATE:</strong></td>
+                            <td></td>
+                            <td align="right">{{ date('d M Y', invoice['due_date']/1000) }}</td>
                         </tr>
                         <tr>
                             <td colspan="3" style="height:10px;"></td>
@@ -115,6 +120,10 @@
                 <tr>
                     <td colspan="6">SUBTOTAL</td>
                     <td align="right">{{ (invoice['amount'] * 10/11) | money_format }}</td>
+                </tr>
+                <tr>
+                    <td colspan="6"><strong>TOTAL</strong></td>
+                    <td align="right">{{ invoice['amount'] | money_format }}</td>
                 </tr>
             </tbody>
         </table>

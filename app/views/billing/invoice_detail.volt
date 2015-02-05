@@ -70,16 +70,10 @@
                                     </div>
                                     &nbsp;
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-info">
+                                        <a class="btn btn-sm btn-info" ng-click="emailInvoice([[ current_invoice.id ]])">
                                             <i class="fa fa-envelope-o"></i> Email
                                         </a>
                                     </div>
-                                    <!-- &nbsp;
-                                    <div class="btn-group">
-                                        <a href="javascript:void(0)" class="btn btn-sm btn-success"> <i class="fa fa-plus"></i> Create New </a>
-                                    </div> -->
-
-
                                 </div>
 
                             </div>
@@ -136,14 +130,15 @@
                                     <div>
                                         <div class="font-md">
                                             <strong>INVOICE DATE :</strong>
-                                            <span class="pull-right"> <i class="fa fa-calendar"></i> [[ current_invoice.created_on | date: 'dd/MM/yyyy']] </span>
+                                            <span class="pull-right">
+                                            [[ current_invoice.created_on | date: 'dd MMM yyyy']] </span>
                                         </div>
 
                                     </div>
                                     <div>
                                         <div class="font-md">
                                             <strong>DUE DATE :</strong>
-                                            <span class="pull-right"> <i class="fa fa-calendar"></i> [[ current_invoice.created_on | date: 'dd/MM/yyyy']] </span>
+                                            <span class="pull-right"> [[ current_invoice.due_date | date: 'dd MMM yyyy']] </span>
                                         </div>
 
                                     </div>
@@ -199,6 +194,12 @@
                                         <td colspan="3">SUBTOTAL</td>
                                         <td align="right">[[ current_invoice.amount * 10/11 | currency ]]</td>
                                     </tr>
+                                    <tr>
+                                        <td colspan="3"><strong>TOTAL</strong></td>
+                                        <td align="right">
+                                            <strong>[[ current_invoice.amount | currency ]]</strong>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
 
@@ -213,11 +214,6 @@
                                             <img src="{{ baseUrl }}img/visa.png" width="64" height="64" alt="visa">
                                         </div>
                                     </div>
-                                    <!-- <div class="col-sm-5">
-                                        <div class="invoice-sum-total pull-right">
-                                            <h3><strong>Total: <span class="text-success">[[ current_invoice.amount | currency ]]</span></strong></h3>
-                                        </div>
-                                    </div> -->
 
                                 </div>
 
