@@ -109,12 +109,16 @@ class Quote extends \Phalcon\Mvc\Model
             "bind" => $parameters
         ));
         $suppliers = array();
+        $users = array();
         foreach($quotes as $quote) {
-            $supplier = Supplier::findFirstByUserId($quote->user_id);
-            if ($supplier) {
-                $supplier = $supplier->toArray();
-                $supplier['quote_status'] = $quote->status;
-                $suppliers[] = $supplier;
+            if (!in_array($quote->user_id, $users)) {
+                $users[] = $quote->user_id;
+                $supplier = Supplier::findFirstByUserId($quote->user_id);
+                if ($supplier) {
+                    $supplier = $supplier->toArray();
+                    $supplier['quote_status'] = $quote->status;
+                    $suppliers[] = $supplier;
+                }
             }
         }
         return $suppliers;
