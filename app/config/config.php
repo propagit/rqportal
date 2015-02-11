@@ -37,5 +37,16 @@ return new \Phalcon\Config(array(
         'disabled'  => false,
         'host'      => '127.0.0.1',
         'port'      => '11300'
+    ),
+
+    'eway' => array(
+        'endpoint' => 'https://www.eway.com.au/gateway/ManagedPaymentService/test/managedCreditCardPayment.asmx?WSDL',
+        'headers' => array(
+            'eWAYCustomerID' => '91893390',
+            'Username' => 'nam@propagate.com.au.sand',
+            'Password' => 'Q1w2e3r4t5'
+        ),
+        'namespace' => 'https://www.eway.com.au/gateway/managedpayment'
+
     )
 ));

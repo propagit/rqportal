@@ -10,9 +10,7 @@
 
 <div ng-show="!current_invoice.id">
 
-    <!-- {% include 'billing/search.volt' %}
-
-    <div class="section-divider"></div> -->
+    {{ flash.output() }}
 
     <div class="row">
         <div class="col-lg-12">
@@ -90,7 +88,7 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <a ng-click="processInvoice([[ invoice.id ]])">Process</a>
+                                                    <a href="{{ baseUrl }}billing/process/[[ invoice.id ]]">Process</a>
                                                 </li>
                                             </ul>
                                         </div>

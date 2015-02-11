@@ -22,6 +22,51 @@ class BillingController extends ControllerBase
         $this->tag->setTitle('Create Manual Invoice');
     }
 
+    public function processAction($id = '')
+    {
+        $this->tag->setTitle('Process Payment...');
+        if (!$id) { return; }
+        $invoice = Invoice::findFirst($id);
+        if (!$invoice) { return; }
+        $supplier = Supplier::findFirstByUserId($invoice->user_id);
+        if (!$supplier) { return; }
+
+        if (!$supplier->eway_customer_id)
+        {
+            $this->flash->error('Supplier has no credit card information');
+        }
+        else
+        {
+            try {
+                $client = new SoapClient($this->config->eway->endpoint, array('trace' => 1));
+                $header = new SoapHeader($this->config->eway->namespace, 'eWAYHeader', $this->config->eway->headers);
+                $client->__setSoapHeaders(array($header));
+                $eway_invoice = array(
+                    'managedCustomerID' => $supplier->eway_customer_id,
+                    'amount' => $invoice->amount * 100,
+                    'invoiceReference' => $invoice->id,
+                    'invoiceDescription' => 'RemovalistQuote'
+                );
+                $result = $client->ProcessPayment($eway_invoice);
+                $invoice->eway_trxn_status = $result->ewayResponse->ewayTrxnStatus;
+                $invoice->eway_trxn_msg = $result->ewayResponse->ewayTrxnError;
+                $invoice->eway_trxn_number = $result->ewayResponse->ewayTrxnNumber;
+                if ($invoice->eway_trxn_status == 'True') {
+                    $invoice->status = Invoice::PAID;
+                    $invoice->paid_on = date('Y-m-d H:i:s');
+                    $this->flash->success('Payment transaction approved');
+                } else {
+                    $this->flash->error($invoice->eway_trxn_msg);
+                }
+                $invoice->save();
+            } catch(Exception $e) {
+                $this->flash->error($e->getMessage());
+            }
+        }
+
+        $this->response->redirect('billing/invoice');
+    }
+
     public function downloadAction($id)
     {
         $this->_generatePdf($id);

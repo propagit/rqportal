@@ -33,6 +33,8 @@ class DistributePool extends Injectable
                         break;
                     case 'create_invoice': $this->createInvoice($job_id);
                         break;
+                    case 'process_invoice': $this->processInvoice($job_id);
+                        break;
                     case 'generate_invoice': $this->generateInvoice($job_id);
                         break;
                     case 'email_invoice': $this->emailInvoice($job_id);
@@ -80,6 +82,44 @@ class DistributePool extends Injectable
         $pdf->Output(__DIR__ . '/../../public/files/invoice' . $id . '.pdf', "F");
     }
 
+    public function processInvoice($id)
+    {
+        if (!$id) { return false; }
+        $invoice = Invoice::findFirst($id);
+        if (!$invoice) { return false; }
+        $supplier = Supplier::findFirstByUserId($invoice->user_id);
+        if (!$supplier) { return false; }
+        if (!$supplier->eway_customer_id) {
+            echo 'Supplier has no credit card information';
+            return false;
+        }
+        try {
+            $client = new SoapClient($this->config->eway->endpoint, array('trace' => 1));
+            $header = new SoapHeader($this->config->eway->namespace, 'eWAYHeader', $this->config->eway->headers);
+            $client->__setSoapHeaders(array($header));
+            $eway_invoice = array(
+                'managedCustomerID' => $supplier->eway_customer_id,
+                'amount' => $invoice->amount * 100,
+                'invoiceReference' => $invoice->id,
+                'invoiceDescription' => 'RemovalistQuote'
+            );
+            $result = $client->ProcessPayment($eway_invoice);
+            $invoice->eway_trxn_status = $result->ewayResponse->ewayTrxnStatus;
+            $invoice->eway_trxn_msg = $result->ewayResponse->ewayTrxnError;
+            $invoice->eway_trxn_number = $result->ewayResponse->ewayTrxnNumber;
+            if ($invoice->eway_trxn_status == 'True') {
+                $invoice->status = Invoice::PAID;
+                $invoice->paid_on = date('Y-m-d H:i:s');
+                echo 'Payment transaction approved';
+            } else {
+                echo $invoice->eway_trxn_msg;
+            }
+            $invoice->save();
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
     public function createInvoice($user_id)
     {
         if (!$user_id) { return false; }
@@ -106,10 +146,16 @@ class DistributePool extends Injectable
 
             }
             $invoice->save();
+            # Auto process payment
+            $this->queue->put(array(
+                'process_invoice' => $invoice->id
+            ));
+
             # Generate invoice in PDF
             $this->queue->put(array(
                 'generate_invoice' => $invoice->id
             ));
+
             # Send email to supplier
             $this->queue->put(array(
                 'email_invoice' => array(

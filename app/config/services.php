@@ -163,3 +163,10 @@ $di->set('elements', function(){
 $di->set('mail', function(){
     return new Mail();
 });
+
+/**
+ * Register eWay service
+ */
+$di->set('eway', function(){
+    return new Eway('test');
+});

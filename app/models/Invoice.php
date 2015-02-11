@@ -65,6 +65,24 @@ class Invoice extends \Phalcon\Mvc\Model
      *
      * @var string
      */
+    public $eway_trxn_status;
+
+    /**
+     *
+     * @var string
+     */
+    public $eway_trxn_msg;
+
+    /**
+     *
+     * @var string
+     */
+    public $eway_trxn_number;
+
+    /**
+     *
+     * @var string
+     */
     public $deleted_on;
 
     /**
@@ -82,6 +100,9 @@ class Invoice extends \Phalcon\Mvc\Model
             'created_on' => 'created_on',
             'due_date' => 'due_date',
             'paid_on' => 'paid_on',
+            'eway_trxn_status' => 'eway_trxn_status',
+            'eway_trxn_msg' => 'eway_trxn_msg',
+            'eway_trxn_number' => 'eway_trxn_number',
             'deleted_on' => 'deleted_on'
         );
     }

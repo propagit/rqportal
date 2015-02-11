@@ -66,32 +66,6 @@ class BillingajaxController extends ControllerAjax
         $this->view->invoices = $results;
     }
 
-    public function processInvoiceAction()
-    {
-        $request = $this->request->getJsonRawBody();
-
-        if (!isset($request->id)) { return; }
-        $invoice = Invoice::findFirst($request->id);
-        if (!$invoice) { return; }
-        $invoice->status = Invoice::PAID;
-        $invoice->paid_on = date('Y-m-d H:i:s');
-        if ($invoice->save())
-        {
-            $this->response->setStatusCode(200, 'OK');
-            $this->view->invoice = $invoice->toArray();
-        }
-        else
-        {
-            $errors = array();
-            foreach($invoice->getMessages() as $message)
-            {
-                $errors[] = (string) $message;
-            }
-            $this->response->setStatusCode(400, 'ERROR');
-            $this->view->message = implode(', ', $errors);
-        }
-    }
-
     public function getSuppliersAction()
     {
         $quotes = Quote::count(array(

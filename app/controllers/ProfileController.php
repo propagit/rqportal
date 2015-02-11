@@ -52,7 +52,97 @@ class ProfileController extends ControllerBase
 
     public function paymentAction()
     {
+        $this->tag->setTitle('Payment Details');
+        $this->view->supplier = $this->supplier;
 
+
+        if ($this->request->isPost())
+        {
+            if (!$this->request->getPost('title') || !$this->request->getPost('firstname')
+                || !$this->request->getPost('lastname') || !$this->request->getPost('ccnumber')
+                || !$this->request->getPost('ccexpmonth') || !$this->request->getPost('ccexpyear')
+                || !$this->request->getPost('cvn')) {
+                $this->flash->error('Please enter all fields');
+                return;
+            }
+
+            $eway_customer = array(
+                'CustomerRef' => $this->supplier->user_id,
+                'Title' => $this->request->getPost('title'),
+                'FirstName' => $this->request->getPost('firstname'),
+                'LastName' => $this->request->getPost('lastname'),
+                'Email' => $this->supplier->email,
+                'Address' => $this->supplier->address,
+                'Suburb' => $this->supplier->suburb,
+                'State' => $this->supplier->state,
+                'PostCode' => $this->supplier->postcode,
+                'Phone' => $this->supplier->phone,
+                'Mobile' => '',
+                'Fax' => '',
+                'Country' => 'au',
+                'Company' => $this->supplier->company,
+                'JobDesc' => '',
+                'URL' => $this->supplier->website,
+                'Comments' => $this->supplier->about,
+                'CCNameOnCard' => $this->request->getPost('firstname') . ' ' . $this->request->getPost('lastname'),
+                'CCNumber' => $this->request->getPost('ccnumber'),
+                'CCExpiryMonth' => $this->request->getPost('ccexpmonth'),
+                'CCExpiryYear' => $this->request->getPost('ccexpyear')
+            );
+
+            if (!$this->supplier->eway_customer_id)
+            {
+                # Create customer
+                try {
+                    $client = new SoapClient($this->config->eway->endpoint, array('trace' => 1));
+                    $header = new SoapHeader($this->config->eway->namespace, 'eWAYHeader', $this->config->eway->headers);
+                    $client->__setSoapHeaders(array($header));
+                    $result = $client->CreateCustomer($eway_customer);
+                    $this->supplier->eway_customer_id = $result->CreateCustomerResult;
+                    $this->supplier->cvn = $this->request->getPost('cvn');
+                    $this->supplier->save();
+                    $this->flash->success('New payment detail has been added successfully!');
+                } catch(Exception $e) {
+                    $this->flash->error($e->getMessage());
+                }
+            }
+            else
+            {
+                # Update customer
+                $eway_customer['managedCustomerID'] = $this->supplier->eway_customer_id;
+                try {
+                    $client = new SoapClient($this->config->eway->endpoint, array('trace' => 1));
+                    $header = new SoapHeader($this->config->eway->namespace, 'eWAYHeader', $this->config->eway->headers);
+                    $client->__setSoapHeaders(array($header));
+                    $result = $client->UpdateCustomer($eway_customer);
+                    if ($result->UpdateCustomerResult) {
+                        $this->flash->success('Payment detail has been update successfully!');
+                    }
+                    $this->supplier->cvn = $this->request->getPost('cvn');
+                    $this->supplier->save();
+                } catch(Exception $e) {
+                    $this->flash->error($e->getMessage());
+                }
+            }
+        }
+
+
+        $eway_customer = null;
+        if ($this->supplier->eway_customer_id)
+        {
+            try {
+                $client = new SoapClient($this->config->eway->endpoint, array('trace' => 1));
+                $header = new SoapHeader($this->config->eway->namespace, 'eWAYHeader', $this->config->eway->headers);
+                $client->__setSoapHeaders(array($header));
+                $result = $client->QueryCustomer(array(
+                    'managedCustomerID' => $this->supplier->eway_customer_id
+                ));
+                $eway_customer = $result->QueryCustomerResult;
+            } catch(Exception $e) {
+                $this->flash->error($e->getMessage());
+            }
+        }
+        $this->view->eway_customer = $eway_customer;
     }
 
 }

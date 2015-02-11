@@ -28,6 +28,9 @@ try {
      */
     include __DIR__ . "/../vendor/autoload.php";
 
+    # Load eway library manually
+    require_once __DIR__ . "/../vendor/eway/eway.php";
+
     /**
      * Read services
      */

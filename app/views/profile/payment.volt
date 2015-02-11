@@ -2,7 +2,7 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-user"></i> Company Profile</h1>
 
-        <a href="#" class="btn btn-labeled btn-danger">
+        <a href="{{ baseUrl }}profile/company" class="btn btn-labeled btn-default">
             <span class="btn-label"><i class="fa fa-user"></i></span>My Profile
         </a> &nbsp;
 
@@ -10,7 +10,7 @@
             <span class="btn-label"><i class="fa fa-map-marker"></i></span>Work Locations
         </a> &nbsp;
 
-        <a href="{{ baseUrl }}profile/payment" class="btn btn-labeled btn-default">
+        <a href="#" class="btn btn-labeled btn-danger">
             <span class="btn-label"><i class="fa fa-credit-card"></i></span>Payment Info
         </a>
         <br /><br />
@@ -28,48 +28,54 @@
         </p>
         <br />
 
-        <form name="paymentForm" class="form-horizontal" novalidate>
+        <form action="{{ baseUrl }}profile/payment" method="post" name="paymentForm" class="form-horizontal" novalidate>
 
         <div class="form-group">
-            <label for="cardname" class="col-lg-2">Card Name</label>
-            <div class="col-lg-4">
-                <input type="text" class="form-control" ng-model="card.name" id="cardname" required>
+            <label for="title" class="col-lg-2">Title</label>
+
+            <div class="col-lg-2">
+                {{ elements.ewayTitle('title', eway_customer ? eway_customer.CustomerTitle : '') }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="firstname" class="col-lg-2">Card Name</label>
+            <div class="col-lg-2">
+                <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First name" value="{{ eway_customer ? eway_customer.CustomerFirstName : '' }}" required>
+            </div>
+            <div class="col-lg-2">
+                <input type="text" class="form-control" name="lastname" placeholder="Last name" value="{{ eway_customer ? eway_customer.CustomerLastName : '' }}" required>
             </div>
         </div>
 
         <div class="form-group">
             <label for="cardnumber" class="col-lg-2">Card Number</label>
             <div class="col-lg-4">
-                <input type="text" class="form-control" ng-model="card.number" id="cardnumber" required>
+                <input type="text" class="form-control" name="ccnumber" id="cardnumber" value="{{ eway_customer ? eway_customer.CCNumber : '' }}" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="expiry" class="col-lg-2">Expiry</label>
+            <label for="ccexpmonth" class="col-lg-2">Expiry</label>
             <div class="col-lg-2">
-                <select class="form-control" ng-model="card.month" name="month" id="expiry" data-card-expiration required>
-                    <option disabled selected value="">Month</option>
-                    <option ng-repeat="month in months" value="[[$index+1]]" > [[$index+1]] - [[month]]</option>
-                </select>
+                {{ elements.cardMonth('ccexpmonth', eway_customer ? eway_customer.CCExpiryMonth : '') }}
             </div>
             <div class="col-lg-2">
-                <select class="form-control" ng-model="card.year" name="year" required>
-                    <option disabled selected value="">Year</option>
-                    <option ng-repeat="year in [] | range:currentYear:currentYear+13">[[year]]</option>
-                </select>
+                {{ elements.cardYear('ccexpyear', eway_customer ? eway_customer.CCExpiryYear : '') }}
             </div>
         </div>
         <div class="form-group">
             <label for="cvv" class="col-lg-2">CVV Number</label>
             <div class="col-lg-2">
-                <input type="text" class="form-control" ng-model="card.cvv" id="cvv" required>
+                <input type="text" class="form-control" name="cvn" id="cvv" value="{{ supplier.cvn }}" required>
             </div>
         </div>
 
 
         <div class="form-group">
             <div class="col-lg-offset-2 col-lg-10">
-                <button class="btn btn-red" ng-disabled="paymentForm.$invalid" ng-click="complete()">Update</button>
+                {{ flash.output() }}
+                <button class="btn btn-red" type="submit">Update</button>
             </div>
         </div>
 

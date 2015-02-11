@@ -19,6 +19,18 @@ class Supplier extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var string
+     */
+    public $eway_customer_id;
+
+    /**
+     *
+     * @var string
+     */
+    public $cvn;
+
+    /**
+     *
      * @var integer
      */
     public $status;
@@ -140,6 +152,8 @@ class Supplier extends \Phalcon\Mvc\Model
         return array(
             'id' => 'id',
             'user_id' => 'user_id',
+            'eway_customer_id' => 'eway_customer_id',
+            'cvn' => 'cvn',
             'status' => 'status',
             'activation_key' => 'activation_key',
             'name' => 'name',
