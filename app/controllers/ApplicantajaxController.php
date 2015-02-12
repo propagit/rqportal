@@ -163,29 +163,103 @@ class ApplicantajaxController extends ControllerAjax
         }
     }
 
-    public function completeAction()
+    public function paymentAction()
     {
-        if ($this->user->status < User::APPROVED)
-        {
-            # Add to the Queue
-            $job_id = $this->queue->put(array('location' => $this->user->id));
+        $request = $this->request->getJsonRawBody();
+
+        if (!$request->title || !$request->firstname || !$request->lastname
+            || !$request->ccnumber || !$request->ccexpmonth || !$request->ccexpyear
+            || !$request->cvn || !$request->agree) {
+            $this->response->setStatusCode(400, 'ERROR');
+            $this->view->error = 'Invalid request';
+            return;
         }
 
-        if ($this->user->level == User::SUPPLIER)
-        {
-            $supplier = Supplier::findFirstByUserId($this->user->id);
+        $supplier = Supplier::findFirstByUserId($this->user->id);
+        if (!$supplier) {
+            $this->response->setStatusCode(400, 'ERROR');
+            $this->view->error = 'Supplier not found';
+            return;
+        }
+
+        $eway_customer = array(
+            'CustomerRef' => $supplier->user_id,
+            'Title' => $request->title,
+            'FirstName' => $request->firstname,
+            'LastName' => $request->lastname,
+            'Email' => $supplier->email,
+            'Address' => $supplier->address,
+            'Suburb' => $supplier->suburb,
+            'State' => $supplier->state,
+            'PostCode' => $supplier->postcode,
+            'Phone' => $supplier->phone,
+            'Mobile' => '',
+            'Fax' => '',
+            'Country' => 'au',
+            'Company' => $supplier->company,
+            'JobDesc' => '',
+            'URL' => $supplier->website,
+            'Comments' => $supplier->about,
+            'CCNameOnCard' => $request->firstname . ' ' . $request->lastname,
+            'CCNumber' => $request->ccnumber,
+            'CCExpiryMonth' => $request->ccexpmonth,
+            'CCExpiryYear' => $request->ccexpyear
+        );
+
+        # Create customer
+        try {
+            $client = new SoapClient($this->config->eway->endpoint, array('trace' => 1));
+            $header = new SoapHeader($this->config->eway->namespace, 'eWAYHeader', $this->config->eway->headers);
+            $client->__setSoapHeaders(array($header));
+            $result = $client->CreateCustomer($eway_customer);
+            $supplier->eway_customer_id = $result->CreateCustomerResult;
+            $supplier->cvn = $request->cvn;
             $supplier->status = Supplier::APPROVED;
             $supplier->save();
-        }
 
-        $this->user->status = User::APPROVED;
-        $this->user->save();
-        $this->session->set('auth', array(
-            'id' => $this->user->id,
-            'username' => $this->user->username,
-            'status' => $this->user->status,
-            'level' => $this->user->level
-        ));
+            # Try process a small amount payment
+
+            # Add to the Queue
+            $job_id = $this->queue->put(array('location' => $this->user->id));
+
+            $this->user->status = User::APPROVED;
+            $this->user->save();
+            $this->session->set('auth', array(
+                'id' => $this->user->id,
+                'username' => $this->user->username,
+                'status' => $this->user->status,
+                'level' => $this->user->level
+            ));
+            $this->response->setStatusCode(200, 'OK');
+        } catch(Exception $e) {
+            $this->response->setStatusCode(400, 'ERROR');
+            $this->view->error = $e->getMessage();
+        }
+    }
+
+    public function completeAction()
+    {
+        // if ($this->user->status < User::APPROVED)
+        // {
+        //     # Add to the Queue
+        //     $job_id = $this->queue->put(array('location' => $this->user->id));
+        // }
+
+        // if ($this->user->level == User::SUPPLIER)
+        // {
+        //     $supplier = Supplier::findFirstByUserId($this->user->id);
+        //     $supplier->status = Supplier::APPROVED;
+        //     $supplier->save();
+        // }
+
+        // $this->user->status = User::APPROVED;
+        // $this->user->save();
+        // $this->session->set('auth', array(
+        //     'id' => $this->user->id,
+        //     'username' => $this->user->username,
+        //     'status' => $this->user->status,
+        //     'level' => $this->user->level
+        // ));
     }
 }
 

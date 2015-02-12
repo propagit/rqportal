@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html {% if router.getControllerName() != "applicant" %} class="be"{% endif %}>
+<html {% if router.getControllerName() != "applicant" %} class="be"{% endif %} ng-app="rqportal">
     <head>
         <meta charset="UTF-8" />
         {{ get_title() }}
@@ -16,9 +16,10 @@
         <meta name="description" content="Removalist Quote Portal">
         <meta name="author" content="Propagate Team">
     </head>
-    <body ng-app="rqportal">
+    <body ng-controller="AppCtrl">
         {{ content() }}
 
+        <div id="loading" ng-show="loading > 0"><i class="fa fa-spinner fa-4x fa-spin"></i></div>
 
         {{ javascript_include('js/lib/jquery.min.js') }}
 

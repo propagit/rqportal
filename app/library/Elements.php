@@ -173,7 +173,7 @@ class Elements extends Component
 
     public function ewayTitle($field_name='title', $value = '')
     {
-        echo '<select name="' . $field_name . '" class="form-control" id="' . $field_name . '">';
+        echo '<select ng-model="form.title" name="' . $field_name . '" class="form-control" id="' . $field_name . '">';
         echo '  <option value="">Select</option>';
         foreach(array('Mr.', 'Ms.', 'Mrs.', 'Miss', 'Dr.', 'Sir.', 'Prof.') as $title) {
             echo '<option value="' . $title . '"' . ($value == $title ? ' selected="selected"' : '') . '>' . $title . '</option>';
@@ -183,7 +183,7 @@ class Elements extends Component
 
     public function cardMonth($field_name='ccexpmonth', $value='')
     {
-        echo '<select name="' . $field_name . '" class="form-control" id="' . $field_name . '">';
+        echo '<select ng-model="form.ccexpmonth" name="' . $field_name . '" class="form-control" id="' . $field_name . '">';
         echo '  <option value="">Month</option>';
         for($month=1; $month <= 12; $month++) {
             echo '<option value="' . $month . '"' . ($value == $month ? ' selected="selected"' : '') . '>' . date("m", mktime(0, 0, 0, $month, 10)) . '</option>';
@@ -193,7 +193,7 @@ class Elements extends Component
 
     public function cardYear($field_name='ccexpyear', $value='')
     {
-        echo '<select name="' . $field_name . '" class="form-control" id="' . $field_name . '">';
+        echo '<select ng-model="form.ccexpyear" name="' . $field_name . '" class="form-control" id="' . $field_name . '">';
         echo '  <option value="">Year</option>';
         for($i=0; $i <= 10; $i++) {
             echo '<option value="' . (date('y') + $i) . '"' . ($value == (date('y') + $i) ? ' selected="selected"' : '') . '>' . (date('Y') + $i) . '</option>';

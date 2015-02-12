@@ -84,7 +84,7 @@ class ProfileForm extends Form
         $this->add($suburb);
 
         $state = new Select('state', State::find(), array(
-            'using' => array('name', 'name'),
+            'using' => array('code', 'name'),
             'useEmpty'  => true,
             'emptyText' => 'Select State',
             'emptyValue' => ''

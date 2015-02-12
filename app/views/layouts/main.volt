@@ -16,10 +16,9 @@
     <!-- END RIBBON -->
 
     <!-- MAIN CONTENT -->
-    <div id="content" ng-controller="AppCtrl">
+    <div id="content">
 
         {{ content() }}
-        <div id="loading" ng-show="loading > 0"><i class="fa fa-spinner fa-4x fa-spin"></i></div>
     </div>
     <!-- END MAIN CONTENT -->
 

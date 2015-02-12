@@ -17,38 +17,43 @@
             <form name="paymentForm" class="form-horizontal" novalidate>
 
             <div class="form-group">
-                <label for="cardname" class="col-lg-2">Card Name</label>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" ng-model="card.name" id="cardname" required>
+                <label for="title" class="col-lg-2">Title</label>
+
+                <div class="col-lg-2">
+                    {{ elements.ewayTitle() }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="firstname" class="col-lg-2">Card Name</label>
+                <div class="col-lg-2">
+                    <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First name" ng-model="form.firstname" required>
+                </div>
+                <div class="col-lg-2">
+                    <input type="text" class="form-control" name="lastname" placeholder="Last name" ng-model="form.lastname" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="cardnumber" class="col-lg-2">Card Number</label>
                 <div class="col-lg-4">
-                    <input type="text" class="form-control" ng-model="card.number" id="cardnumber" required>
+                    <input type="text" class="form-control" name="ccnumber" id="cardnumber" ng-model="form.ccnumber" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="expiry" class="col-lg-2">Expiry</label>
                 <div class="col-lg-2">
-                    <select class="form-control" ng-model="card.month" name="month" id="expiry" data-card-expiration required>
-                        <option disabled selected value="">Month</option>
-                        <option ng-repeat="month in months" value="[[$index+1]]" > [[$index+1]] - [[month]]</option>
-                    </select>
+                    {{ elements.cardMonth() }}
                 </div>
                 <div class="col-lg-2">
-                    <select class="form-control" ng-model="card.year" name="year" required>
-                        <option disabled selected value="">Year</option>
-                        <option ng-repeat="year in [] | range:currentYear:currentYear+13">[[year]]</option>
-                    </select>
+                    {{ elements.cardYear() }}
                 </div>
             </div>
             <div class="form-group">
                 <label for="cvv" class="col-lg-2">CVV Number</label>
                 <div class="col-lg-2">
-                    <input type="text" class="form-control" ng-model="card.cvv" id="cvv" required>
+                    <input type="text" class="form-control" name="cvn" id="cvv" ng-model="form.cvn" required>
                 </div>
             </div>
 
@@ -56,14 +61,15 @@
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10 checkbox">
                     <label>
-                        <input type="checkbox" ng-model="card.agree" required> &nbsp; I have read and understand and agree to your <a class="text" ng-click="policy()">payment policy</a>
+                        <input type="checkbox" name="agree" ng-model="form.agree" required> &nbsp; I have read and understand and agree to your <a class="text" ng-click="policy()">payment policy</a>
                     </label>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
-                    <button class="btn btn-red" ng-disabled="paymentForm.$invalid" ng-click="complete()">Complete Setup</button>
+                    {{ flash.output() }}
+                    <button ng-click="process(form)" class="btn btn-red" ng-disabled="!paymentForm.$valid">Complete Setup</button>
                 </div>
             </div>
 

@@ -422,4 +422,22 @@ aside {
   margin-top: 0;
   margin-bottom: 0; }
 
+.minified .minifyme {
+  border-radius: 4px 0 0 4px;
+  right: -4px;
+  width: 130%;
+  padding: 0 7px; }
+.minified nav ul > li {
+  border: 0; }
+  .minified nav ul > li > a {
+    padding: 10px 0; }
+    .minified nav ul > li > a > .menu-item-parent {
+      left: 34px; }
+  .minified nav ul > li nav ul ul {
+    background: #fff; }
+  .minified nav ul > li > ul {
+    left: 24px; }
+    .minified nav ul > li > ul > li {
+      background: #fff; }
+
 /*# sourceMappingURL=app.min.css.map */

@@ -209,34 +209,29 @@ angular.module('controllers.applicant', [])
     };
 })
 
-.controller('ApplicantPaymentCtrl', function($scope, $locale, $http, $modal, $timeout, Config) {
-    $scope.currentYear = new Date().getFullYear();
-    $scope.currentMonth = new Date().getMonth() + 1;
-    $scope.months = $locale.DATETIME_FORMATS.MONTH;
-    $scope.card = { // Populate for testing
-        name: 'John Doe',
-        number: '4444333322221111',
-        month: 12,
-        year: 2016,
-        cvv: 123,
-        agree: false
-    };
-    $scope.complete = function() {
-        var loadingModal = $modal.open({
-            templateUrl: 'welcomeAboard',
-            controller: 'WelcomeCtrl',
-            size: 'lg',
-            backdrop: 'static',
-            resolve: {
-                items: function () {
-                    return $scope.items;
-                }
-            }
-        });
+.controller('ApplicantPaymentCtrl', function($rootScope, $scope, $locale, $http, $modal, $timeout, Config) {
 
-        $http.post(Config.BASE_URL + 'applicantajax/complete')
+    $scope.process = function(form) {
+        $rootScope.loading++;
+
+        $http.post(Config.BASE_URL + 'applicantajax/payment', form)
         .success(function(response){
+            console.log(response);
+            var loadingModal = $modal.open({
+                templateUrl: 'welcomeAboard',
+                controller: 'WelcomeCtrl',
+                size: 'lg',
+                backdrop: 'static',
+                resolve: {
+                    items: function () {
+                        return $scope.items;
+                    }
+                }
+            });
         }).error(function(error){
+            console.log(error);
+        }).finally(function(){
+            $rootScope.loading--;
         });
     };
 
@@ -253,14 +248,4 @@ angular.module('controllers.applicant', [])
     $scope.goToPortal = function() {
         window.location = '..';
     };
-})
-.filter('range', function(){
-    var filter = function(arr, lower, upper) {
-        for (var i = lower; i <= upper; i++) {
-            arr.push(i);
-        }
-        return arr;
-
-    }
-    return filter;
 })

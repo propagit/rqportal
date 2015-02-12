@@ -482,3 +482,29 @@ aside {
     margin-top: 0;
     margin-bottom: 0;
 }
+.minified {
+    .minifyme {
+        border-radius: 4px 0 0 4px;
+        right: -4px;
+        width: 130%;
+        padding: 0 7px;
+    }
+    nav ul>li {
+        border: 0;
+        &>a {
+            padding: 10px 0;
+            &>.menu-item-parent {
+                left: 34px;
+            }
+        }
+        nav ul ul {
+            background: #fff;
+        }
+        &>ul {
+            left: 24px;
+            &>li {
+                background: #fff;
+            }
+        }
+    }
+}
