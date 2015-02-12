@@ -219,18 +219,33 @@ class ApplicantajaxController extends ControllerAjax
 
             # Try process a small amount payment
 
-            # Add to the Queue
-            $job_id = $this->queue->put(array('location' => $this->user->id));
+            $eway_invoice = array(
+                'managedCustomerID' => $supplier->eway_customer_id,
+                'amount' => 20000,
+                'invoiceReference' => $supplier->user_id,
+                'invoiceDescription' => 'Member Deposit'
+            );
+            $result = $client->ProcessPayment($eway_invoice);
+            if ($result->ewayResponse->ewayTrxnStatus == 'True') {
+                # Valid credit card
+                $this->user->status = User::APPROVED;
+                $this->user->save();
+                $this->session->set('auth', array(
+                    'id' => $this->user->id,
+                    'username' => $this->user->username,
+                    'status' => $this->user->status,
+                    'level' => $this->user->level
+                ));
 
-            $this->user->status = User::APPROVED;
-            $this->user->save();
-            $this->session->set('auth', array(
-                'id' => $this->user->id,
-                'username' => $this->user->username,
-                'status' => $this->user->status,
-                'level' => $this->user->level
-            ));
-            $this->response->setStatusCode(200, 'OK');
+                # Add to the Queue
+                $job_id = $this->queue->put(array('location' => $this->user->id));
+
+                $this->response->setStatusCode(200, 'OK');
+            } else {
+                # Invalid credit card
+                $this->response->setStatusCode(400, 'ERROR');
+                $this->view->error = $result->ewayResponse->ewayTrxnError;
+            }
         } catch(Exception $e) {
             $this->response->setStatusCode(400, 'ERROR');
             $this->view->error = $e->getMessage();
