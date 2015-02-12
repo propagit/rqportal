@@ -216,7 +216,6 @@ angular.module('controllers.applicant', [])
 
         $http.post(Config.BASE_URL + 'applicantajax/payment', form)
         .success(function(response){
-            console.log(response);
             var loadingModal = $modal.open({
                 templateUrl: 'welcomeAboard',
                 controller: 'WelcomeCtrl',
@@ -229,7 +228,7 @@ angular.module('controllers.applicant', [])
                 }
             });
         }).error(function(error){
-            console.log(error);
+            console.log("ERROR: ", error);
         }).finally(function(){
             $rootScope.loading--;
         });

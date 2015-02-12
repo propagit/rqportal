@@ -167,9 +167,9 @@ class ApplicantajaxController extends ControllerAjax
     {
         $request = $this->request->getJsonRawBody();
 
-        if (!$request->title || !$request->firstname || !$request->lastname
-            || !$request->ccnumber || !$request->ccexpmonth || !$request->ccexpyear
-            || !$request->cvn || !$request->agree) {
+        if (!isset($request->title) || !isset($request->firstname) || !isset($request->lastname)
+            || !isset($request->ccnumber) || !isset($request->ccexpmonth)
+            || !isset($request->ccexpyear) || !isset($request->cvn) || !isset($request->agree)) {
             $this->response->setStatusCode(400, 'ERROR');
             $this->view->error = 'Invalid request';
             return;
@@ -235,31 +235,6 @@ class ApplicantajaxController extends ControllerAjax
             $this->response->setStatusCode(400, 'ERROR');
             $this->view->error = $e->getMessage();
         }
-    }
-
-    public function completeAction()
-    {
-        // if ($this->user->status < User::APPROVED)
-        // {
-        //     # Add to the Queue
-        //     $job_id = $this->queue->put(array('location' => $this->user->id));
-        // }
-
-        // if ($this->user->level == User::SUPPLIER)
-        // {
-        //     $supplier = Supplier::findFirstByUserId($this->user->id);
-        //     $supplier->status = Supplier::APPROVED;
-        //     $supplier->save();
-        // }
-
-        // $this->user->status = User::APPROVED;
-        // $this->user->save();
-        // $this->session->set('auth', array(
-        //     'id' => $this->user->id,
-        //     'username' => $this->user->username,
-        //     'status' => $this->user->status,
-        //     'level' => $this->user->level
-        // ));
     }
 }
 
