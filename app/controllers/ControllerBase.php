@@ -20,10 +20,14 @@ class ControllerBase extends Controller
     {
         $uriParts = explode('/', $uri);
         $params = array_slice($uriParts, 2);
+        $action = 'index';
+        if (isset($uriParts[1])) {
+            $action = $uriParts[1];
+        }
         return $this->dispatcher->forward(
             array(
                 'controller' => $uriParts[0],
-                'action' => $uriParts[1],
+                'action' => $action,
                 'params' => $params
             )
         );
