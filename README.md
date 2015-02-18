@@ -14,6 +14,8 @@ Quote Submission API
 List of fields
 
 + moving_type: enum: moving_home, moving_office, storage, moving_interstate
+
+
 Common fields:
 + customer_name
 + customer_email
