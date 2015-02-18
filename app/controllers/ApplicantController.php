@@ -26,7 +26,7 @@ class ApplicantController extends \Phalcon\Mvc\Controller
             AND activation_key='$activation_key'");
 
         if (!$supplier) {
-            return $this->response->redirect('signup');
+            return $this->response->redirect('login');
         }
         $this->tag->setTitle('Register');
 

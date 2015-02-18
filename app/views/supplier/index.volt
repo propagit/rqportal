@@ -74,7 +74,9 @@
                                 <a ng-if="supplier.status == {{ constant("Supplier::APPLIED") }}" ng-click="reject([[ $index ]])" class="btn btn-xs btn-danger">Reject</a>
 
 
-                                <a ng-if="supplier.status == {{ constant("Supplier::ACTIVATED") }}" href="{{ baseUrl }}applicant/register/[[ supplier.id ]]/[[ supplier.activation_key ]]" class="btn btn-xs btn-primary">Complete Profile</a>
+                                <a ng-if="supplier.status == {{ constant("Supplier::ACTIVATED") }} && supplier.activation_key" href="{{ baseUrl }}applicant/register/[[ supplier.id ]]/[[ supplier.activation_key ]]" class="btn btn-xs btn-primary">Complete Profile</a>
+
+                                <a ng-if="supplier.status == {{ constant("Supplier::ACTIVATED") }} && !supplier.activation_key" href="{{ baseUrl }}supplier/login/[[ supplier.user_id ]]" class="btn btn-xs btn-primary">Complete Profile</a>
 
                                 <a ng-if="supplier.status == {{ constant("Supplier::APPROVED") }}" href="{{ baseUrl }}supplier/login/[[ supplier.user_id ]]" class="btn btn-xs btn-success">Login as supplier</a>
                                 &nbsp;
