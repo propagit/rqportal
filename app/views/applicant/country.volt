@@ -66,10 +66,6 @@
         <a href="{{ baseUrl }}applicant/location/interstate#map" class="btn btn-labeled btn-danger">
             <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Next Step
         </a>
-        &nbsp;
-        <a href="{{ baseUrl }}applicant/location/interstate#map" class="btn btn-labeled btn-default">
-            <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Skip
-        </a>
         {% endif %}
     </div>
 </div>
