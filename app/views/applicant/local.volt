@@ -67,16 +67,17 @@
                     </tr>
                 </tbody>
             </table>
-            {% if goNext %}
-            <a href="{{ baseUrl }}applicant/location/country#map" ng-if="zones.length > 0" class="btn btn-labeled btn-danger">
-                <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Next Step
-            </a>
-            &nbsp;
-            <a href="{{ baseUrl }}applicant/location/country#map" class="btn btn-labeled btn-default">
-                <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Skip
-            </a>
             {% endif %}
         </div>
+
+        {% if goNext %}
+        <a href="{{ baseUrl }}applicant/location/country#map" ng-if="zones.length > 0" class="btn btn-labeled btn-danger">
+            <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Next Step
+        </a>
+        &nbsp;
+        <a href="{{ baseUrl }}applicant/location/country#map" class="btn btn-labeled btn-default">
+            <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Skip
+        </a>
     </div>
 </div>
 {% endblock %}
