@@ -6,7 +6,7 @@ class SupplierajaxController extends ControllerAjax
     public function getAllAction()
     {
         $request = $this->request->getJsonRawBody();
-        $conditions = "status >= 0";
+        $conditions = ""; #"status >= 0";
         if (isset($request->status))
         {
             $conditions = "status = '$request->status'";
@@ -47,6 +47,21 @@ class SupplierajaxController extends ControllerAjax
         $supplier->status = Supplier::REJECTED;
         $supplier->save();
         $job_id = $this->queue->put(array('reject' => $id));
+        $this->view->supplier = $supplier->toArray();
+    }
+
+    public function reactivateAction($id)
+    {
+        $supplier = Supplier::findFirst($id);
+        if ($supplier->user_id)
+        {
+            $user = User::findFirst($supplier->user_id);
+            $user->status = User::APPROVED;
+            $user->save();
+        }
+        $supplier->status = Supplier::APPROVED;
+        $supplier->save();
+        $this->view->supplier = $supplier->toArray();
     }
 
     public function deleteAction($id)
@@ -67,6 +82,7 @@ class SupplierajaxController extends ControllerAjax
         }
         $supplier->status = Supplier::INACTIVED;
         $supplier->save();
+        $this->view->supplier = $supplier->toArray();
     }
 
 }

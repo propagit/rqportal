@@ -207,7 +207,7 @@
                 <div class="widget-toolbar pull-right">
 
                     <div class="btn-group">
-                        <button class="btn dropdown-toggle btn-xs btn-[[ current_quote.invoiced == 0 ? 'danger' : 'warning' ]]" data-toggle="dropdown">
+                        <button class="btn dropdown-toggle btn-xs btn-[[ !current_quote.invoiced ? 'danger' : 'warning' ]]" data-toggle="dropdown">
                             <i class="fa fa-times"></i>
                         </button>
                         <ul class="dropdown-menu pull-right">

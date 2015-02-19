@@ -57,7 +57,8 @@ angular.module('controllers.supplier', [])
         $rootScope.loading++;
         $http.post(Config.BASE_URL + 'supplierajax/reject/' + $scope.suppliers[index].id)
         .success(function(response){
-            $scope.suppliers.splice(index, 1);
+            // $scope.suppliers.splice(index, 1);
+            $scope.suppliers[index] = response.supplier;
         }).error(function(error){
             console.log("ERROR: ", error);
         }).finally(function(){
@@ -69,7 +70,22 @@ angular.module('controllers.supplier', [])
         $rootScope.loading++;
         $http.post(Config.BASE_URL + 'supplierajax/deactivate/' + $scope.suppliers[index].id)
         .success(function(response){
-            $scope.suppliers.splice(index, 1);
+            // $scope.suppliers.splice(index, 1);
+            $scope.suppliers[index] = response.supplier;
+        }).error(function(error){
+            console.log("ERROR: ", error);
+        }).finally(function(){
+            $rootScope.loading--;
+        });
+    };
+
+    $scope.reactivate = function(index) {
+        $rootScope.loading++;
+        $http.post(Config.BASE_URL + 'supplierajax/reactivate/' + $scope.suppliers[index].id)
+        .success(function(response){
+            // $scope.suppliers.splice(index, 1);
+            console.log(response.supplier);
+            $scope.suppliers[index] = response.supplier;
         }).error(function(error){
             console.log("ERROR: ", error);
         }).finally(function(){
