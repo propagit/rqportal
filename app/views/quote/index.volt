@@ -212,8 +212,8 @@
                         </button>
                         <ul class="dropdown-menu pull-right">
                             <li>
-                                <a ng-if="current_quote.invoice == 0" ng-click="deleteQuote()">Delete this quote</a>
-                                <a ng-if="current_quote.invoice > 0">This quote has been invoiced and cannot be deleted.</a>
+                                <a ng-if="!current_quote.invoice" ng-click="deleteQuote()">Delete this quote</a>
+                                <a ng-if="current_quote.invoice">This quote has been invoiced and cannot be deleted.</a>
                             </li>
                         </ul>
                     </div>
