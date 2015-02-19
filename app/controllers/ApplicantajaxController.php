@@ -137,7 +137,7 @@ class ApplicantajaxController extends ControllerAjax
             if ($this->user->status == User::APPROVED)
             {
                 # Add to the Queue
-                $job_id = $this->queue->put(array('country' => $zone->id));
+                $job_id = $this->queue->put(array('interstate' => $zone->id));
             }
             $this->response->setStatusCode(200, 'OK');
             $this->view->zone = $zone->toArray();
