@@ -38,7 +38,7 @@ class DashboardajaxController extends ControllerAjax
 
         $this->view->total_suppliers = Supplier::count("status > " . Supplier::APPLIED .
             ($condition ? " AND $condition" : ""));
-        $this->view->incompleted_supplier = Supplier::count("status <= " . Supplier::ACTIVATED .
+        $this->view->incompleted_supplier = Supplier::count("status > 0 AND status <= " . Supplier::ACTIVATED .
             ($condition ? " AND $condition" : ""));
     }
 
