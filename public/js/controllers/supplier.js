@@ -1,7 +1,10 @@
 angular.module('controllers.supplier', [])
 
 .controller('SupplierCtrl', function($rootScope, $scope, $http, Config){
-
+    if (!$scope.query)
+    {
+        $scope.filter_status = 2;
+    }
     $scope.filterSupplier = function(supplier) {
         if ($scope.query) {
             if (supplier.status == 0 || supplier.status == 1) {
