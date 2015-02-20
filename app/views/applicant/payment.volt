@@ -127,17 +127,12 @@
         <h6 class="fw600">Order processing</h6>
         <p>All quotes delivered to members (suppliers) are billed on a “per quote” basis. Quotes received are available via your member profile. The same price is allocated to a delivered quote regardless of whether the suppler successfully wins work from the quote.</p>
 
-        <h6 class="fw600">Refunds/returns Policy (be specific)</h6>
-        <p>Should you for any reason wish to cancel your purchase you will be liable for a 15% handling fee. You must advise us in writing of your cancellation and any such cancellation must be signed by the person who made the original purchase. The goods must be returned to us undamaged in the original packaging within 14 calendar days.</p>
-        <p>* Note:  Jack Bones Jeans CC recommends that you use Speed Services Couriers (South African Postal Services) for all returns as it offers shipment tracking through a 24 hours customer helpline. Should you choose to use a carrier that does not offer a tracking facility and the goods are lost then no refund or return will be considered.</p>
+        <h6 class="fw600">Deposit/Refunds/returns/cancelation Policy</h6>
+        <p>New members who wish to sign up to the Removalist Quote system are required to pay a $200 deposit. The deposit is kept until cancelation of your account at which time the $200 deposit will be refunded.</p>
+        <p>Should you for any reason wish to cancel your account you must advise us by writing or via a phone call to a Removalist Quote representative.</p>
 
-        <p>International customers should make use of a courier that offers:</p>
-
-        <ol>
-            <li>Shipment tracking.</li>
-            <li>Insure your package for safe return and declare the full value of the shipment failing which loss or damage will be for your account.</li>
-        </ol>
-
+        <p>Upon cancelation any outstanding balance you have in the system will be deducted from your initial deposit payment with any outstanding balance charged to your credit card on file.</p>
+		
         <h4 class="fw600">Payment Options and Pricing</h4>
         <p>All transactions will be processed in Australian Dollars (AUD).</p>
         <p>Every member account has a (AUD dollar) account balance of $0.00 when the account is first activated. Each quote sent to a member will deduct and amount from the member account balance. When a member account has a negative value of approximately $500.00 AUD an invoice will be issued for the quotes received.</p>
