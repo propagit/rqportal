@@ -71,9 +71,10 @@
                             </td>
                             <td align="left">
                                 <a ng-if="supplier.status == {{ constant("Supplier::APPLIED") }}"  href="{{ baseUrl }}supplier/activate/[[ supplier.id ]]" class="btn btn-xs btn-warning">Activate</a>
-                                <a ng-if="supplier.status == {{ constant("Supplier::APPLIED") }}" ng-click="reject([[ $index ]])" class="btn btn-xs btn-danger">Reject</a>
 
-                                <a ng-click="reactivate([[ $index ]])" ng-if="supplier.status == {{ constant("Supplier::INACTIVED") }}" class="btn btn-xs btn-info">Re-activate</a>
+                                <a ng-if="supplier.status == {{ constant("Supplier::APPLIED") }}" ng-click="reject([[ supplier.id ]])" class="btn btn-xs btn-danger">Reject</a>
+
+                                <a ng-click="reactivate([[ supplier.id ]])" ng-if="supplier.status == {{ constant("Supplier::INACTIVED") }}" class="btn btn-xs btn-info">Re-activate</a>
 
 
                                 <a ng-if="supplier.status == {{ constant("Supplier::ACTIVATED") }} && supplier.activation_key" href="{{ baseUrl }}applicant/register/[[ supplier.id ]]/[[ supplier.activation_key ]]" class="btn btn-xs btn-primary">Complete Profile</a>
@@ -82,16 +83,17 @@
 
                                 <a ng-if="supplier.status == {{ constant("Supplier::APPROVED") }}" href="{{ baseUrl }}supplier/login/[[ supplier.user_id ]]" class="btn btn-xs btn-success">Login as supplier</a>
                                 &nbsp;
+
                                 <div class="btn-group" ng-if="supplier.status >= {{ constant("Supplier::ACTIVATED") }}">
                                     <button class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown">
                                         <i class="fa fa-times"></i>
                                     </button>
                                     <ul class="dropdown-menu dropdown-right">
                                         <li ng-if="supplier.status > {{ constant("Supplier::ACTIVATED") }}">
-                                            <a ng-click="deactivate([[ $index ]])">De-activate</a>
+                                            <a ng-click="deactivate([[ supplier.id ]])">De-activate</a>
                                         </li>
                                         <li>
-                                            <a ng-click="delete([[ $index ]])">Delete this supplier</a>
+                                            <a ng-click="delete([[ supplier.id ]])">Delete this supplier</a>
                                         </li>
                                     </ul>
                                 </div>
