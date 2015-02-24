@@ -11,6 +11,10 @@
             <span class="btn-label"><i class="fa fa-map-marker"></i></span>Work Locations
         </a> &nbsp;
 
+        <a href="{{ baseUrl }}profile/filter" class="btn btn-labeled btn-default">
+            <span class="btn-label"><i class="fa fa-comment-o"></i></span>Quote Filter
+        </a> &nbsp;
+
         <a href="{{ baseUrl }}profile/payment" class="btn btn-labeled btn-default">
             <span class="btn-label"><i class="fa fa-credit-card"></i></span>Payment Info
         </a>
