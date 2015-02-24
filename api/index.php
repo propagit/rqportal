@@ -94,6 +94,9 @@ $app->post('/supplier', function() use($app, $config){
     ));
 
     if ($status->success() == true) {
+        # Add to queue
+        $job_id = $app->queue->put(array('new_applicant' => $status->getModel()->id));
+
         $response->setStatusCode(201, "Created");
         $response->setJsonContent(array('status' => 'OK'));
     } else {
@@ -234,7 +237,7 @@ $app->post('/quote/storage', function() use($app, $config) {
     $response = new Phalcon\Http\Response();
     $response->setHeader('Access-Control-Allow-Origin', '*');
 	$response->setHeader('Access-Control-Allow-Methods','POST, GET, OPTIONS, PUT');
-	
+
     # Check required fields for Removal
     $required_fields = array(
         'customer_name' => 'Customer Name',

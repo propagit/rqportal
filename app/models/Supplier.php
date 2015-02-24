@@ -172,30 +172,6 @@ class Supplier extends \Phalcon\Mvc\Model
         );
     }
 
-    public function afterCreate() {
-
-
-        $this->getDI()->getMail()->send(
-            array('team@propagate.com.au' => 'Team'), # hard code for now
-            'New Member Sign Up',
-            'new_applicant',
-            array(
-                'name' => $this->name,
-                'business' => $this->business,
-                'company' => $this->company,
-                'abn_acn' => $this->abn_acn,
-                'address' => $this->address,
-                'suburb' => $this->suburb,
-                'state' => $this->state,
-                'postcode' => $this->postcode,
-                'phone' => $this->phone,
-                'email' => $this->email,
-                'website' => $this->website,
-                'about' => $this->about
-            )
-        );
-    }
-
     public function beforeDelete()
     {
         if ($this->user_id)

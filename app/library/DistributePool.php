@@ -39,6 +39,8 @@ class DistributePool extends Injectable
                         break;
                     case 'email_invoice': $this->emailInvoice($job_id);
                         break;
+                    case 'new_applicant': $this->emailNewApplicant($job_id);
+                        break;
                 }
             }
             $job->delete();
@@ -63,6 +65,33 @@ class DistributePool extends Injectable
                     'name' => $invoice['supplier']['name'],
                     'attachment' => __DIR__ . '/../../public/files/invoice' . $id . '.pdf'
                 )
+        );
+    }
+
+    public function emailNewApplicant($id)
+    {
+        if (!$id) { return false; }
+        $supplier = Supplier::findFirst($id);
+        if (!$supplier) { return false; }
+
+        $this->mail->send(
+            array('sales@removalistquote.com.au' => 'Team'), # hard code for now
+            'New Member Sign Up',
+            'new_applicant',
+            array(
+                'name' => $supplier->name,
+                'business' => $supplier->business,
+                'company' => $supplier->company,
+                'abn_acn' => $supplier->abn_acn,
+                'address' => $supplier->address,
+                'suburb' => $supplier->suburb,
+                'state' => $supplier->state,
+                'postcode' => $supplier->postcode,
+                'phone' => $supplier->phone,
+                'email' => $supplier->email,
+                'website' => $supplier->website,
+                'about' => $supplier->about
+            )
         );
     }
 
