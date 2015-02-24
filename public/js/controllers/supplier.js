@@ -56,12 +56,13 @@ angular.module('controllers.supplier', [])
         }
     });
 
-    $scope.reject = function(index) {
+    $scope.reject = function(id) {
         $rootScope.loading++;
-        $http.post(Config.BASE_URL + 'supplierajax/reject/' + $scope.suppliers[index].id)
+        $http.post(Config.BASE_URL + 'supplierajax/reject/' + id)
         .success(function(response){
             // $scope.suppliers.splice(index, 1);
-            $scope.suppliers[index] = response.supplier;
+            // $scope.suppliers[index] = response.supplier;
+            _updateSupplier(id, response.supplier);
         }).error(function(error){
             console.log("ERROR: ", error);
         }).finally(function(){
@@ -69,12 +70,27 @@ angular.module('controllers.supplier', [])
         });
     };
 
-    $scope.deactivate = function(index) {
+    function _updateSupplier(id, supplier) {
+        angular.forEach($scope.suppliers, function(s, key){
+            if (s.id == supplier.id) {
+                $scope.suppliers[key] = supplier;
+            }
+        });
+    };
+    function _deleteSupplier(id) {
+        angular.forEach($scope.suppliers, function(s, key){
+            if (s.id == id) {
+                console.log(key);
+                $scope.suppliers.splice(key, 1);
+            }
+        });
+    };
+
+    $scope.deactivate = function(id) {
         $rootScope.loading++;
-        $http.post(Config.BASE_URL + 'supplierajax/deactivate/' + $scope.suppliers[index].id)
+        $http.post(Config.BASE_URL + 'supplierajax/deactivate/' + id)
         .success(function(response){
-            // $scope.suppliers.splice(index, 1);
-            $scope.suppliers[index] = response.supplier;
+            _updateSupplier(id, response.supplier);
         }).error(function(error){
             console.log("ERROR: ", error);
         }).finally(function(){
@@ -82,13 +98,11 @@ angular.module('controllers.supplier', [])
         });
     };
 
-    $scope.reactivate = function(index) {
+    $scope.reactivate = function(id) {
         $rootScope.loading++;
-        $http.post(Config.BASE_URL + 'supplierajax/reactivate/' + $scope.suppliers[index].id)
+        $http.post(Config.BASE_URL + 'supplierajax/reactivate/' + id)
         .success(function(response){
-            // $scope.suppliers.splice(index, 1);
-            console.log(response.supplier);
-            $scope.suppliers[index] = response.supplier;
+            _updateSupplier(id, response.supplier);
         }).error(function(error){
             console.log("ERROR: ", error);
         }).finally(function(){
@@ -96,11 +110,11 @@ angular.module('controllers.supplier', [])
         });
     };
 
-    $scope.delete = function(index) {
+    $scope.delete = function(id) {
         $rootScope.loading++;
-        $http.post(Config.BASE_URL + 'supplierajax/delete/' + $scope.suppliers[index].id)
+        $http.post(Config.BASE_URL + 'supplierajax/delete/' + id)
         .success(function(response){
-            $scope.suppliers.splice(index, 1);
+            _deleteSupplier(id);
         }).error(function(error){
             console.log("ERROR: ", error);
         }).finally(function(){
