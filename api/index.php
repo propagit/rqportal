@@ -36,15 +36,14 @@ $di->set('queue', function() use($config) {
 $app = new \Phalcon\Mvc\Micro($di);
 
 // define the routes here
-
 # Add new supplier
 $app->post('/supplier', function() use($app, $config){
     $request = $app->request->getJsonRawBody();
 
     $response = new Phalcon\Http\Response();
     $response->setHeader('Access-Control-Allow-Origin', '*');
-    // $response->setHeader('Access-Control-Allow-Headers', '*');
-    // $response->setHeader('Access-Control-Allow-Methods', '*');
+    // $response->setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
+    // $response->setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS,PUT,DELETE');
 
     # Check required fields for Supplier
     $required_fields = array(
@@ -295,6 +294,12 @@ $app->post('/quote/storage', function() use($app, $config) {
     }
 
     return $response;
+});
+
+
+$app->notFound(function () use ($app) {
+    $app->response->setStatusCode(404, "Not Found")->sendHeaders();
+    echo 'Dude, you are not supposed to be here!';
 });
 
 $app->handle();
