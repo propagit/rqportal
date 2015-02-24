@@ -56,8 +56,11 @@ $app->get('/postcode/{keyword}', function($keyword) use($app) {
     // echo json_encode(array('postcodes' => $data));
 
     $response = new Phalcon\Http\Response();
+	 $content_type = 'application/json';
     $response->setHeader('Access-Control-Allow-Origin', '*');
-	$response->setHeader('Access-Control-Allow-Methods','POST, GET, OPTIONS, PUT');
+	$response->setHeader('Access-Control-Allow-Headers', 'X-Requested-With');
+	$response->setHeader("Access-Control-Allow-Headers: Authorization");
+	$response->setHeader('Content-type: ' . $content_type);
     $response->setStatusCode(201, "Created");
     $response->setJsonContent(array('postcodes' => $data));
     return $response;
