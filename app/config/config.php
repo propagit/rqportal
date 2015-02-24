@@ -5,7 +5,7 @@ return new \Phalcon\Config(array(
         'adapter'     => 'Mysql',
         'host'        => 'localhost',
         'username'    => 'root',
-        'password'    => 'root',
+        'password'    => 'password',
         'dbname'      => 'rqportal',
     ),
     'application' => array(
@@ -17,7 +17,7 @@ return new \Phalcon\Config(array(
         'formsDir'       => __DIR__ . '/../../app/forms/',
         'cacheDir'       => __DIR__ . '/../../app/cache/',
         'baseUri'        => '/rqportal/',
-        'publicUrl'      => 'http://localhost/rqportal/'
+        'publicUrl'      => 'http://nam.dev/rqportal/'
     ),
     'mail' => array(
         'toName'    => 'Team',

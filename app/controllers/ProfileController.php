@@ -50,6 +50,11 @@ class ProfileController extends ControllerBase
         $this->view->zoneType = $zoneType;
     }
 
+    public function filterAction()
+    {
+        $this->tag->setTitle('Quote Filter');
+    }
+
     public function paymentAction()
     {
         $this->tag->setTitle('Payment Details');

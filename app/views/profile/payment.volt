@@ -10,6 +10,10 @@
             <span class="btn-label"><i class="fa fa-map-marker"></i></span>Work Locations
         </a> &nbsp;
 
+        <a href="{{ baseUrl }}profile/filter" class="btn btn-labeled btn-default">
+            <span class="btn-label"><i class="fa fa-comment-o"></i></span>Quote Filter
+        </a> &nbsp;
+
         <a href="#" class="btn btn-labeled btn-danger">
             <span class="btn-label"><i class="fa fa-credit-card"></i></span>Payment Info
         </a>
@@ -137,7 +141,7 @@
         <p>Should you for any reason wish to cancel your account you must advise us by writing or via a phone call to a Removalist Quote representative.</p>
 
         <p>Upon cancelation any outstanding balance you have in the system will be deducted from your initial deposit payment with any outstanding balance charged to your credit card on file.</p>
-		
+
         <h4 class="fw600">Payment Options and Pricing</h4>
         <p>All transactions will be processed in Australian Dollars (AUD).</p>
         <p>Every member account has a (AUD dollar) account balance of $0.00 when the account is first activated. Each quote sent to a member will deduct and amount from the member account balance. When a member account has a negative value of approximately $500.00 AUD an invoice will be issued for the quotes received.</p>

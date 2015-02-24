@@ -192,6 +192,18 @@ class Removal extends \Phalcon\Mvc\Model
         );
     }
 
+    public function listBeds()
+    {
+        return array(
+            'Any' => 'Any',
+            '1' => '1 Bed',
+            '2' => '2 Beds',
+            '3' => '3 Beds',
+            '4' => '4 Beds',
+            '5' => '5 Beds'
+        );
+    }
+
     public function beforeDelete()
     {
         $conditions = "job_type = '" . Quote::REMOVAL . "' AND job_id = " . $this->id;

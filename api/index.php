@@ -36,6 +36,79 @@ $di->set('queue', function() use($config) {
 $app = new \Phalcon\Mvc\Micro($di);
 
 // define the routes here
+
+# Add new supplier
+$app->post('/supplier', function() use($app, $config){
+    $request = $app->request->getJsonRawBody();
+
+    $response = new Phalcon\Http\Response();
+    $response->setHeader('Access-Control-Allow-Origin', '*');
+    // $response->setHeader('Access-Control-Allow-Headers', '*');
+    // $response->setHeader('Access-Control-Allow-Methods', '*');
+
+    # Check required fields for Supplier
+    $required_fields = array(
+        'name' => 'Contact Name',
+        'business' => 'Business Name',
+        'company' => 'Company Name',
+        'abn_acn' => 'ABN/ACN',
+        'address' => 'Address',
+        'suburb' => 'Suburb',
+        'state' => 'State',
+        'postcode' => 'Postcode',
+        'phone' => 'Phone',
+        'email' => 'Email'
+    );
+
+    $errors = array();
+    foreach($required_fields as $key => $label) {
+        if (!isset($request->$key)) {
+            $errors[] = $label . ' is required';
+        }
+    }
+
+
+    if (count($errors) > 0) {
+        $response->setStatusCode(400, "Bad request");
+        $response->setJsonContent(array('status' => 'ERROR', 'message' => $errors));
+        return $response;
+    }
+
+    $phql = "INSERT INTO Supplier (status, name, business, company, abn_acn, address, suburb, state, postcode, phone, email, website, about, created_on) VALUES (:status:, :name:, :business:, :company:, :abn_acn:, :address:, :suburb:, :state:, :postcode:, :phone:, :email:, :website:, :about:, :created_on:)";
+
+    $status = $app->modelsManager->executeQuery($phql, array(
+        'status' => Supplier::APPLIED,
+        'name' => $request->name,
+        'business' => $request->business,
+        'company' => $request->company,
+        'abn_acn' => $request->abn_acn,
+        'address' => $request->address,
+        'suburb' => $request->suburb,
+        'state' => $request->state,
+        'postcode' => $request->postcode,
+        'phone' => $request->phone,
+        'email' => $request->email,
+        'website' => isset($request->website) ? $request->website : '',
+        'about' => isset($request->about) ? $request->about : '',
+        'created_on' => new Phalcon\Db\RawValue('now()')
+    ));
+
+    if ($status->success() == true) {
+        $response->setStatusCode(201, "Created");
+        $response->setJsonContent(array('status' => 'OK'));
+    } else {
+        $response->setStatusCode(409, "Conflict");
+        $errors = array();
+        foreach($status->getMessages() as $message) {
+            $errors[] = $message->getMessage();
+        }
+        $response->setJsonContent(array('status' => 'ERROR', 'message' => $errors));
+    }
+
+    return $response;
+
+});
+
 # Get the postcode
 $app->get('/postcode/{keyword}', function($keyword) use($app) {
     if (strlen($keyword) < 3) { return; }
