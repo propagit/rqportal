@@ -57,6 +57,7 @@ $app->get('/postcode/{keyword}', function($keyword) use($app) {
 
     $response = new Phalcon\Http\Response();
     $response->setHeader('Access-Control-Allow-Origin', '*');
+	$response->setHeader('Access-Control-Allow-Methods','POST, GET, OPTIONS, PUT');
     $response->setStatusCode(201, "Created");
     $response->setJsonContent(array('postcodes' => $data));
     return $response;
@@ -68,7 +69,7 @@ $app->post('/quote/removal', function() use($app, $config) {
 
     $response = new Phalcon\Http\Response();
     $response->setHeader('Access-Control-Allow-Origin', '*');
-
+	$response->setHeader('Access-Control-Allow-Methods','POST, GET, OPTIONS, PUT');
     # Check required fields for Removal
     $required_fields = array(
         'customer_name' => 'Customer Name',
@@ -156,7 +157,8 @@ $app->post('/quote/storage', function() use($app, $config) {
 
     $response = new Phalcon\Http\Response();
     $response->setHeader('Access-Control-Allow-Origin', '*');
-
+	$response->setHeader('Access-Control-Allow-Methods','POST, GET, OPTIONS, PUT');
+	
     # Check required fields for Removal
     $required_fields = array(
         'customer_name' => 'Customer Name',
