@@ -266,7 +266,7 @@
                                         <div class="row">
                                             <div class="col-lg-3">Job Date</div>
                                             <div class="col-lg-3"><b>[[ current_quote.removal.moving_date | date: 'd MMM yy' ]]</b></div>
-                                            <div class="col-lg-3">Rooms</div>
+                                            <div class="col-lg-3">Bedrooms</div>
                                             <div class="col-lg-3"><b>[[ current_quote.removal.bedrooms ]]</b></div>
                                         </div>
                                         <div class="row">

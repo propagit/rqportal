@@ -365,7 +365,7 @@ class DistributePool extends Injectable
                 $quote->job_id = $removal->id;
                 $quote->user_id = $user_id;
                 $quote->status = 0;
-                $quote->free = 0;
+                $quote->free = ($supplier->free) ? 1 : 0;
                 $quote->created_on = new Phalcon\Db\RawValue('now()');
                 if ($quote->save()) {
 
@@ -458,7 +458,7 @@ class DistributePool extends Injectable
                 $quote->job_id = $storage->id;
                 $quote->user_id = $user_id;
                 $quote->status = 0;
-                $quote->free = 0;
+                $quote->free = ($supplier->free) ? 1 : 0;
                 $quote->created_on = new Phalcon\Db\RawValue('now()');
                 if ($quote->save()) {
 

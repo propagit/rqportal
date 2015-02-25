@@ -43,6 +43,12 @@ class Supplier extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var integer
+     */
+    public $free;
+
+    /**
+     *
      * @var string
      */
     public $activation_key;
@@ -155,6 +161,7 @@ class Supplier extends \Phalcon\Mvc\Model
             'eway_customer_id' => 'eway_customer_id',
             'cvn' => 'cvn',
             'status' => 'status',
+            'free' => 'free',
             'activation_key' => 'activation_key',
             'name' => 'name',
             'business' => 'business',

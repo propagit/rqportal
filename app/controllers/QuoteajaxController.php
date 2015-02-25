@@ -89,7 +89,7 @@ class QuoteajaxController extends ControllerAjax
                 $new_quote->job_id = $quote->job_id;
                 $new_quote->user_id = $supplier->user_id;
                 $new_quote->status = Quote::FRESH;
-                $new_quote->free = $free;
+                $new_quote->free = ($supplier->free) ? 1 : $free;
                 $new_quote->created_on = new Phalcon\Db\RawValue('now()');
                 if ($new_quote->save() == false)
                 {
@@ -140,7 +140,8 @@ class QuoteajaxController extends ControllerAjax
         if ($quote->user_id == 0) {
             # Update user_id for this quote
             $quote->user_id = $supplier->user_id;
-            $quote->free = $free;
+            $quote->free = ($supplier->free) ? 1 : $free;
+
             if ($quote->save() == false)
             {
                 foreach($quote->getMessages() as $message) {
@@ -172,7 +173,7 @@ class QuoteajaxController extends ControllerAjax
                 $new_quote->job_id = $quote->job_id;
                 $new_quote->user_id = $supplier->user_id;
                 $new_quote->status = Quote::FRESH;
-                $new_quote->free = $free;
+                $new_quote->free = ($supplier->free) ? 1 : $free;
                 $new_quote->created_on = new Phalcon\Db\RawValue('now()');
                 if ($new_quote->save() == false)
                 {

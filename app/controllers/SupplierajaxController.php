@@ -64,6 +64,18 @@ class SupplierajaxController extends ControllerAjax
         $this->view->supplier = $supplier->toArray();
     }
 
+    public function setfreeAction($id)
+    {
+        $supplier = Supplier::findFirst($id);
+        if ($supplier->free) {
+            $supplier->free = NULL;
+        } else {
+            $supplier->free = 1;
+        }
+        $supplier->save();
+        $this->view->supplier = $supplier->toArray();
+    }
+
     public function deleteAction($id)
     {
         $supplier = Supplier::findFirst($id);

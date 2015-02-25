@@ -31,7 +31,7 @@
                             <th class="hasinput" colspan="5">
                                 <input type="text" ng-model="keyword" class="form-control" placeholder="Keyword" />
                             </th>
-                            <th colspan="2">
+                            <th colspan="3">
                                 <?php echo $this->tag->selectStatic(array(
                                     'status', Supplier::getStatus(),
                                     'useEmpty'  => true,
@@ -48,6 +48,7 @@
                             <th data-hide="phone"><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i>Phone</th>
                             <th data-hide="phone,tablet">Email</th>
                             <th data-hide="phone,tablet">Status</th>
+                            <th data-hide="phone,tablet">Free</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -68,6 +69,13 @@
                                 <span ng-if="supplier.status == {{ constant("Supplier::INACTIVED") }}" class="text-muted">In-actived</span>
 
                                 <span ng-if="supplier.status == {{ constant("Supplier::REJECTED") }}" class="text-danger">Rejected</span>
+                            </td>
+                            <td class="text-center">
+                                <label>
+                                  <input ng-if="supplier.free" type="checkbox" class="checkbox" checked>
+                                  <input ng-if="!supplier.free" type="checkbox" class="checkbox">
+                                  <span ng-click="setFree([[ supplier.id ]])"></span>
+                                </label>
                             </td>
                             <td align="left">
                                 <a ng-if="supplier.status == {{ constant("Supplier::APPLIED") }}"  href="{{ baseUrl }}supplier/activate/[[ supplier.id ]]" class="btn btn-xs btn-warning">Activate</a>

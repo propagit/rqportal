@@ -121,4 +121,16 @@ angular.module('controllers.supplier', [])
             $rootScope.loading--;
         });
     };
+
+    $scope.setFree = function(id) {
+        $rootScope.loading++;
+        $http.post(Config.BASE_URL + 'supplierajax/setfree/' + id)
+        .success(function(response){
+            _updateSupplier(id, response.supplier);
+        }).error(function(error){
+            console.log("ERROR: ", error);
+        }).finally(function(){
+            $rootScope.loading--;
+        });
+    };
 })
