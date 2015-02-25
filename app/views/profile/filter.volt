@@ -24,7 +24,7 @@
 <div class="row">
     <div class="col-lg-12">
         <h3>What Quotes Do You Want to Receive?</h3>
-        <p>Set the quote filter so you only receive the quote that you want</p>
+        <p>Set the quote filter so you only receive the quotes that you want</p>
         <br />
 
         <form method="post" action="{{ baseUrl }}profile/filter" class="form-horizontal">
