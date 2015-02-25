@@ -146,6 +146,9 @@ hr {
       width: 300px;
       padding: 3px 5px; }
 
+.form-group label {
+  margin-top: 7px; }
+
 .invoice-input {
   margin-top: -8px;
   margin-bottom: 10px; }

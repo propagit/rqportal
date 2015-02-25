@@ -344,7 +344,21 @@ class DistributePool extends Injectable
 
         foreach($users_with_quote as $user_id => $quote_number) {
             $supplier = Supplier::findFirstByUserId($user_id);
-            if ($supplier->status == Supplier::APPROVED
+
+            # Check the supplier filter first
+            $filters = SupplierFilter::find("user_id = $user_id");
+            $matched = true;
+            foreach($filters as $filter)
+            {
+                if ($filter->name == 'bedrooms') {
+                    if (($filter->value == Removal::UNDER_THREE && intval($removal->bedrooms) >= 3)
+                    || ($filter->value == Removal::THREE_PLUS && intval($removal->bedrooms) < 3)) {
+                        $matched = false;
+                    }
+                }
+            }
+
+            if ($supplier->status == Supplier::APPROVED && $matched
                 && $count < $supplier_per_quote->value) {
                 $quote = new Quote();
                 $quote->job_type = Quote::REMOVAL;
