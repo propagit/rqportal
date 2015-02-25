@@ -95,6 +95,40 @@ class ApplicantController extends \Phalcon\Mvc\Controller
 
     }
 
+    public function filterAction()
+    {
+        $this->tag->setTitle('Quote Filter');
+
+        if ($this->request->isPost())
+        {
+            foreach($this->request->getPost() as $name => $value)
+            {
+                $filter = SupplierFilter::findFirst("user_id = " . $this->user->id
+                        . " AND name = '$name'");
+                if (!$filter) {
+                    $filter = new SupplierFilter();
+                    $filter->user_id = $this->user->id;
+                    $filter->name = $name;
+                    $filter->value = $value;
+                    $filter->created_on = new Phalcon\Db\RawValue('now()');
+                }
+                if ($filter->value != $value) # Updated
+                {
+                    $filter->value = $value;
+                    $filter->updated_on = new Phalcon\Db\RawValue('now()');
+                }
+                $filter->save();
+                $this->response->redirect('applicant/payment');
+            }
+        }
+
+        $filters = SupplierFilter::find("user_id = " . $this->user->id);
+        foreach($filters as $filter)
+        {
+            $this->tag->setDefault($filter->name, $filter->value);
+        }
+    }
+
     public function paymentAction()
     {
         $this->tag->setTitle('Payment Information');

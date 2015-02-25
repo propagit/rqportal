@@ -92,7 +92,7 @@
         </div>
 
         {% if goNext %}
-        <a href="{{ baseUrl }}applicant/payment" class="btn btn-labeled btn-danger">
+        <a href="{{ baseUrl }}applicant/filter" class="btn btn-labeled btn-danger">
             <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>Next Step
         </a>
         {% endif %}

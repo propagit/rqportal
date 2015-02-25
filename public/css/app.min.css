@@ -131,8 +131,10 @@ hr {
     #signup-step ul#steps li.step1 {
       left: 10%; }
     #signup-step ul#steps li.step2 {
-      left: 48%; }
+      left: 35%; }
     #signup-step ul#steps li.step3 {
+      left: 60%; }
+    #signup-step ul#steps li.step4 {
       left: 84%; }
 
 .form-inline {
