@@ -263,7 +263,7 @@
                                     <td><strong>[[ removal.customer_name ]]</strong></td>
                                     <td>[[ removal.from_postcode ]]</td>
                                     <td>[[ removal.to_postcode ]]</td>
-                                    <td>[[ removal.moving_date ]]</td>
+                                    <td>[[ removal.moving_date | date : 'dd MMM yyyy' ]]</td>
                                     <td align="center">[[ removal.bedrooms ]]</td>
                                     <td align="center">
                                         [[ removal.status == {{ constant("Quote::WON") }} ? 'Won' : (removal.status == {{ constant("Quote::LOST") }} ? 'Lost' : 'Open') ]]</td>
