@@ -132,7 +132,7 @@ class Removal extends \Phalcon\Mvc\Model
     public function toArray($columns = NULL)
     {
         $removal = parent::toArray();
-        $removal['moving_date'] = strtotime($removal['moving_date']);
+        // $removal['moving_date'] = strtotime($removal['moving_date']);
         $removal['from_marker'] = $this->drawFromMarker();
         $removal['to_marker'] = $this->drawToMarker();
         $removal['path'] = $this->drawPath();
