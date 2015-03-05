@@ -57,6 +57,7 @@ angular.module('controllers.billing', [])
     $http.post(Config.BASE_URL + 'billingajax/searchInvoices')
     .success(function(response){
         $scope.invoices = response.invoices;
+        console.log(response.invoices);
     }).error(function(error){
         console.log("ERROR: ", error);
     }).finally(function(){
