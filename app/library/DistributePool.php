@@ -41,10 +41,31 @@ class DistributePool extends Injectable
                         break;
                     case 'new_applicant': $this->emailNewApplicant($job_id);
                         break;
+                    case 'reset_instruction': $this->emailResetInstruction($job_id);
+                        break;
                 }
             }
             $job->delete();
         }
+    }
+
+    public function emailResetInstruction($user_id)
+    {
+        if (!$user_id) { return false; }
+        $user = User::findFirst($user_id);
+        if (!$user) { return false; }
+        $supplier = Supplier::findFirstByUserId($user_id);
+        if (!$supplier) { return false; }
+
+        $this->mail->send(
+            array($supplier['email'] => $supplier['name']),
+            'Reset Your Password',
+            'reset_password',
+            array(
+                'name' => $supplier['name'],
+                'resetUrl' => '/reset/confirm/' . $user->id . '/' .  $user->reset_key
+            )
+        );
     }
 
     public function emailInvoice($data)

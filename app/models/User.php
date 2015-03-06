@@ -36,6 +36,13 @@ class User extends Model
 
     /**
      *
+     * @var string
+     */
+    public $reset_key;
+
+
+    /**
+     *
      * @var integer
      */
     public $level;
@@ -53,6 +60,7 @@ class User extends Model
             'status' => 'status',
             'username' => 'username',
             'password' => 'password',
+            'reset_key' => 'reset_key',
             'level' => 'level'
         );
     }

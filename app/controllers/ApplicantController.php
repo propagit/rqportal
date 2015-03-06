@@ -39,7 +39,7 @@ class ApplicantController extends \Phalcon\Mvc\Controller
             $password = $this->request->getPost('password');
             $repeatPassword = $this->request->getPost('repeatPassword');
             if ($password != $repeatPassword) {
-                $this->flash->error('Passwords are diferent');
+                $this->flash->error('Confirm password does not match');
             } else {
                 $user = new User();
                 $user->status = User::PENDING;

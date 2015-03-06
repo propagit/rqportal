@@ -32,7 +32,9 @@ class Elements extends Component
             'action' => '#',
             'children' => array(
                 'company' => 'Company Profile',
+                'password' => 'Password',
                 'location' => 'Work Locations',
+                'filter' => 'Quote Filter',
                 'payment' => 'Payment Info'
             )
         ),

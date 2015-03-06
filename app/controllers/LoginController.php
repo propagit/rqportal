@@ -8,6 +8,7 @@ class LoginController extends \Phalcon\Mvc\Controller
         $this->_dispatcherUser();
 
         $this->tag->setTitle('Login');
+        $this->view->baseUrl = $this->url->get('');
         if ($this->request->isPost()) {
             $username = $this->request->getPost('username');
             $password = $this->request->getPost('password');

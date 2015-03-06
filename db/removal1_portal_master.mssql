@@ -16454,6 +16454,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `status` tinyint(1) NOT NULL COMMENT '0: pending, 1: approved',
   `username` varchar(32) NOT NULL,
   `password` varchar(40) NOT NULL,
+  `reset_key` VARCHAR(40) NULL,
   `level` int(11) NOT NULL COMMENT '1: supplier, 9: admin',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;

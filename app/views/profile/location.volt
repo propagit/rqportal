@@ -7,6 +7,10 @@
             <span class="btn-label"><i class="fa fa-user"></i></span>My Profile
         </a> &nbsp;
 
+        <a href="{{ baseUrl }}profile/password" class="btn btn-labeled btn-default">
+            <span class="btn-label"><i class="fa fa-lock"></i></span>Password
+        </a> &nbsp;
+
         <a href="#" class="btn btn-labeled btn-danger">
             <span class="btn-label"><i class="fa fa-map-marker"></i></span>Work Locations
         </a> &nbsp;

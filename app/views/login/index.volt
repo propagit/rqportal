@@ -37,6 +37,7 @@
         </fieldset>
 
         <footer>
+            <p class="pull-left"><br /><a href="{{ baseUrl }}reset">Forgot your password?</a></p>
             <button type="submit" class="btn btn-red" id="btn-login">Sign in</button>
         </footer>
     </form>

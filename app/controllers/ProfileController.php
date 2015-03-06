@@ -40,6 +40,26 @@ class ProfileController extends ControllerBase
         $this->view->form = $form;
     }
 
+    public function passwordAction()
+    {
+        $this->tag->setTitle('Update password');
+
+        if ($this->request->isPost()) {
+            $newPassword = $this->request->getPost('newPassword');
+            $repeatPassword = $this->request->getPost('repeatPassword');
+            if ($newPassword && $newPassword != $repeatPassword) {
+                $this->flash->error('Confirm password does not match');
+            } else {
+                $this->user->password = md5($newPassword);
+                if ($this->user->save()) {
+                    $this->flash->success('Password has been updated successfully!');
+                }
+            }
+        }
+
+
+    }
+
     public function locationAction($zoneType='local')
     {
         $this->tag->setTitle('Work Locations - ' . ucwords($zoneType) . ' Zones');
