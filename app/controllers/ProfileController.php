@@ -47,7 +47,10 @@ class ProfileController extends ControllerBase
         if ($this->request->isPost()) {
             $newPassword = $this->request->getPost('newPassword');
             $repeatPassword = $this->request->getPost('repeatPassword');
-            if ($newPassword && $newPassword != $repeatPassword) {
+            if (!$newPassword) {
+                $this->flash->error('Please enter your new password');
+            }
+            else if ($newPassword != $repeatPassword) {
                 $this->flash->error('Confirm password does not match');
             } else {
                 $this->user->password = md5($newPassword);
