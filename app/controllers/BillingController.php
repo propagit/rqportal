@@ -75,7 +75,6 @@ class BillingController extends ControllerBase
 
     private function _generatePdf($id)
     {
-		#ini_set("memory_limit","128M");
         $file = __DIR__ . '/../../public/files/invoice' . $id . '.pdf';
         if (!file_exists($file)){
 			 unlink($file);
