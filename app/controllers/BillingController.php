@@ -75,10 +75,11 @@ class BillingController extends ControllerBase
 
     private function _generatePdf($id)
     {
+		ini_set("memory_limit","128M");
         $file = __DIR__ . '/../../public/files/invoice' . $id . '.pdf';
         if (!file_exists($file)){
-			 #unlink($file);
-		#}else{
+			 unlink($file);
+		}else{
             $this->view->disable();
             $data['invoice'] = Invoice::findFirst($id)->toArray();
             $html = $this->view->getRender('billing', 'invoice_pdf', $data);
