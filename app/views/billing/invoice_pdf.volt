@@ -164,7 +164,7 @@
                         <td style="border-bottom:1px solid #ccc;"><strong>{{ removal['customer_name'] }}</strong></td>
                         <td style="border-bottom:1px solid #ccc;">{{ removal['from_postcode'] }}</td>
                         <td style="border-bottom:1px solid #ccc;">{{ removal['to_postcode'] }}</td>
-                        <td style="border-bottom:1px solid #ccc;">{{ removal['moving_date'] }}</td>
+                        <td style="border-bottom:1px solid #ccc;">{{ date('d/m/Y', removal['moving_date']/1000) }}</td>
                         <td style="border-bottom:1px solid #ccc;" align="center">{{ removal['bedrooms'] }}</td>
                         <td style="border-bottom:1px solid #ccc;" align="center">
                             {% if removal['status'] == constant("Quote::WON") %}
