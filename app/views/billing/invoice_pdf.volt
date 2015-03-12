@@ -12,7 +12,7 @@
                         <br>
                         Head Office<br>
                         P.O. Box 1172<br>
-                        Bentleigh East - VIC 3165.<br>
+                        Bentleigh East - VIC 3165<br>
                         Tel: 1300 531 475
                     </address>
                 </td>
