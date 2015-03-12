@@ -136,7 +136,7 @@
         {% if invoice['removals']|length > 0 or invoice['storages']|length > 0 %}
         <pagebreak />
 
-        <address>
+        <address style="color:#2f2e2e;">
             <br>
             <strong>Removalist Quote Pty. LTD<br>
             Service Breakdown</strong>
@@ -145,28 +145,28 @@
         </address>
         {% if invoice['removals']|length > 0 %}
         <br>
-        <h4>Removal Quotes</h4>
+        <h4 style="color:#2f2e2e;">Removal Quotes</h4>
         <table width="100%" cellspacing="0" cellpadding="5">
                 <thead>
                     <tr style="background:#eee;">
-                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">CUSTOMER</th>
-                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">FROM</th>
-                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">TO</th>
-                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">MOVING DATE</th>
-                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">ROOMS</th>
-                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">STATUS</th>
-                        <th align="right" style="padding-top:10px;border-bottom:2px solid #ccc;">COST</th>
+                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;color:#2f2e2e;">CUSTOMER</th>
+                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;color:#2f2e2e;">FROM</th>
+                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;color:#2f2e2e;">TO</th>
+                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;color:#2f2e2e;">MOVING DATE</th>
+                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;color:#2f2e2e;">ROOMS</th>
+                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;color:#2f2e2e;">STATUS</th>
+                        <th align="right" style="padding-top:10px;border-bottom:2px solid #ccc;color:#2f2e2e;">COST</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for removal in invoice['removals'] %}
                     <tr>
-                        <td style="border-bottom:1px solid #ccc;"><strong>{{ removal['customer_name'] }}</strong></td>
-                        <td style="border-bottom:1px solid #ccc;">{{ removal['from_postcode'] }}</td>
-                        <td style="border-bottom:1px solid #ccc;">{{ removal['to_postcode'] }}</td>
-                        <td style="border-bottom:1px solid #ccc;">{{ date('d/m/Y', removal['moving_date']/1000) }}</td>
-                        <td style="border-bottom:1px solid #ccc;" align="center">{{ removal['bedrooms'] }}</td>
-                        <td style="border-bottom:1px solid #ccc;" align="center">
+                        <td style="border-bottom:1px solid #ccc;color:#2f2e2e;"><strong>{{ removal['customer_name'] }}</strong></td>
+                        <td style="border-bottom:1px solid #ccc;color:#2f2e2e;">{{ removal['from_postcode'] }}</td>
+                        <td style="border-bottom:1px solid #ccc;color:#2f2e2e;">{{ removal['to_postcode'] }}</td>
+                        <td style="border-bottom:1px solid #ccc;color:#2f2e2e;">{{ date('d/m/Y', removal['moving_date']/1000) }}</td>
+                        <td style="border-bottom:1px solid #ccc;color:#2f2e2e;" align="center">{{ removal['bedrooms'] }}</td>
+                        <td style="border-bottom:1px solid #ccc;color:#2f2e2e;" align="center">
                             {% if removal['status'] == constant("Quote::WON") %}
                             Won
                             {% elseif removal['status'] == constant("Quote::LOST") %}
@@ -175,7 +175,7 @@
                             Open
                             {% endif %}
                         </td>
-                        <td style="border-bottom:1px solid #ccc;" align="right">
+                        <td style="border-bottom:1px solid #ccc;color:#2f2e2e;" align="right">
                             {% if removal['free'] == 1 %}
                             Free
                             {% else %}
@@ -190,26 +190,26 @@
 
         {% if invoice['storages']|length > 0 %}
         <br>
-        <h4>Storage Quotes</h4>
+        <h4 style="color:#2f2e2e;">Storage Quotes</h4>
         <table width="100%" cellspacing="0" cellpadding="5">
                 <thead>
                     <tr style="background:#eee;">
-                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">CUSTOMER</th>
-                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">PICKUP</th>
-                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;">PERIOD</th>
-                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">CONTAINERS</th>
-                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;">STATUS</th>
-                        <th align="right" style="padding-top:10px;border-bottom:2px solid #ccc;">COST</th>
+                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;color:#2f2e2e;">CUSTOMER</th>
+                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;color:#2f2e2e;">PICKUP</th>
+                        <th align="left" style="padding-top:10px;border-bottom:2px solid #ccc;color:#2f2e2e;">PERIOD</th>
+                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;color:#2f2e2e;">CONTAINERS</th>
+                        <th align="center" style="padding-top:10px;border-bottom:2px solid #ccc;color:#2f2e2e;">STATUS</th>
+                        <th align="right" style="padding-top:10px;border-bottom:2px solid #ccc;color:#2f2e2e;">COST</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for storage in invoice['storages'] %}
                     <tr>
-                        <td style="border-bottom:1px solid #ccc;"><strong>{{ storage['customer_name'] }}</strong></td>
-                        <td style="border-bottom:1px solid #ccc;">{{ storage['pickup_postcode'] }}</td>
-                        <td style="border-bottom:1px solid #ccc;">{{ storage['period'] }}</td>
-                        <td style="border-bottom:1px solid #ccc;" align="center">{{ storage['containers'] }}</td>
-                        <td style="border-bottom:1px solid #ccc;" align="center">
+                        <td style="border-bottom:1px solid #ccc;color:#2f2e2e;"><strong>{{ storage['customer_name'] }}</strong></td>
+                        <td style="border-bottom:1px solid #ccc;color:#2f2e2e;">{{ storage['pickup_postcode'] }}</td>
+                        <td style="border-bottom:1px solid #ccc;color:#2f2e2e;">{{ storage['period'] }}</td>
+                        <td style="border-bottom:1px solid #ccc;color:#2f2e2e;" align="center">{{ storage['containers'] }}</td>
+                        <td style="border-bottom:1px solid #ccc;color:#2f2e2e;" align="center">
                             {% if storage['status'] == constant("Quote::WON") %}
                             Won
                             {% elseif storage['status'] == constant("Quote::LOST") %}
@@ -218,7 +218,7 @@
                             Open
                             {% endif %}
                         </td>
-                        <td style="border-bottom:1px solid #ccc;" align="right">
+                        <td style="border-bottom:1px solid #ccc;color:#2f2e2e;" align="right">
                             {% if storage['free'] == 1 %}
                             Free
                             {% else %}

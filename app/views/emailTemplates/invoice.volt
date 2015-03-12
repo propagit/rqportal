@@ -9,7 +9,7 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
             <p>A copy of your latest invoice is attached in this email in PDF format.<br>
             This and all past invoices are available by accessing your member account.</p>
 
-            <p>Should you have any question relating to your bill please contact our customer service team on 1300 772 800 during our opening hours of:</p>
+            <p>Should you have any question relating to your bill please contact our customer service team on 1300 531 475 during our opening hours of:</p>
             <p>Monday - Friday 9am - 5.30pm</p>
             <p>This email is automatically generated.</p>
 
