@@ -12,7 +12,7 @@
                         <br>
                         Head Office<br>
                         P.O. Box 1172<br>
-                        Bentleigh East - VIC 3165<br>
+                        Bentleigh East - VIC 3165.<br>
                         Tel: 1300 531 475
                     </address>
                 </td>
@@ -131,10 +131,10 @@
         <h4>Payment Methods</h4>
         <img src="{{ baseUrl }}img/mastercard.png" width="64" height="64" alt="mastercard">
         <img src="{{ baseUrl }}img/visa.png" width="64" height="64" alt="visa">
-        <p><small>**To avoid any excess penalty charges, please make payments within 30 days of the due date. There will be a 2% interest charge per month on all late invoices. - </small></p>
+        <p><small>**To avoid any excess penalty charges, please make payments within 30 days of the due date. There will be a 2% interest charge per month on all late invoices.</small></p>
 
         {% if invoice['removals']|length > 0 or invoice['storages']|length > 0 %}
-        
+        <pagebreak />
 
         <address>
             <br>
