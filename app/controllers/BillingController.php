@@ -76,9 +76,10 @@ class BillingController extends ControllerBase
     private function _generatePdf($id)
     {
         $file = __DIR__ . '/../../public/files/invoice' . $id . '.pdf';
-        if (!file_exists($file)){
+        if (file_exists($file)){
 			 unlink($file);
-		}else{
+		}
+	
             $this->view->disable();
             $data['invoice'] = Invoice::findFirst($id)->toArray();
             $html = $this->view->getRender('billing', 'invoice_pdf', $data);
@@ -87,7 +88,7 @@ class BillingController extends ControllerBase
             $pdf->WriteHTML($stylesheet,1);
             $pdf->WriteHTML($html, 2);
             $pdf->Output($file, "F");
-        }
+
     }
 }
 
