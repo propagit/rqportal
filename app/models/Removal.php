@@ -82,6 +82,7 @@ class Removal extends \Phalcon\Mvc\Model
     public $bedrooms;
 
     const ANY = 'any';
+	const TWO_PLUS = '2+';
     const UNDER_THREE = '<3';
     const THREE_PLUS = '3+';
 
@@ -199,10 +200,14 @@ class Removal extends \Phalcon\Mvc\Model
 
     public static function listBedsOptions()
     {
-        return array(
+       /* return array(
             Removal::ANY => 'Any',
             Removal::UNDER_THREE => 'Under 3 Bedrooms',
             Removal::THREE_PLUS => '3+ Bedrooms'
+        );*/
+		 return array(
+            Removal::ANY => 'Any',
+            Removal::TWO_PLUS => '2+ Bedrooms'
         );
     }
 

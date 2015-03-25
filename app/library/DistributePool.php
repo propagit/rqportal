@@ -371,9 +371,15 @@ class DistributePool extends Injectable
             $matched = true;
             foreach($filters as $filter)
             {
-                if ($filter->name == 'bedrooms') {
+                /*if ($filter->name == 'bedrooms') {
                     if (($filter->value == Removal::UNDER_THREE && intval($removal->bedrooms) >= 3)
                     || ($filter->value == Removal::THREE_PLUS && intval($removal->bedrooms) < 3)) {
+                        $matched = false;
+                    }
+                }*/
+				
+				if ($filter->name == 'bedrooms') {
+                    if (($filter->value == Removal::TWO_PLUS && intval($removal->bedrooms) < 2)) {
                         $matched = false;
                     }
                 }
