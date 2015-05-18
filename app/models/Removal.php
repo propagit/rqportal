@@ -95,7 +95,31 @@ class Removal extends \Phalcon\Mvc\Model
 
     const INT_YES = 'yes';
 	const INT_NO = 'no';
-
+	
+	
+	/**
+     *
+     * @var string
+     */
+    public $from_country;
+	
+	/**
+     *
+     * @var string
+     */
+    public $to_country;
+	
+	/**
+     *
+     * @var integer
+     */
+    public $from_country_id;
+	
+	/**
+     *
+     * @var integer
+     */
+    public $to_country_id;
 
     /**
      *
@@ -136,6 +160,11 @@ class Removal extends \Phalcon\Mvc\Model
             'bedrooms' => 'bedrooms',
             'packing' => 'packing',
             'notes' => 'notes',
+			'is_international' => 'is_international',
+			'from_country' => 'from_country',
+			'to_country' => 'to_country',
+			'from_country_id' => 'from_country_id',
+			'to_country_id' => 'to_country_id',
             'created_on' => 'created_on'
         );
     }

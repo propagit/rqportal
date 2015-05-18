@@ -311,40 +311,54 @@ class DistributePool extends Injectable
         }
         # Get the removal
         $removal = Removal::findFirst($id);
-        $from = Postcodes::findFirstByPostcode($removal->from_postcode);
-        $to = Postcodes::findFirstByPostcode($removal->to_postcode);
-
-        # Check suppliers who are able to provide this removal
-        $users = array();
-
-        # Local Zone
-        $suppliers = ZoneLocal::find("pool LIKE '%$removal->from_postcode%'
-                AND pool LIKE '%$removal->to_postcode%'");
-        foreach($suppliers as $supplier) {
-            $users[] = $supplier->user_id;
-        }
-
-        # Country Zone
-        $suppliers = ZoneCountry::find("(pool_local LIKE '%$removal->from_postcode%'
-                AND pool_country LIKE '%$removal->to_postcode%') OR
-                (pool_country LIKE '%$removal->from_postcode%'
-                AND pool_local LIKE '%$removal->to_postcode%')");
-        foreach($suppliers as $supplier) {
-            if (!in_array($supplier->user_id, $users)) {
-                $users[] = $supplier->user_id;
-            }
-        }
-
-        # Interstate
-        $suppliers = ZoneInterstate::find("(pool1 LIKE '%$removal->from_postcode%'
-                AND pool2 LIKE '%$removal->to_postcode%') OR
-                (pool2 LIKE '%$removal->from_postcode%'
-                AND pool1 LIKE '%$removal->to_postcode%')");
-        foreach($suppliers as $supplier) {
-            if (!in_array($supplier->user_id, $users)) {
-                $users[] = $supplier->user_id;
-            }
-        }
+		
+		#check if this is a domestic removal
+		if($removal->is_international == 'no'){
+			$from = Postcodes::findFirstByPostcode($removal->from_postcode);
+			$to = Postcodes::findFirstByPostcode($removal->to_postcode);
+	
+			# Check suppliers who are able to provide this removal
+			$users = array();
+	
+			# Local Zone
+			$suppliers = ZoneLocal::find("pool LIKE '%$removal->from_postcode%'
+					AND pool LIKE '%$removal->to_postcode%'");
+			foreach($suppliers as $supplier) {
+				$users[] = $supplier->user_id;
+			}
+	
+			# Country Zone
+			$suppliers = ZoneCountry::find("(pool_local LIKE '%$removal->from_postcode%'
+					AND pool_country LIKE '%$removal->to_postcode%') OR
+					(pool_country LIKE '%$removal->from_postcode%'
+					AND pool_local LIKE '%$removal->to_postcode%')");
+			foreach($suppliers as $supplier) {
+				if (!in_array($supplier->user_id, $users)) {
+					$users[] = $supplier->user_id;
+				}
+			}
+	
+			# Interstate
+			$suppliers = ZoneInterstate::find("(pool1 LIKE '%$removal->from_postcode%'
+					AND pool2 LIKE '%$removal->to_postcode%') OR
+					(pool2 LIKE '%$removal->from_postcode%'
+					AND pool1 LIKE '%$removal->to_postcode%')");
+			foreach($suppliers as $supplier) {
+				if (!in_array($supplier->user_id, $users)) {
+					$users[] = $supplier->user_id;
+				}
+			}
+		}else{
+			# international removal	
+			$from = $removal->from_country;
+			$to = $removal->to_country;
+			# International Suppliers
+			$suppliers = SupplierFilter::find("name = 'international'
+					AND value = 'yes'");
+			foreach($suppliers as $supplier) {
+				$users[] = $supplier->user_id;
+			}
+		}
 
         # Get quote of the day for each user
         $users_with_quote = array();
@@ -378,11 +392,11 @@ class DistributePool extends Injectable
                     }
                 }*/
 				
-				if ($filter->name == 'bedrooms') {
+				/*if ($filter->name == 'bedrooms') {
                     if (($filter->value == Removal::TWO_PLUS && intval($removal->bedrooms) < 2)) {
                         $matched = false;
                     }
-                }
+                }*/
             }
 
             if ($supplier->status == Supplier::APPROVED && $matched

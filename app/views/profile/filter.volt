@@ -64,7 +64,7 @@
             <label for="minbed" class="col-lg-2">Receive International Quotes</label>
             <div class="col-lg-2">
                 <?php echo $this->tag->selectStatic(array(
-                    'interlational_quotes', Removal::listInternationalOptions(),
+                    'international', Removal::listInternationalOptions(),
                     'class' => 'form-control'
                 )); ?>
             </div>

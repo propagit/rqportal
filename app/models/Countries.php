@@ -33,6 +33,18 @@ class Countries extends \Phalcon\Mvc\Model
      */
     public $lon;
 
-    
+     /**
+     * Independent Column Mapping.
+     */
+    public function columnMap()
+    {
+        return array(
+            'id' => 'id', 
+            'name' => 'name', 
+            'abbr' => 'abbr', 
+            'lat' => 'lat', 
+            'lon' => 'lon'
+        );
+    }
 
 }

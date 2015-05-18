@@ -69,6 +69,7 @@ class QuoteController extends ControllerBase
         $this->response->setContent(json_encode($q));
         return $this->response;
     }
+	
 
 }
 
