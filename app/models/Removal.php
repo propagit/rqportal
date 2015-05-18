@@ -85,6 +85,16 @@ class Removal extends \Phalcon\Mvc\Model
 	const TWO_PLUS = '2+';
     const UNDER_THREE = '<3';
     const THREE_PLUS = '3+';
+	
+	
+	/**
+     *
+     * @var string
+     */
+    public $is_international;
+
+    const INT_YES = 'yes';
+	const INT_NO = 'no';
 
 
     /**
@@ -210,6 +220,14 @@ class Removal extends \Phalcon\Mvc\Model
             Removal::TWO_PLUS => '2+ Bedrooms'
         );
     }
+	
+	public static function listInternationalOptions()
+	{
+		return array(
+            Removal::INT_NO => 'No',
+            Removal::INT_YES => 'Yes'
+        );
+	}
 
     public function beforeDelete()
     {

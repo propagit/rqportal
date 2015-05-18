@@ -296,6 +296,29 @@ $app->post('/quote/storage', function() use($app, $config) {
     return $response;
 });
 
+# Get the countries
+$app->get('/country/{keyword}', function($keyword) use($app) {
+    if (strlen($keyword) < 3) { return; }
+    $phql = "SELECT * FROM countries WHERE name LIKE :keyword:";
+    $countries = $app->modelsManager->executeQuery($phql, array(
+        'keyword' => '%' . $keyword . '%'
+    ));
+
+    $data = array();
+    foreach($countries as $country) {
+        $data[] = array(
+            'name' => ucwords(strtolower($country->name))
+        );
+    }
+    // echo json_encode(array('postcodes' => $data));
+
+    $response = new Phalcon\Http\Response();
+    $response->setHeader('Access-Control-Allow-Origin', '*');
+    $response->setStatusCode(201, "Created");
+    $response->setJsonContent(array('countries' => $data));
+    return $response;
+});
+
 
 $app->notFound(function () use ($app) {
     $app->response->setStatusCode(404, "Not Found")->sendHeaders();

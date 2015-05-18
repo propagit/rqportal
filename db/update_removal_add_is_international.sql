@@ -1,0 +1,1 @@
+ALTER TABLE `removal` ADD `is_international` VARCHAR(16) NOT NULL DEFAULT 'no' AFTER `notes`;
