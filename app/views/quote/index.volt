@@ -143,8 +143,8 @@
                                     <tbody>
                                         <tr class="[[ current_quote.id == quote.id ? 'active' : '' ]] status-quote-[[ quote.status ]]" ng-repeat="quote in removals | filter: keyword">
                                             <td>[[ quote.removal.customer_name ]]</td>
-                                            <td>[[ quote.removal.from_postcode != 'INTL' ? quote.removal.from_postcode : quote.removal.from_country ]]</td>
-                                            <td>[[ quote.removal.to_postcode != 'INTL' ? quote.removal.to_postcode : quote.removal.to_country]]</td>
+                                            <td>[[ quote.removal.is_international == 'no' ? quote.removal.from_postcode : quote.removal.from_country ]]</td>
+                                            <td>[[ quote.removal.is_international == 'no' ? quote.removal.to_postcode : quote.removal.to_country]]</td>
                                             <td align="center">[[ quote.removal.bedrooms ]]</td>
                                             <td>[[ quote.removal.moving_date | date: 'dd MMM yyyy' ]]</td>
                                             <td align="right">
@@ -259,9 +259,9 @@
                                         <b>Job Details</b>
                                         <div class="row">
                                             <div class="col-lg-3">Pick Up</div>
-                                            <div class="col-lg-3"><b>[[ current_quote.removal.from_postcode != 'INTL' ? current_quote.removal.from_postcode : current_quote.removal.from_country ]]</b></div>
+                                            <div class="col-lg-3"><b>[[ current_quote.is_international == 'no' ? current_quote.removal.from_postcode : current_quote.removal.from_country ]]</b></div>
                                             <div class="col-lg-3">Drop Off</div>
-                                            <div class="col-lg-3"><b>[[ current_quote.removal.to_postcode != 'INTL' ? current_quote.removal.to_postcode : current_quote.removal.to_country ]]</b></div>
+                                            <div class="col-lg-3"><b>[[ current_quote.is_international == 'no' ? current_quote.removal.to_postcode : current_quote.removal.to_country ]]</b></div>
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-3">Job Date</div>

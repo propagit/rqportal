@@ -28,12 +28,24 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
             <tr>
                 <td>Pick Up:</td>
                 <td width="20"></td>
-                <td>{{ from.state }} {{ removal.from_postcode }} ({{ from.suburb }})</td>
+                <td>
+                {% if removal.removal.is_international == 'yes' %}
+                	{{ removal.from_country }}
+                {% else %}
+                	{{ from.state }} {{ removal.from_postcode }} ({{ from.suburb }})
+                {% endif %}
+                </td>
             </tr>
             <tr>
                 <td>Drop Off:</td>
                 <td width="20"></td>
-                <td>{{ to.state}} {{ removal.to_postcode }} ({{ to.suburb }})</td>
+                <td>
+                {% if removal.removal.is_international == 'yes' %}
+                	{{ removal.to_country }}
+                {% else %}
+               		{{ to.state}} {{ removal.to_postcode }} ({{ to.suburb }})
+                {% endif %}
+                </td>
             </tr>
             <tr>
                 <td>Date of Job:</td>
