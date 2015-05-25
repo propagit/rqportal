@@ -56,6 +56,14 @@ class BillingController extends ControllerBase
                     $invoice->paid_on = date('Y-m-d H:i:s');
                     $this->flash->success('Payment transaction approved');
                 } else {
+					# payment failed de activate this account
+						$supplier = Supplier::findFirst($invoice->user_id);
+						if ($supplier->user_id)
+						{
+							$user = User::findFirst($supplier->user_id);
+							$user->status = User::INACTIVED;
+							$user->save();
+						}
                     $this->flash->error($invoice->eway_trxn_msg);
                 }
                 $invoice->save();
