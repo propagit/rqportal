@@ -132,24 +132,6 @@ $app->get('/postcode/{keyword}', function($keyword) use($app) {
 
     $response = new Phalcon\Http\Response();
     $response->setHeader('Access-Control-Allow-Origin', '*');
-	
-	if (isset($_SERVER['HTTP_ORIGIN'])) {
-        $response->setHeader("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-        $response->setHeader('Access-Control-Allow-Credentials: true');
-        $response->setHeader('Access-Control-Max-Age: 86400');    // cache for 1 day
-    }
-
-    // Access-Control headers are received during OPTIONS requests
-    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-
-        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-            $response->setHeader("Access-Control-Allow-Methods: GET, POST, OPTIONS");         
-
-        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
-            $response->setHeader("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
-
-    }
-	
     $response->setStatusCode(201, "Created");
     $response->setJsonContent(array('postcodes' => $data));
     return $response;
