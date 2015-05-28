@@ -296,6 +296,121 @@ $app->post('/quote/storage', function() use($app, $config) {
     return $response;
 });
 
+# Get the countries
+$app->get('/country/{keyword}', function($keyword) use($app) {
+    if (strlen($keyword) < 3) { return; }
+    $phql = "SELECT * FROM Countries WHERE name LIKE :keyword:";
+    $countries = $app->modelsManager->executeQuery($phql, array(
+        'keyword' => '%' . $keyword . '%'
+    ));
+	
+    $data = array();
+    foreach($countries as $country) {
+    	$name = ucwords(strtolower($country->name)) . ' [' . $country->abbr . ']';
+        $data[] = array(
+        	'country_id' => $country->id,
+            'name' => $name
+        );
+    }
+    // echo json_encode(array('postcodes' => $data));
+
+    $response = new Phalcon\Http\Response();
+    $response->setHeader('Access-Control-Allow-Origin', '*');
+    $response->setStatusCode(201, "Created");
+    $response->setJsonContent(array('countries' => $data));
+    return $response;
+});
+
+
+# Add new international removal quote
+$app->post('/quote/international', function() use($app, $config) {
+    $quote = $app->request->getJsonRawBody();
+
+    $response = new Phalcon\Http\Response();
+    $response->setHeader('Access-Control-Allow-Origin', '*');
+    # Check required fields for Removal
+    $required_fields = array(
+        'customer_name' => 'Customer Name',
+        'customer_email' => 'Customer Email',
+        'customer_phone' => 'Customer Phone',
+        'moving_from' => 'Moving From',
+        'moving_to' => 'Moving To',
+        'moving_date' => 'Moving Date',
+        'bedrooms' => 'Bedrooms',
+        'packing' => 'Packing Needs'
+    );
+
+    $errors = array();
+    foreach($required_fields as $key => $label) {
+        if (!isset($quote->$key)) {
+            $errors[] = $label . ' is required';
+        }
+    }
+
+
+    if (count($errors) > 0) {
+        $response->setStatusCode(400, "Bad request");
+        $response->setJsonContent(array('status' => 'ERROR', 'message' => $errors));
+        return $response;
+    }
+
+
+    # Get from countries
+    $from = $quote->moving_from->originalObject;
+    $phql = "SELECT * FROM Countries WHERE id = :id:";
+    $from_country = $app->modelsManager->executeQuery($phql, array(
+        'id' => $from->country_id
+    ))->getFirst();
+
+    # Get to postcode
+    $to = $quote->moving_to->originalObject;
+    $to_country = $app->modelsManager->executeQuery($phql, array(
+        'id' => $to->country_id
+    ))->getFirst();
+
+
+    $phql = "INSERT INTO Removal (customer_name, customer_email, customer_phone, from_postcode, from_lat, from_lon, to_postcode, to_lat, to_lon, moving_date, moving_type, bedrooms, packing, notes, is_international,from_country,to_country, from_country_id, to_country_id, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :from_postcode:, :from_lat:, :from_lon:, :to_postcode:, :to_lat:, :to_lon:, :moving_date:, :moving_type:, :bedrooms:, :packing:, :notes:,:is_international:,:from_country:,:to_country:, :from_country_id:, :to_country_id:, :created_on:)";
+    $status = $app->modelsManager->executeQuery($phql, array(
+        'customer_name' => $quote->customer_name,
+        'customer_email' => $quote->customer_email,
+        'customer_phone' => $quote->customer_phone,
+        'from_postcode' => 'INTL',
+        'from_lat' => $from_country->lat,
+        'from_lon' => $from_country->lon,
+        'to_postcode' => 'INTL',
+        'to_lat' => $to_country->lat,
+        'to_lon' => $to_country->lon,
+        'moving_date' => $quote->moving_date,
+        'moving_type' => $quote->moving_type,
+        'bedrooms' => $quote->bedrooms,
+        'packing' => $quote->packing,
+        'notes' => $quote->notes,
+		'is_international' => 'yes',
+		'from_country' => $from_country->name,
+		'to_country' => $to_country->name,
+		'from_country_id' => $from_country->id,
+		'to_country_id' => $to_country->id,
+        'created_on' => new Phalcon\Db\RawValue('now()')
+    ));
+
+    if ($status->success() == true) {
+        # Add to queue
+        $job_id = $app->queue->put(array('removal' => $status->getModel()->id));
+
+        $response->setStatusCode(201, "Created");
+        $response->setJsonContent(array('status' => 'OK', 'data' => $job_id));
+    } else {
+        $response->setStatusCode(409, "Conflict");
+        $errors = array();
+        foreach($status->getMessages() as $message) {
+            $errors[] = $message->getMessage();
+        }
+        $response->setJsonContent(array('status' => 'ERROR', 'message' => $errors));
+    }
+
+    return $response;
+});
+
 
 $app->notFound(function () use ($app) {
     $app->response->setStatusCode(404, "Not Found")->sendHeaders();
