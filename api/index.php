@@ -186,7 +186,7 @@ $app->post('/quote/removal', function() use($app, $config) {
     ))->getFirst();
 
 
-    $phql = "INSERT INTO Removal (customer_name, customer_email, customer_phone, from_postcode, from_lat, from_lon, to_postcode, to_lat, to_lon, moving_date, moving_type, bedrooms, packing, notes, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :from_postcode:, :from_lat:, :from_lon:, :to_postcode:, :to_lat:, :to_lon:, :moving_date:, :moving_type:, :bedrooms:, :packing:, :notes:, :created_on:)";
+    $phql = "INSERT INTO Removal (customer_name, customer_email, customer_phone, from_postcode, from_lat, from_lon, to_postcode, to_lat, to_lon, moving_date, moving_type, bedrooms, packing, notes, is_international,from_country,to_country, from_country_id, to_country_id, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :from_postcode:, :from_lat:, :from_lon:, :to_postcode:, :to_lat:, :to_lon:, :moving_date:, :moving_type:, :bedrooms:, :packing:, :notes:,:is_international:,:from_country:,:to_country:, :from_country_id:, :to_country_id:, :created_on:)";
 
     $status = $app->modelsManager->executeQuery($phql, array(
         'customer_name' => $quote->customer_name,
@@ -203,6 +203,11 @@ $app->post('/quote/removal', function() use($app, $config) {
         'bedrooms' => $quote->bedrooms,
         'packing' => $quote->packing,
         'notes' => $quote->notes,
+		'is_international' => 'no',
+		'from_country' => '-',
+		'to_country' => '-',
+		'from_country_id' => 0,
+		'to_country_id' => 0,
         'created_on' => new Phalcon\Db\RawValue('now()')
     ));
 
