@@ -128,13 +128,13 @@ $app->get('/postcode/{keyword}', function($keyword) use($app) {
             'name' => $name
         );
     }
-    // echo json_encode(array('postcodes' => $data));
+    echo json_encode(array('postcodes' => $data));
 
     $response = new Phalcon\Http\Response();
     $response->setHeader('Access-Control-Allow-Origin', '*');   
     $response->setStatusCode(201, "Created");
     $response->setJsonContent(array('postcodes' => $data));
-    echo $response;
+    return $response;
 });
 
 # Add new removal quote
