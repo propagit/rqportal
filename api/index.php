@@ -131,9 +131,8 @@ $app->get('/postcode/{keyword}', function($keyword) use($app) {
     // echo json_encode(array('postcodes' => $data));
 
     $response = new Phalcon\Http\Response();
-    $response->setHeader('Access-Control-Allow-Origin', '*');
-	$response->setHeader('Access-Control-Allow-Headers', 'X-Requested-With');      
-	$response->sendHeaders();
+    #$response->setHeader('Access-Control-Allow-Origin', '*');
+	$response->setHeader('Access-Control-Allow-Origin', 'http://removalscompare.com.au');    
     $response->setStatusCode(201, "Created");
     $response->setJsonContent(array('postcodes' => $data));
     return $response;
