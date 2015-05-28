@@ -297,7 +297,6 @@ $app->post('/quote/storage', function() use($app, $config) {
 });
 
 
-
 $app->notFound(function () use ($app) {
     $app->response->setStatusCode(404, "Not Found")->sendHeaders();
     echo 'Dude, you are not supposed to be here!';
