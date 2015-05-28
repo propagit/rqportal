@@ -132,7 +132,6 @@ $app->get('/postcode/{keyword}', function($keyword) use($app) {
 
     $response = new Phalcon\Http\Response();
     $response->setHeader('Access-Control-Allow-Origin', '*');
-	$response->setHeader('Access-Control-Allow-Headers', 'X-Requested-With'); 
     $response->setStatusCode(201, "Created");
     $response->setJsonContent(array('postcodes' => $data));
     return $response;
