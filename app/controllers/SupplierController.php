@@ -60,14 +60,14 @@ class SupplierController extends ControllerBase
         return $this->response->redirect('profile/company');
     }
 	
-	
-	#To manually test the distribute quote function
+	/*
+	To manually test the distribute quote function
 	function testAction()
 	{
 		$job_id = 118;
 		$spool = new DistributePool();
         $spool->distributeRemoval($job_id);	
-	}
+	}*/
 
 }
 
