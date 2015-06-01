@@ -29,7 +29,7 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
                 <td>Pick Up:</td>
                 <td width="20"></td>
                 <td>
-                {% if removal.removal.is_international == 'yes' %}
+                {% if removal.is_international == 'yes' %}
                 	{{ removal.from_country }}
                 {% else %}
                 	{{ from.state }} {{ removal.from_postcode }} ({{ from.suburb }})
@@ -40,7 +40,7 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
                 <td>Drop Off:</td>
                 <td width="20"></td>
                 <td>
-                {% if removal.removal.is_international == 'yes' %}
+                {% if removal.is_international == 'yes' %}
                 	{{ removal.to_country }}
                 {% else %}
                		{{ to.state}} {{ removal.to_postcode }} ({{ to.suburb }})
