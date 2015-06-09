@@ -77,7 +77,7 @@
                 <div class="col-lg-offset-2 col-lg-10">
                 	<p class="bg-danger text-danger" style="padding:20px;">
                     	Payment Failed<br>
-						The following error has occurred : <span id="paymentErrorMsg"></span><br><br>
+						The following error has occurred : <span>[[ paymentErrorMsg ]]</span><br><br>
                         
                         Your account has not yet been created.<br><br>
                         

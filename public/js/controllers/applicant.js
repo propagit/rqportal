@@ -232,7 +232,7 @@ angular.module('controllers.applicant', [])
         }).error(function(error){
             console.log("ERROR: ", error);
 			//console.log(error['error']);
-			$('#paymentErrorMsg').html(error['error']);
+			$scope.paymentErrorMsg = error['error'];
 			$scope.paymentError = true;
         }).finally(function(){
             $rootScope.loading--;
