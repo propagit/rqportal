@@ -75,9 +75,17 @@
 			
             <div class="form-group" ng-show="paymentError">
                 <div class="col-lg-offset-2 col-lg-10">
-                	<p class="bg-danger text-danger" style="padding:20px;" id="paymentErrorMsg"></p>
+                	<p class="bg-danger text-danger" style="padding:20px;">
+                    	Payment Failed<br>
+						The following error has occurred : <span id="paymentErrorMsg"></span><br><br>
+                        
+                        Your account has not yet been created.<br><br>
+                        
+                        <span style="font-size:17px; font-weight:600">TO START RECEIVING QUOTES TODAY PLEASE ENTER A VALID CREDIT CARD</span> 
+                        
+                    </p>
                 </div
-            </div>
+            ></div>
             
             </form>
 
