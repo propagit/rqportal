@@ -35,6 +35,13 @@
         {{ flash.output() }}
 
         <form method="post" action="{{ baseUrl }}profile/password" role="form" class="form-horizontal">
+        	<div class="form-group">
+                <label for="newPassword" class="col-lg-2">Username</label>
+                <div class="col-lg-4">
+                  <strong>{{ username }}</strong>
+                </div>
+            </div>
+        
             <div class="form-group">
                 <label for="newPassword" class="col-lg-2">New Password</label>
                 <div class="col-lg-4">

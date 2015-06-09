@@ -43,7 +43,8 @@ class ProfileController extends ControllerBase
     public function passwordAction()
     {
         $this->tag->setTitle('Update password');
-
+		$this->view->setVar("username", $this->user->username);
+		
         if ($this->request->isPost()) {
             $newPassword = $this->request->getPost('newPassword');
             $repeatPassword = $this->request->getPost('repeatPassword');
