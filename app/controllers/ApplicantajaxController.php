@@ -214,7 +214,7 @@ class ApplicantajaxController extends ControllerAjax
             $result = $client->CreateCustomer($eway_customer);
             $supplier->eway_customer_id = $result->CreateCustomerResult;
             $supplier->cvn = $request->cvn;
-            $supplier->status = Supplier::APPROVED;
+            #$supplier->status = Supplier::APPROVED;
             $supplier->save();
 
             # Try process a small amount payment
@@ -230,6 +230,10 @@ class ApplicantajaxController extends ControllerAjax
                 # Valid credit card
                 $this->user->status = User::APPROVED;
                 $this->user->save();
+				
+				$supplier->status = Supplier::APPROVED;
+           		$supplier->save();
+				
                 $this->session->set('auth', array(
                     'id' => $this->user->id,
                     'username' => $this->user->username,

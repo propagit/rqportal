@@ -210,7 +210,9 @@ angular.module('controllers.applicant', [])
 })
 
 .controller('ApplicantPaymentCtrl', function($rootScope, $scope, $locale, $http, $modal, $timeout, Config) {
-
+	
+	$scope.paymentError = false;
+	
     $scope.process = function(form) {
         $rootScope.loading++;
 
@@ -229,6 +231,9 @@ angular.module('controllers.applicant', [])
             });
         }).error(function(error){
             console.log("ERROR: ", error);
+			//console.log(error['error']);
+			$('#paymentErrorMsg').html(error['error']);
+			$scope.paymentError = true;
         }).finally(function(){
             $rootScope.loading--;
         });

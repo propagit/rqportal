@@ -72,7 +72,13 @@
                     <button ng-click="process(form)" class="btn btn-red" ng-disabled="!paymentForm.$valid">Complete Setup</button>
                 </div>
             </div>
-
+			
+            <div class="form-group" ng-show="paymentError">
+                <div class="col-lg-offset-2 col-lg-10">
+                	<p class="bg-danger text-danger" style="padding:20px;" id="paymentErrorMsg"></p>
+                </div
+            </div>
+            
             </form>
 
         </div>
