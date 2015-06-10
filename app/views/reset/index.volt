@@ -21,7 +21,7 @@
                 </div>
             </section>
         </fieldset>
-        {{ user.reset_key }}
+        <!--{% if user %}{{ user.reset_key }} {% endif %}-->
 
         <footer>
             <p class="pull-left"><br /><a href="{{ baseUrl }}login">Login</a></p>

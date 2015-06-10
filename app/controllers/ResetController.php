@@ -6,10 +6,10 @@ class ResetController extends \Phalcon\Mvc\Controller
     public function indexAction()
     {
         $this->tag->setTitle('Reset Your Password');
-
+		#$this->view->setVar('user', NULL);
         if ($this->request->isPost()) {
             $username = $this->request->getPost('username');
-
+			
             $user = User::findFirst(array(
                 "username = :username: AND status = :status: AND level = :level:",
                 'bind' => array(
@@ -22,6 +22,7 @@ class ResetController extends \Phalcon\Mvc\Controller
                 $this->flash->error('Username not found');
             } else {
                 $user->reset_key = md5(Helper::random_string());
+				#$this->view->setVar('user', $user);
                 if ($user->save()) {
                     # Add to the Queue
                     $job_id = $this->queue->put(array('reset_instruction' => $user->id));
