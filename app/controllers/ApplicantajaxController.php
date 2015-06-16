@@ -221,7 +221,7 @@ class ApplicantajaxController extends ControllerAjax
 
             $eway_invoice = array(
                 'managedCustomerID' => $supplier->eway_customer_id,
-                'amount' => 20000,
+                'amount' => 1000,
                 'invoiceReference' => $supplier->user_id,
                 'invoiceDescription' => 'Member Deposit'
             );
