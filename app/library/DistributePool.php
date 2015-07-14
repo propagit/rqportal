@@ -164,6 +164,8 @@ class DistributePool extends Injectable
             } else {
 				# payment failed de activate this account
 					$supplier = Supplier::findFirst($invoice->user_id);
+                    $supplier->status = Supplier::INACTIVED;
+                    $supplier->save();
 					if ($supplier->user_id)
 					{
 						$user = User::findFirst($supplier->user_id);
@@ -319,22 +321,22 @@ class DistributePool extends Injectable
         }
         # Get the removal
         $removal = Removal::findFirst($id);
-		
+
 		#check if this is a domestic removal
 		if($removal->is_international == 'no'){
 			$from = Postcodes::findFirstByPostcode($removal->from_postcode);
 			$to = Postcodes::findFirstByPostcode($removal->to_postcode);
-	
+
 			# Check suppliers who are able to provide this removal
 			$users = array();
-	
+
 			# Local Zone
 			$suppliers = ZoneLocal::find("pool LIKE '%$removal->from_postcode%'
 					AND pool LIKE '%$removal->to_postcode%'");
 			foreach($suppliers as $supplier) {
 				$users[] = $supplier->user_id;
 			}
-	
+
 			# Country Zone
 			$suppliers = ZoneCountry::find("(pool_local LIKE '%$removal->from_postcode%'
 					AND pool_country LIKE '%$removal->to_postcode%') OR
@@ -345,7 +347,7 @@ class DistributePool extends Injectable
 					$users[] = $supplier->user_id;
 				}
 			}
-	
+
 			# Interstate
 			$suppliers = ZoneInterstate::find("(pool1 LIKE '%$removal->from_postcode%'
 					AND pool2 LIKE '%$removal->to_postcode%') OR
@@ -357,7 +359,7 @@ class DistributePool extends Injectable
 				}
 			}
 		}else{
-			# international removal	
+			# international removal
 			$from = $removal->from_country;
 			$to = $removal->to_country;
 			# International Suppliers
@@ -399,7 +401,7 @@ class DistributePool extends Injectable
                         $matched = false;
                     }
                 }*/
-				
+
 				/*if ($filter->name == 'bedrooms') {
                     if (($filter->value == Removal::TWO_PLUS && intval($removal->bedrooms) < 2)) {
                         $matched = false;
