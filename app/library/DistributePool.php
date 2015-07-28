@@ -322,6 +322,10 @@ class DistributePool extends Injectable
         # Get the removal
         $removal = Removal::findFirst($id);
 
+        if (!$removal) {
+            return false;
+        }
+
 		#check if this is a domestic removal
 		if($removal->is_international == 'no'){
 			$from = Postcodes::findFirstByPostcode($removal->from_postcode);
