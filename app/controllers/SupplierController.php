@@ -64,12 +64,12 @@ class SupplierController extends ControllerBase
 	#To manually test the distribute quote function
 	function testAction()
 	{
-		$job_id_from = 4263;
-		$job_id_to = 4287;
+		$job_id_from = 4548;
+		$job_id_to = 4571;
 		for($i = $job_id_from; $i <= $job_id_to; $i++){
 			$spool = new DistributePool();
         	$spool->distributeRemoval($i);	
-			#echo $i . '<br>';
+			echo $i . '<br>';
 		}
 	}
 
