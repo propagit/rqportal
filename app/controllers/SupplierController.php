@@ -59,19 +59,22 @@ class SupplierController extends ControllerBase
         ));
         return $this->response->redirect('profile/company');
     }
-	
-	
+
+
 	#To manually test the distribute quote function
 	function testAction()
 	{
-		$job_id_from = 4548;
-		$job_id_to = 4571;
+		$job_id_from = 5525;
+		$job_id_to = 5548;
 		for($i = $job_id_from; $i <= $job_id_to; $i++){
 			$spool = new DistributePool();
-        	$spool->distributeRemoval($i);	
-			echo $i . '<br>';
+        	$spool->distributeRemoval($i);
+            #$spool->distributeStorage($i);
+			#echo $i . '<br>';
 		}
 	}
+
+
 
 }
 
