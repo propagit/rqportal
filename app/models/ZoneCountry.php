@@ -108,13 +108,13 @@ class ZoneCountry extends BaseModel
     {
         $local = ZoneLocal::findFirst("id = " . $this->local_id);
 
-        $result = $this->db->query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($local->postcode, p.postcode) <= $this->distance");
-
+		$query = $this->modelsManager->createQuery("SELECT p.postcode FROM postcodes p WHERE postcode_dist($local->postcode, p.postcode) <= $this->distance");
+		$result = $query->execute();
+		
         $pool = array();
-        $result->setFetchMode(Phalcon\Db::FETCH_OBJ);
-        while($postcode = $result->fetch()) {
-            $pool[] = $postcode->postcode;
-        }
+		foreach($result as $postcode){
+			$pool[] = $postcode->postcode;
+		}
         $this->pool_local = $local->pool;
         $this->pool_country = json_encode($pool);
         $this->save();

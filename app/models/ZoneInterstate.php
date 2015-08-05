@@ -179,24 +179,33 @@ class ZoneInterstate extends BaseModel
 
     public function generatePool()
     {
-        # Pool 1
-        $result = $this->db->query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode1, p.postcode) <= $this->distance1");
-
+        /*
+			Code in the comments are from Old Phalcon 1.3 kept for ref on why this is failing
+		*/
+	    # Pool 1
+        #$result = $this->db->query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode1, p.postcode) <= $this->distance1");
+		$query = $this->modelsManager->createQuery("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode1, p.postcode) <= $this->distance1");
+		$result = $query->execute();
+		
         $pool1 = array();
-        $result->setFetchMode(Phalcon\Db::FETCH_OBJ);
+        /* 
+		$result->setFetchMode(Phalcon\Db::FETCH_OBJ);
         while($postcode = $result->fetch()) {
+            $pool1[] = $postcode->postcode;
+        }*/
+        foreach($result as $postcode) {
             $pool1[] = $postcode->postcode;
         }
         $this->pool1 = json_encode($pool1);
 
         # Pool 2
-        $result = $this->db->query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode2, p.postcode) <= $this->distance2");
-
+		$query = $this->modelsManager->createQuery("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode2, p.postcode) <= $this->distance2");
+		$result = $query->execute();
+		
         $pool2 = array();
-        $result->setFetchMode(Phalcon\Db::FETCH_OBJ);
-        while($postcode = $result->fetch()) {
-            $pool2[] = $postcode->postcode;
-        }
+		foreach($result as $postcode){
+			$pool2[] = $postcode->postcode;	
+		}
         $this->pool2 = json_encode($pool2);
 
         $this->save();
