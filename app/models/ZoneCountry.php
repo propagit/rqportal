@@ -107,14 +107,15 @@ class ZoneCountry extends BaseModel
     public function generatePool()
     {
         $local = ZoneLocal::findFirst("id = " . $this->local_id);
-
-		$query = $this->modelsManager->createQuery("SELECT p.postcode FROM Postcodes p WHERE postcode_dist($local->postcode, p.postcode) <= $this->distance");
-		$result = $query->execute();
+		$result = $this->db->query("SELECT p.postcode FROM Postcodes p WHERE postcode_dist($local->postcode, p.postcode) <= $this->distance");
+		/*$query = $this->modelsManager->createQuery("SELECT p.postcode FROM Postcodes p WHERE postcode_dist($local->postcode, p.postcode) <= $this->distance");
+		$result = $query->execute();*/
 		
         $pool = array();
-		foreach($result as $postcode){
-			$pool[] = $postcode->postcode;
-		}
+		$result->setFetchMode(Phalcon\Db::FETCH_OBJ);
+        while($postcode = $result->fetch()) {
+            $pool[] = $postcode->postcode;
+        }
         $this->pool_local = $local->pool;
         $this->pool_country = json_encode($pool);
         $this->save();

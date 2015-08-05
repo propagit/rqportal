@@ -104,14 +104,15 @@ class ZoneLocal extends BaseModel
 
     public function generatePool()
     {
-        #$result = $this->db->query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode, p.postcode) <= $this->distance");
-		$query = $this->modelsManager->createQuery("SELECT p.postcode FROM Postcodes p WHERE postcode_dist($this->postcode, p.postcode) <= $this->distance");
-		$result = $query->execute();
+        $result = $this->db->query("SELECT p.postcode FROM Postcodes p WHERE postcode_dist($this->postcode, p.postcode) <= $this->distance");
+		#$query = $this->modelsManager->createQuery("SELECT p.postcode FROM Postcodes p WHERE postcode_dist($this->postcode, p.postcode) <= $this->distance");
+		#$result = $query->execute();
 		
         $pool = array();
-		foreach($result as $postcode){
-			$pool[] = $postcode->postcode;
-		}
+		$result->setFetchMode(Phalcon\Db::FETCH_OBJ);
+        while($postcode = $result->fetch()) {
+            $pool[] = $postcode->postcode;
+        }
         $this->pool = json_encode($pool);
         $this->save();
         return count($pool);
