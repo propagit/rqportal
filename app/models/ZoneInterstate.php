@@ -184,7 +184,7 @@ class ZoneInterstate extends BaseModel
 		*/
 	    # Pool 1
         #$result = $this->db->query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode1, p.postcode) <= $this->distance1");
-		$query = $this->modelsManager->createQuery("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode1, p.postcode) <= $this->distance1");
+		$query = $this->modelsManager->createQuery("SELECT postcode FROM postcodes WHERE postcode_dist($this->postcode1, postcode) <= $this->distance1");
 		$result = $query->execute();
 		
         $pool1 = array();
@@ -199,7 +199,7 @@ class ZoneInterstate extends BaseModel
         $this->pool1 = json_encode($pool1);
 
         # Pool 2
-		$query = $this->modelsManager->createQuery("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode2, p.postcode) <= $this->distance2");
+		$query = $this->modelsManager->createQuery("SELECT postcode FROM postcodes WHERE postcode_dist($this->postcode2, postcode) <= $this->distance2");
 		$result = $query->execute();
 		
         $pool2 = array();
