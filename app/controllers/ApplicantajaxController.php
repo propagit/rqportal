@@ -2,8 +2,6 @@
 
 class ApplicantajaxController extends ControllerAjax
 {
-    public $user;
-
     public function allLocalAction()
     {
         $zones = ZoneLocal::find("user_id = " . $this->user->id);
@@ -26,11 +24,11 @@ class ApplicantajaxController extends ControllerAjax
 
         if ($zone->save())
         {
-            #if ($this->user->status == User::APPROVED)
-            #{
+            if ($this->user->status == User::APPROVED)
+            {
                 # Add to the Queue
                 $job_id = $this->queue->put(array('local' => $zone->id));
-            #}
+            }
 
             $this->view->zone = $zone->toArray();
             $this->response->setStatusCode(200, 'OK');
