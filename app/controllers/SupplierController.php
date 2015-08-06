@@ -73,11 +73,11 @@ class SupplierController extends ControllerBase
 			#echo $i . '<br>';
 		}
 	}
-	
+
 	#To manually generate interstate Pool
 	function genispoolAction($id)
 	{
-		$zone = ZoneInterstate::findFirst($id);
+		$zone = ZoneLocal::findFirst($id);
         if ($zone) {
             $zone->generatePool();
         }
