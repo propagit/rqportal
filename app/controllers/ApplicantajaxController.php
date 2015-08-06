@@ -2,6 +2,8 @@
 
 class ApplicantajaxController extends ControllerAjax
 {
+    public $user;
+
     public function allLocalAction()
     {
         $zones = ZoneLocal::find("user_id = " . $this->user->id);
@@ -24,11 +26,11 @@ class ApplicantajaxController extends ControllerAjax
 
         if ($zone->save())
         {
-            if ($this->user->status == User::APPROVED)
-            {
+            #if ($this->user->status == User::APPROVED)
+            #{
                 # Add to the Queue
                 $job_id = $this->queue->put(array('local' => $zone->id));
-            }
+            #}
 
             $this->view->zone = $zone->toArray();
             $this->response->setStatusCode(200, 'OK');
@@ -230,10 +232,10 @@ class ApplicantajaxController extends ControllerAjax
                 # Valid credit card
                 $this->user->status = User::APPROVED;
                 $this->user->save();
-				
+
 				$supplier->status = Supplier::APPROVED;
            		$supplier->save();
-				
+
                 $this->session->set('auth', array(
                     'id' => $this->user->id,
                     'username' => $this->user->username,
