@@ -277,6 +277,7 @@ class DistributePool extends Injectable
         foreach($zone_interstate as $zone) {
             $zone->generatePool();
         }
+        echo "Location populated postcode successfully!";
     }
 
     public function populateLocal($id)
@@ -285,6 +286,7 @@ class DistributePool extends Injectable
         $zone = ZoneLocal::findFirst($id);
         if ($zone) {
             $zone->generatePool();
+            echo "Local Zone populated postcode successfully!";
         }
     }
 
@@ -294,6 +296,7 @@ class DistributePool extends Injectable
         $zone = ZoneCountry::findFirst($id);
         if ($zone) {
             $zone->generatePool();
+            echo "Country Zone populated postcode successfully!";
         }
     }
 
@@ -303,6 +306,7 @@ class DistributePool extends Injectable
         $zone = ZoneInterstate::findFirst($id);
         if ($zone) {
             $zone->generatePool();
+            echo "Interstate Zone populated postcode successfully!";
         }
     }
 
