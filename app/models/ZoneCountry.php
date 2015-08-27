@@ -113,7 +113,7 @@ class ZoneCountry extends BaseModel
 		
         $pool = array();
 		foreach($result as $postcode){
-			$pool[] = $postcode->postcode;
+			$pool[] = strlen($postcode->postcode) < 4 ? '0' . $postcode->postcode : $postcode->postcode;
 		}
         $this->pool_local = $local->pool;
         $this->pool_country = json_encode($pool);

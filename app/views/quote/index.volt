@@ -259,9 +259,9 @@
                                         <b>Job Details</b>
                                         <div class="row">
                                             <div class="col-lg-3">Pick Up</div>
-                                            <div class="col-lg-3"><b>[[ current_quote.is_international == 'no' ? current_quote.removal.from_postcode : current_quote.removal.from_country ]]</b></div>
+                                            <div class="col-lg-3"><b>[[ current_quote.removal.is_international == 'no' ? current_quote.removal.from_postcode : current_quote.removal.from_country ]]</b></div>
                                             <div class="col-lg-3">Drop Off</div>
-                                            <div class="col-lg-3"><b>[[ current_quote.is_international == 'no' ? current_quote.removal.to_postcode : current_quote.removal.to_country ]]</b></div>
+                                            <div class="col-lg-3"><b>[[ current_quote.removal.is_international == 'no' ? current_quote.removal.to_postcode : current_quote.removal.to_country ]]</b></div>
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-3">Job Date</div>

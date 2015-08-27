@@ -79,6 +79,7 @@ angular.module('controllers.quote', [])
             $scope.to_marker = removal.to_marker;
             $rootScope.loading--;
         });
+		console.log($scope.current_quote);
     };
     $scope.storageDetails = function(quote) {
         var storage = quote.storage;

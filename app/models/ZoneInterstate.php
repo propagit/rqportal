@@ -194,7 +194,7 @@ class ZoneInterstate extends BaseModel
             $pool1[] = $postcode->postcode;
         }*/
         foreach($result as $postcode) {
-            $pool1[] = $postcode->postcode;
+            $pool1[] = strlen($postcode->postcode) < 4 ? '0' . $postcode->postcode : $postcode->postcode;
         }
         $this->pool1 = json_encode($pool1);
 
@@ -205,7 +205,7 @@ class ZoneInterstate extends BaseModel
 		
         $pool2 = array();
 		foreach($result as $postcode){
-			$pool2[] = $postcode->postcode;	
+			$pool2[] = strlen($postcode->postcode) < 4 ? '0' . $postcode->postcode : $postcode->postcode;	
 		}
         $this->pool2 = json_encode($pool2);
 
