@@ -51,7 +51,7 @@ class DashboardajaxController extends ControllerAjax
 
         for($i=12; $i >= 0; $i--)
         {
-            $month = strtotime(date('Y-m') . "-$i month");
+            $month = strtotime(date('Y-m') . " -$i month");
             $labels[] = date('M Y', $month);
 
             $sales = Invoice::sum(array(
