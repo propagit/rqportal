@@ -183,6 +183,19 @@ class DistributePool extends Injectable
     public function createInvoice($user_id)
     {
         if (!$user_id) { return false; }
+
+        # We check if this user is currently has unpaid invoice, then do not create a new one
+        $invoices = Invoice::find(array(
+            "user_id = :user_id: AND status = :status:",
+            "bind" => array(
+                "user_id" => $user_id,
+                "status" => Invoice::UNPAID
+            )
+        ));
+        if (count($invoices) > 0) {
+            return false;
+        }
+
         $quotes = Quote::find("user_id = $user_id AND invoice_id is NULL");
         if (!$quotes || count($quotes) == 0) { return false; }
         $price_per_quote = Setting::findFirstByName(Setting::PRICE_PER_QUOTE);
