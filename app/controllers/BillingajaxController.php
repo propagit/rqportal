@@ -53,7 +53,7 @@ class BillingajaxController extends ControllerAjax
             $parameters['user_id'] = $this->user->id;
         }
 
-        $per_page = 2;
+        $per_page = 10;
         $offset = ($request->page - 1) * $per_page;
         $invoices = Invoice::find(array(
             $conditions,
