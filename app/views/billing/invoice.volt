@@ -124,8 +124,11 @@
                     <!-- end widget content -->
 
                 </div>
-                <!-- end widget div -->
 
+                <!-- end widget div -->
+                <p align="center">
+                    <button class="btn btn-default" style="margin-top: 10px"><i class="fa fa-arrow-circle-down" ng-click="loadMore()"></i> Load more</button>
+                </p>
             </div>
             <!-- end widget -->
         </div>

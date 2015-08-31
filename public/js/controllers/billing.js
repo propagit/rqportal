@@ -55,15 +55,23 @@ angular.module('controllers.billing', [])
 
     $rootScope.loading++;
     $scope.page = 1;
-    $http.post(Config.BASE_URL + 'billingajax/searchInvoices', {page: $scope.page})
-    .success(function(response){
-        console.log(response);
-        $scope.invoices = response.invoices;
-    }).error(function(error){
-        console.log("ERROR: ", error);
-    }).finally(function(){
-        $rootScope.loading--;
-    });
+    searchInvoices();
+    function searchInvoices() {
+        $http.post(Config.BASE_URL + 'billingajax/searchInvoices', {page: $scope.page})
+        .success(function(response){
+            console.log(response);
+            $scope.invoices = response.invoices;
+        }).error(function(error){
+            console.log("ERROR: ", error);
+        }).finally(function(){
+            $rootScope.loading--;
+        });
+    };
+
+    $scope.loadMore = function() {
+        $scope.page++;
+        searchInvoices();
+    };
 
     $scope.processInvoice = function(id) {
         $rootScope.loading++;
