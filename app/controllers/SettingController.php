@@ -2,7 +2,24 @@
 
 class SettingController extends ControllerBase
 {
+	
+	public function initialize()
+    {
+        parent::initialize();
+        $this->tag->setTitle('Settings');
+        $this->view->parent = 'setting';
+		
+		$auth = $this->session->get('auth');
+        if (!$auth) {
+            $this->response->redirect('login');
+        } else if ($auth['status'] == User::PENDING) {
+            $this->response->redirect('applicant');
+        } else if ($auth['level'] == User::SUPPLIER) {
+            $this->response->redirect('quote');
+        }
+    }
 
+	
     public function indexAction()
     {
         $this->tag->setTitle('System Configuration');

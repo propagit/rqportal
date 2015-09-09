@@ -1,0 +1,3 @@
+ALTER TABLE `removal` ADD `is_duplicate` TINYINT NOT NULL DEFAULT '0' COMMENT '0: not duplicate, 1: Duplicate' AFTER `to_country_id`, ADD `parent_id` BIGINT NOT NULL COMMENT 'Store the Parent Id if this has been flagged as Duplicate' AFTER `is_duplicate`;
+
+ALTER TABLE `removal` ADD `duplicate_status` TINYINT NOT NULL DEFAULT '0' COMMENT '-1: Trashed, 0: Not Distributed, 1: Distributed' AFTER `parent_id`;

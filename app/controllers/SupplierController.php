@@ -8,6 +8,15 @@ class SupplierController extends ControllerBase
         parent::initialize();
         $this->tag->setTitle('Supplier');
         $this->view->parent = 'supplier';
+		
+		$auth = $this->session->get('auth');
+        if (!$auth) {
+            $this->response->redirect('login');
+        } else if ($auth['status'] == User::PENDING) {
+            $this->response->redirect('applicant');
+        } else if ($auth['level'] == User::SUPPLIER) {
+            $this->response->redirect('quote');
+        }
     }
 
     public function indexAction()

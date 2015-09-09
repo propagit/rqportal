@@ -212,6 +212,192 @@ class QuoteajaxController extends ControllerAjax
             $storage->delete();
         }
     }
+	
+	public function getDuplicateRemovalQuotesAction()
+	{
+		$conditions = "is_duplicate = :is_duplicate: AND duplicate_status = :duplicate_status: GROUP BY parent_id";
+		$parameters = array(
+			'is_duplicate' => 1,
+			'duplicate_status' => 0
+		);
+		$removals = Removal::find(array(
+								  $conditions,
+								  "bind" => $parameters
+							  ))->toArray();
+		
+		// build removal such that the list is in this format
+		// Parent row - Distributed or not
+		//	- child row
+		//	- child row
+		
+		$duplicates = array();
+		$duplicate_removal_count = 0;
+		foreach($removals as $key => $removal){
+			# get parent
+			$parent_id = $removal['parent_id'];
+			$parent = Removal::findFirst(array('id = ' . $parent_id))->toArray();
+			
+			# check if parent has been distributed
+			$conditions = "job_id = :job_id: AND user_id != 0";
+            $parameters = array(
+                'job_id' => $parent_id
+            );
+			$suppliers = Quote::find(array(
+								  $conditions,
+								  "bind" => $parameters
+							  ))->toArray();
+							  
+			
+			if($suppliers){	
+				# get duplicates
+				$conditions = "is_duplicate = :is_duplicate: AND duplicate_status = :duplicate_status: AND parent_id = :parent_id:";
+				$parameters = array(
+					'is_duplicate' => 1,
+					'duplicate_status' => 0,
+					'parent_id' => $parent_id
+				);
+				$childrens = Removal::find(array(
+								$conditions,
+								"bind" => $parameters
+							))->toArray();
+							
+				foreach($childrens as $children_key => $children){
+					$childrens[$children_key]['suppliers'] = array();	
+				}
+								
+				$duplicates[$key] = $parent;
+				$duplicates[$key]['duplicates'] = $childrens;
+				
+				
+				foreach($suppliers as $suplier){
+					$duplicates[$key]['suppliers'][] = Supplier::findFirst(array('user_id = ' . $suplier['user_id']));	
+				}
+				#$duplicates[$key]['suppliers'] = $suppliers;
+				
+				# count removal duplicates
+				$duplicate_removal_count += count($childrens);
+			}
+			
+			
+			
+		}
+		$q['removal'] = $duplicates;
+		$q['storage'] = array();
+		$q['removal_duplicate_count'] = $duplicate_removal_count;
+		$results[] = $q;
+        $this->view->results = $results;
+	}
+	
+	public function deleteDuplicateRemovalQuoteAction($id)
+	{
+		$duplicate = Removal::findFirst($id);
+		if($duplicate){
+			$duplicate->duplicate_status = -1;	
+		}
+		$duplicate->save();
+		$this->view->results = $duplicate;
+       
+	}
+	
+	public function reSendDuplicateRemovalQuoteAction($id)
+	{
+		$duplicate = Removal::findFirst($id);
+		if($duplicate){
+			$duplicate->duplicate_status = 1;
+			$parent_id = $duplicate->parent_id;	
+			$job_id = $duplicate->id;
+		}
+		$duplicate->save();
+		
+		$errors = array();
+		if($parent_id){
+			# insert quote
+			$conditions = "job_id = :job_id:";
+			$parameters = array(
+				'job_id' => $parent_id,
+			);
+			$prev_suppliers = Quote::find(array(
+								  $conditions,
+								  "bind" => $parameters
+							  ))->toArray();
+			if($prev_suppliers){
+				foreach($prev_suppliers as $supplier){
+					$new_quote = new Quote();
+					$new_quote->job_type = 'removal';
+					$new_quote->job_id = $job_id;
+					$new_quote->user_id = $supplier['user_id'];
+					$new_quote->status = 0;
+					$new_quote->free = 1;
+					$new_quote->created_on = new Phalcon\Db\RawValue('now()');
+					if ($new_quote->save() == false)
+					{
+						foreach($new_quote->getMessages() as $message) {
+							$errors[] = (string) $message;
+						}
+					}
+				}
+			}
+						  
+		}
+		$this->view->results = $out;
+		if (count($errors) > 0)
+        {
+            $this->response->setStatusCode(400, 'ERROR');
+            $this->view->message = implode(', ', $errors);
+        }
+        else
+        {
+            $this->response->setStatusCode(200, 'OK');
+            $this->view->message = 'Successfully Re Distributed';
+        }
+	}
+	
+	public function addSupplierToDuplicateAction()
+    {
+        $request = $this->request->getJsonRawBody();
+        $removal_id = $request->quote_id;
+        $supplier_id = $request->supplier_id;
+        $free = 0;
+        if (isset($request->free) && $request->free == 'YES')
+        {
+            $free = 1;
+        }
 
+        $removal = Removal::findFirst($removal_id);
+        $supplier = Supplier::findFirst($supplier_id);
+
+        $errors = array();
+		$new_quote = new Quote();
+		$new_quote->job_type = 'removal';
+		$new_quote->job_id = $removal_id;
+		$new_quote->user_id = $supplier->user_id;
+		$new_quote->status = 0;
+		$new_quote->free = $free;
+		$new_quote->created_on = new Phalcon\Db\RawValue('now()');
+		if ($new_quote->save() == false)
+		{
+			foreach($new_quote->getMessages() as $message) {
+				$errors[] = (string) $message;
+			}
+		}
+		else
+		{
+			$removal->duplicate_status = 1;
+			$removal->save();	
+		}
+        
+
+        if (count($errors) > 0)
+        {
+            $this->response->setStatusCode(400, 'ERROR');
+            $this->view->message = implode(', ', $errors);
+        }
+        else
+        {
+            $this->response->setStatusCode(200, 'OK');
+            $this->view->supplier = $supplier->toArray();
+        }
+
+    }
 }
 

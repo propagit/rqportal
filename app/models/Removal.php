@@ -132,6 +132,19 @@ class Removal extends \Phalcon\Mvc\Model
      * @var string
      */
     public $notes;
+	
+	 /**
+     *
+     * @var integer
+     */
+    public $is_duplicate;
+	
+	 /**
+     *
+     * @var integer
+     */
+    public $parent_id;
+	
 
     /**
      *
@@ -165,6 +178,9 @@ class Removal extends \Phalcon\Mvc\Model
 			'to_country' => 'to_country',
 			'from_country_id' => 'from_country_id',
 			'to_country_id' => 'to_country_id',
+			'is_duplicate' => 'is_duplicate',
+			'parent_id' => 'parent_id',
+			'duplicate_status' => 'duplicate_status',
             'created_on' => 'created_on'
         );
     }

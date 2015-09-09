@@ -184,9 +184,29 @@ $app->post('/quote/removal', function() use($app, $config) {
         'postcode' => $to->postcode,
         'suburb' => $to->suburb
     ))->getFirst();
+	
+	
+	# Check if this is duplicate quote
+	$time_now = time();
+	$now = date('Y-m-d H:i:s');
+	$last_24_hr = date('Y-m-d H:i:s', strtotime('-24 hour', $time_now));
+	$phql = "SELECT * FROM Removal WHERE customer_email = :customer_email: AND from_postcode = :from_postcode: AND to_postcode = :to_postcode: AND (created_on <= :created_on_now: AND created_on >= :created_on_last24hr:)  ORDER BY id ASC";
+	$duplicate = $app->modelsManager->executeQuery($phql, array(
+		'customer_email' => $quote->customer_email,
+		'from_postcode' => strlen($from_postcode->postcode) < 4 ? '0' . $from_postcode->postcode : $from_postcode->postcode,
+		'to_postcode' => strlen($to_postcode->postcode) < 4 ? '0' . $to_postcode->postcode : $to_postcode->postcode,
+		'created_on_now' => $now,
+		'created_on_last24hr' => $last_24_hr
+	))->getFirst();
+	
+	$is_duplicate = 0;
+	$parent_id = 0;
+	if($duplicate){
+		$is_duplicate = 1;
+		$parent_id = $duplicate->id;	
+	}
 
-
-    $phql = "INSERT INTO Removal (customer_name, customer_email, customer_phone, from_postcode, from_lat, from_lon, to_postcode, to_lat, to_lon, moving_date, moving_type, bedrooms, packing, notes, is_international,from_country,to_country, from_country_id, to_country_id, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :from_postcode:, :from_lat:, :from_lon:, :to_postcode:, :to_lat:, :to_lon:, :moving_date:, :moving_type:, :bedrooms:, :packing:, :notes:,:is_international:,:from_country:,:to_country:, :from_country_id:, :to_country_id:, :created_on:)";
+    $phql = "INSERT INTO Removal (customer_name, customer_email, customer_phone, from_postcode, from_lat, from_lon, to_postcode, to_lat, to_lon, moving_date, moving_type, bedrooms, packing, notes, is_international,from_country,to_country, from_country_id, to_country_id, is_duplicate, parent_id, duplicate_status, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :from_postcode:, :from_lat:, :from_lon:, :to_postcode:, :to_lat:, :to_lon:, :moving_date:, :moving_type:, :bedrooms:, :packing:, :notes:,:is_international:,:from_country:,:to_country:, :from_country_id:, :to_country_id:, :is_duplicate:, :parent_id:, :duplicate_status:, :created_on:)";
 
     $status = $app->modelsManager->executeQuery($phql, array(
         'customer_name' => $quote->customer_name,
@@ -208,23 +228,31 @@ $app->post('/quote/removal', function() use($app, $config) {
 		'to_country' => '-',
 		'from_country_id' => 0,
 		'to_country_id' => 0,
+		'is_duplicate' => $is_duplicate,
+		'parent_id' => $parent_id,
+		'duplicate_status' => 0,
         'created_on' => new Phalcon\Db\RawValue('now()')
     ));
-
-    if ($status->success() == true) {
-        # Add to queue
-        $job_id = $app->queue->put(array('removal' => $status->getModel()->id));
-
-        $response->setStatusCode(201, "Created");
-        $response->setJsonContent(array('status' => 'OK', 'data' => $job_id));
-    } else {
-        $response->setStatusCode(409, "Conflict");
-        $errors = array();
-        foreach($status->getMessages() as $message) {
-            $errors[] = $message->getMessage();
-        }
-        $response->setJsonContent(array('status' => 'ERROR', 'message' => $errors));
-    }
+	
+	if(!$is_duplicate){
+		if ($status->success() == true) {
+			# Add to queue
+			$job_id = $app->queue->put(array('removal' => $status->getModel()->id));
+	
+			$response->setStatusCode(201, "Created");
+			$response->setJsonContent(array('status' => 'OK', 'data' => $job_id));
+		} else {
+			$response->setStatusCode(409, "Conflict");
+			$errors = array();
+			foreach($status->getMessages() as $message) {
+				$errors[] = $message->getMessage();
+			}
+			$response->setJsonContent(array('status' => 'ERROR', 'message' => $errors));
+		}
+	}else{
+		$response->setStatusCode(201, "Created");
+		$response->setJsonContent(array('status' => 'OK', 'data' => ''));	
+	}
 
     return $response;
 });
@@ -374,7 +402,7 @@ $app->post('/quote/international', function() use($app, $config) {
     ))->getFirst();
 
 
-    $phql = "INSERT INTO Removal (customer_name, customer_email, customer_phone, from_postcode, from_lat, from_lon, to_postcode, to_lat, to_lon, moving_date, moving_type, bedrooms, packing, notes, is_international,from_country,to_country, from_country_id, to_country_id, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :from_postcode:, :from_lat:, :from_lon:, :to_postcode:, :to_lat:, :to_lon:, :moving_date:, :moving_type:, :bedrooms:, :packing:, :notes:,:is_international:,:from_country:,:to_country:, :from_country_id:, :to_country_id:, :created_on:)";
+    $phql = "INSERT INTO Removal (customer_name, customer_email, customer_phone, from_postcode, from_lat, from_lon, to_postcode, to_lat, to_lon, moving_date, moving_type, bedrooms, packing, notes, is_international,from_country,to_country, from_country_id, to_country_id, is_duplicate, parent_id, duplicate_status, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :from_postcode:, :from_lat:, :from_lon:, :to_postcode:, :to_lat:, :to_lon:, :moving_date:, :moving_type:, :bedrooms:, :packing:, :notes:,:is_international:,:from_country:,:to_country:, :from_country_id:, :to_country_id:, :is_duplicate:, :parent_id:, :duplicate_status:, :created_on:)";
     $status = $app->modelsManager->executeQuery($phql, array(
         'customer_name' => $quote->customer_name,
         'customer_email' => $quote->customer_email,
@@ -395,6 +423,9 @@ $app->post('/quote/international', function() use($app, $config) {
 		'to_country' => $to_country->name,
 		'from_country_id' => $from_country->id,
 		'to_country_id' => $to_country->id,
+		'is_duplicate' => 0,
+		'parent_id' => 0,
+		'duplicate_status' => 0,
         'created_on' => new Phalcon\Db\RawValue('now()')
     ));
 

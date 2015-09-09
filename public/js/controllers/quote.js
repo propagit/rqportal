@@ -229,5 +229,7 @@ angular.module('controllers.quote', [])
 
         return Math.min(latZoom, lngZoom, ZOOM_MAX);
     };
+	
+	
 
 })

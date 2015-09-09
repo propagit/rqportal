@@ -19,6 +19,14 @@ class BillingController extends ControllerBase
 
     public function createAction()
     {
+		$auth = $this->session->get('auth');
+        if (!$auth) {
+            $this->response->redirect('login');
+        } else if ($auth['status'] == User::PENDING) {
+            $this->response->redirect('applicant');
+        } else if ($auth['level'] == User::SUPPLIER) {
+            $this->response->redirect('quote');
+        }
         $this->tag->setTitle('Create Manual Invoice');
     }
 
