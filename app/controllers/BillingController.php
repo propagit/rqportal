@@ -65,12 +65,16 @@ class BillingController extends ControllerBase
                     $this->flash->success('Payment transaction approved');
                 } else {
 					# payment failed de activate this account
-						$supplier = Supplier::findFirst($invoice->user_id);
+					# $supplier = Supplier::findFirst($invoice->user_id); // this gets by primary key and hence the id - kept here for future reference.
+						$supplier = Supplier::findFirstByUserId($invoice->user_id);
 						if ($supplier->user_id)
 						{
 							$user = User::findFirst($supplier->user_id);
 							$user->status = User::INACTIVED;
 							$user->save();
+							
+							$supplier->status = Supplier::INACTIVED;
+							$supplier->save();
 						}
                     $this->flash->error($invoice->eway_trxn_msg);
                 }
