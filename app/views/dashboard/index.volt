@@ -78,11 +78,11 @@
             </h1>
         </div>
         <div class="col-md-[[ current_quote.id ? 5 : 12 ]]">
-            <div class="jarviswidget" id="wid-1" ng-if="duplicateRemovals.length > 0">
+            <div class="jarviswidget" id="wid-1" ng-if="duplicateRemovalsCount > 0">
     
                 <header>
                     <ul id="widget-tab-1" class="nav nav-tabs pull-left">
-                        <li class="active" ng-if="duplicateRemovals.length > 0">
+                        <li class="active" ng-if="duplicateRemovalsCount> 0">
                             <a data-toggle="tab" href="#removal"> Removal
                                 <span class="badge">[[ duplicateRemovalsCount ]]</span>
                             </a>
