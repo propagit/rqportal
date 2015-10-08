@@ -4,3 +4,4 @@ app/config/config.php
 .DS_Store?
 public/demo
 public/files
+nbproject

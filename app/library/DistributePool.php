@@ -143,6 +143,10 @@ class DistributePool extends Injectable
             echo 'Supplier has no credit card information';
             return false;
         }
+        
+        # If the supplier is inactive is not procceding with the payment
+        if ($supplier->status == Supplier::INACTIVED) { return false; }
+        
         try {
             $client = new SoapClient($this->config->eway->endpoint, array('trace' => 1));
             $header = new SoapHeader($this->config->eway->namespace, 'eWAYHeader', $this->config->eway->headers);
@@ -178,6 +182,7 @@ class DistributePool extends Injectable
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+        
     }
 
     public function createInvoice($user_id)
