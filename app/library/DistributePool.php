@@ -167,7 +167,8 @@ class DistributePool extends Injectable
                 echo 'Payment transaction approved';
             } else {
 				# payment failed de activate this account
-					$supplier = Supplier::findFirst($invoice->user_id);
+					#$supplier = Supplier::findFirst($invoice->user_id); //Zack changed, set up the same as BillingController.php
+                    $supplier = Supplier::findFirstByUserId($invoice->user_id);
                     $supplier->status = Supplier::INACTIVED;
                     $supplier->save();
 					if ($supplier->user_id)
