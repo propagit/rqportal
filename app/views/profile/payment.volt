@@ -141,7 +141,7 @@
         <p>All quotes delivered to members (suppliers) are billed on a “per quote” basis. Quotes received are available via your member profile. The same price is allocated to a delivered quote regardless of whether the suppler successfully wins work from the quote.</p>
 
         <h6 class="fw600">Deposit/Refunds/returns/cancelation Policy</h6>
-        <p>New members who wish to sign up to the Removalist Quote system are required to pay a $200 deposit. The deposit is kept until cancelation of your account at which time the $200 deposit will be refunded.</p>
+        <p>New members who wish to sign up to the Removalist Quote system are required to pay a $10 deposit. The deposit is kept until cancelation of your account at which time the $10 deposit will be refunded.</p>
         <p>Should you for any reason wish to cancel your account you must advise us by writing or via a phone call to a Removalist Quote representative.</p>
 
         <p>Upon cancelation any outstanding balance you have in the system will be deducted from your initial deposit payment with any outstanding balance charged to your credit card on file.</p>
