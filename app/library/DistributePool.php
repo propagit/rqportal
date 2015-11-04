@@ -446,7 +446,7 @@ class DistributePool extends Injectable
             ));
 
             if ($supplier->status == Supplier::APPROVED && $matched
-                && $count < $supplier_per_quote->value && $quote == NULL) {
+                && $count < $supplier_per_quote->value && !$quote) {
                 $quote = new Quote();
                 $quote->job_type = Quote::REMOVAL;
                 $quote->job_id = $removal->id;
