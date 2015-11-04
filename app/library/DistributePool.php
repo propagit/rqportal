@@ -537,9 +537,19 @@ class DistributePool extends Injectable
         $count = 0;
         $supplier_per_quote = Setting::findFirstByName(Setting::SUPPLIER_PER_QUOTE);
         foreach($users_with_quote as $user_id => $quote_number) {
+
+            # Check if this supplier already received this quote
+            $quote = Quote::findFirst(array(
+                "job_id = :job_id: AND user_id = :user_id:",
+                "bind" => array(
+                    "job_id" => $storage->id,
+                    "user_id" => $user_id
+                )
+            ));
+
             $supplier = Supplier::findFirstByUserId($user_id);
             if ($supplier->status == Supplier::APPROVED &&
-                    $count < $supplier_per_quote->value) {
+                    $count < $supplier_per_quote->value && !$quote) {
                 $quote = new Quote();
                 $quote->job_type = Quote::STORAGE;
                 $quote->job_id = $storage->id;
