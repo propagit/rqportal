@@ -143,10 +143,10 @@ class DistributePool extends Injectable
             echo 'Supplier has no credit card information';
             return false;
         }
-        
+
         # If the supplier is inactive is not procceding with the payment
         if ($supplier->status == Supplier::INACTIVED) { return false; }
-        
+
         try {
             $client = new SoapClient($this->config->eway->endpoint, array('trace' => 1));
             $header = new SoapHeader($this->config->eway->namespace, 'eWAYHeader', $this->config->eway->headers);
@@ -183,7 +183,7 @@ class DistributePool extends Injectable
         } catch(Exception $e) {
             echo $e->getMessage();
         }
-        
+
     }
 
     public function createInvoice($user_id)
@@ -436,8 +436,17 @@ class DistributePool extends Injectable
                 }*/
             }
 
+            # Check if this supplier already received this quote
+            $quote = Quote::findFirst(array(
+                "job_id = :job_id: AND user_id = :user_id:",
+                "bind" => array(
+                    "job_id" => $removal->id,
+                    "user_id" => $user_id
+                )
+            ));
+
             if ($supplier->status == Supplier::APPROVED && $matched
-                && $count < $supplier_per_quote->value) {
+                && $count < $supplier_per_quote->value && $quote == NULL) {
                 $quote = new Quote();
                 $quote->job_type = Quote::REMOVAL;
                 $quote->job_id = $removal->id;
