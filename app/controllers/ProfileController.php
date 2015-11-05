@@ -114,7 +114,6 @@ class ProfileController extends ControllerBase
         $this->tag->setTitle('Payment Details');
         $this->view->supplier = $this->supplier;
 
-        $eway_customer = null;
 
         if ($this->request->isPost())
         {
@@ -122,6 +121,7 @@ class ProfileController extends ControllerBase
                 || !$this->request->getPost('lastname') || !$this->request->getPost('ccnumber')
                 || !$this->request->getPost('ccexpmonth') || !$this->request->getPost('ccexpyear')
                 || !$this->request->getPost('cvn')) {
+                $this->view->eway_customer = null;
                 $this->flash->error('Please enter all fields');
                 return;
             }
@@ -163,6 +163,7 @@ class ProfileController extends ControllerBase
                     $this->supplier->save();
                     $this->flash->success('New payment detail has been added successfully!');
                 } catch(Exception $e) {
+                    $this->view->eway_customer = null;
                     $this->flash->error($e->getMessage());
                 }
             }
@@ -181,12 +182,14 @@ class ProfileController extends ControllerBase
                     $this->supplier->cvn = $this->request->getPost('cvn');
                     $this->supplier->save();
                 } catch(Exception $e) {
+                    $this->view->eway_customer = null;
                     $this->flash->error($e->getMessage());
                 }
             }
         }
 
 
+        $eway_customer = null;
         if ($this->supplier->eway_customer_id)
         {
             try {
