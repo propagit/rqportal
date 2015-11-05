@@ -44,7 +44,7 @@ class ProfileController extends ControllerBase
     {
         $this->tag->setTitle('Update password');
 		$this->view->setVar("username", $this->user->username);
-		
+
         if ($this->request->isPost()) {
             $newPassword = $this->request->getPost('newPassword');
             $repeatPassword = $this->request->getPost('repeatPassword');
@@ -114,6 +114,7 @@ class ProfileController extends ControllerBase
         $this->tag->setTitle('Payment Details');
         $this->view->supplier = $this->supplier;
 
+        $eway_customer = null;
 
         if ($this->request->isPost())
         {
@@ -186,7 +187,6 @@ class ProfileController extends ControllerBase
         }
 
 
-        $eway_customer = null;
         if ($this->supplier->eway_customer_id)
         {
             try {
