@@ -58,7 +58,6 @@ angular.module('controllers.billing', [])
     $scope.invoices = [];
     searchInvoices();
     function searchInvoices() {
-        console.log(Config.BASE_URL + 'billingajax/searchInvoices', {page: $scope.page});
         $http.post(Config.BASE_URL + 'billingajax/searchInvoices', {page: $scope.page})
         .success(function(response){
             for(var i=0; i < response.invoices.length; i++) {
