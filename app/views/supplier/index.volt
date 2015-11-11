@@ -62,7 +62,7 @@
                             <i class="fa fa-pencil"></i></a> -->
 
                             &nbsp; 
-                            <span ng-show="supplier.note != null || supplier.note != ''"><a ns-popover ns-popover-template="loadnote" ns-popover-trigger="click" ns-popover-placement="bottom" ng-click="getSupplierNote(supplier.id)" style="color: red;"><i class="fa fa-comment"></i></a></span>
+                            <span ng-show="supplier.note != null && supplier.note != ''"><a ns-popover ns-popover-template="loadnote" ns-popover-trigger="click" ns-popover-placement="bottom" ng-click="getSupplierNote(supplier.id)" style="color: red;"><i class="fa fa-comment"></i></a></span>
 
                             <span ng-show="supplier.note == null || supplier.note == ''">
                             <a ns-popover ns-popover-template="loadnote" ns-popover-trigger="click" ns-popover-placement="bottom" ng-click="getSupplierNote(supplier.id)"><i class="fa fa-comment"></i></a>
