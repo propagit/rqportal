@@ -10,7 +10,9 @@ angular.module('rqportal', [
     'controllers.applicant',
     'controllers.supplier',
     'controllers.quote',
-    'controllers.billing'
+    'controllers.billing',
+    'ngDialog',
+    'nsPopover'
 ])
 .config(function($interpolateProvider) {
     // Avoid confliction with Phalcon

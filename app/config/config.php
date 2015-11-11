@@ -7,6 +7,8 @@ return new \Phalcon\Config(array(
         'username'    => 'root',
         'password'    => 'root',
         'dbname'      => 'rqportal',
+        //'dbname'      => 'removal1_portal', //zack's configuration
+
     ),
     'application' => array(
         'controllersDir' => __DIR__ . '/../../app/controllers/',
@@ -17,7 +19,9 @@ return new \Phalcon\Config(array(
         'formsDir'       => __DIR__ . '/../../app/forms/',
         'cacheDir'       => __DIR__ . '/../../app/cache/',
         'baseUri'        => '/rqportal/',
+        //'baseUri'        => '/', //zack's configuration
         'publicUrl'      => 'http://nam.dev/rqportal/'
+        //'publicUrl'      => 'http://localhost/propagate/rqportal/' //Zack's configuration
     ),
     'mail' => array(
         'toName'    => 'Team',

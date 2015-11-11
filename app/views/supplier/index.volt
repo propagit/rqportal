@@ -23,7 +23,7 @@
         <div>
 
             <!-- widget content -->
-            <div class="widget-body no-padding">
+            <div class="widget-body no-padding">            
 
                 <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
                     <thead>
@@ -44,6 +44,7 @@
                         <tr>
                             <th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>Name</th>
                             <th>Business</th>
+                            <th data-hide="phone,tablet">Note</th>
                             <th data-hide="phone"><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i>Address</th>
                             <th data-hide="phone"><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i>Phone</th>
                             <th data-hide="phone,tablet">Email</th>
@@ -56,6 +57,18 @@
                         <tr ng-repeat="supplier in suppliers | filter: keyword | filter: filterSupplier">
                             <td>[[ supplier.name ]]</td>
                             <td>[[ supplier.business ]]</td>
+                            <td>
+                            <!-- <a ns-popover ns-popover-template="popover" ns-popover-trigger="click" ns-popover-placement="bottom" ng-click="setSupplierId(supplier.id)">
+                            <i class="fa fa-pencil"></i></a> -->
+
+                            &nbsp; 
+                            <span ng-show="supplier.note != ''"><a ns-popover ns-popover-template="loadnote" ns-popover-trigger="click" ns-popover-placement="bottom" ng-click="getSupplierNote(supplier.id)" style="color: red;"><i class="fa fa-comment"></i></a></span>
+
+                            <span ng-show="supplier.note == ''">
+                            <a ns-popover ns-popover-template="loadnote" ns-popover-trigger="click" ns-popover-placement="bottom" ng-click="getSupplierNote(supplier.id)"><i class="fa fa-comment"></i></a>
+                            </span>
+
+                            </td>
                             <td>[[ supplier.address ]]</td>
                             <td>[[ supplier.phone ]]</td>
                             <td>[[ supplier.email ]]</td>
@@ -122,3 +135,37 @@
 
 
 </div>
+
+
+<script type="text/ng-template" id="popover">
+  <div class="triangle note-dialog">
+      <div class="page-title"><span>Add A Note</span> </div>
+      <div ng-show="noteForm">
+          <textarea ng-model="note" placeholder="Enter new note"></textarea>
+          <div class="button-group">
+            <button type="submit" class="btn btn-danger" ng-click="saveNote(note)">
+            Add The Note</button>
+          </div>
+      </div>
+      <div ng-hide="noteResponse">
+        <p>Your note is added successfully to this supplier.</p>
+      </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="loadnote">
+  <div class="triangle note-dialog">
+      <div class="page-title"><span>Supplier Note</span> </div>
+      <div ng-show="noteForm">
+          <textarea ng-model="note" placeholder="Enter new note"></textarea>
+          <div class="button-group">
+            <button type="submit" class="btn btn-danger" ng-click="saveNote(note)">
+            Update Note</button>
+          </div>
+      </div>
+      <div ng-hide="noteResponse">
+        <p>Your note is added successfully to this supplier.</p>
+      </div>
+  </div>
+</script>
+

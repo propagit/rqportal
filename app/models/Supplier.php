@@ -132,6 +132,12 @@ class Supplier extends \Phalcon\Mvc\Model
     public $created_on;
 
     /**
+     *
+     * @var string
+     */
+    public $note;
+
+    /**
      * Validations and business logic
      */
     public function validation()
@@ -175,7 +181,8 @@ class Supplier extends \Phalcon\Mvc\Model
             'email' => 'email',
             'website' => 'website',
             'about' => 'about',
-            'created_on' => 'created_on'
+            'created_on' => 'created_on',
+            'note' => 'note'
         );
     }
 

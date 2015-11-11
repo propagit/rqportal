@@ -1,10 +1,16 @@
 angular.module('controllers.supplier', [])
 
-.controller('SupplierCtrl', function($rootScope, $scope, $http, Config){
+.controller('SupplierCtrl', function($rootScope, $scope, $http, Config,ngDialog){
     if (!$scope.query)
     {
         $scope.filter_status = 2;
     }
+    $rootScope.supplierId = null;
+    $scope.setSupplierId = function(id) {
+        $rootScope.supplierId = id;
+        $scope.noteForm = true;
+        $scope.noteResponse = true;
+    };
     $scope.filterSupplier = function(supplier) {
         if ($scope.query) {
             if (supplier.status == 0 || supplier.status == 1) {
@@ -33,12 +39,13 @@ angular.module('controllers.supplier', [])
     $http.post(Config.BASE_URL + 'supplierajax/getAll')
     .success(function(response){
         $scope.suppliers = response.suppliers;
-        console.log(response);
     }).error(function(error){
         console.log("ERROR: ", error);
     }).finally(function(){
         $rootScope.loading--;
     });
+
+
 
     $scope.$watch('status', function(value){
         if (value)
@@ -47,7 +54,7 @@ angular.module('controllers.supplier', [])
             $http.post(Config.BASE_URL + 'supplierajax/getAll', { status: value })
             .success(function(response){
                 $scope.suppliers = response.suppliers;
-                console.log(response);
+                // console.log(response);
             }).error(function(error){
                 console.log("ERROR: ", error);
             }).finally(function(){
@@ -133,4 +140,44 @@ angular.module('controllers.supplier', [])
             $rootScope.loading--;
         });
     };
+    
+    $scope.saveNote = function(note) {
+        $rootScope.loading++;
+        $http.post(Config.BASE_URL + 'supplierajax/updatenote/' + $rootScope.supplierId,{
+            note: note
+        })
+        .success(function(response){
+            //_updateSupplier($rootScope.supplierId, response.supplier);
+            $scope.noteForm = false;
+            $scope.noteResponse = false;
+            for(var i=0; i < $scope.suppliers.length;i++) {
+                if ($scope.suppliers[i].id == $rootScope.supplierId) {
+                    $scope.suppliers[i] = response.supplier;
+                }
+            }
+        }).error(function(error){
+            console.log("ERROR: ", error);
+        }).finally(function(){
+            $rootScope.loading--;
+        });
+    };
+
+    $scope.getSupplierNote = function(id) {
+        $rootScope.supplierId = id;
+        $scope.noteForm = true;
+        $scope.noteResponse = true;
+        $rootScope.loading++;
+        $http.post(Config.BASE_URL + 'supplierajax/getnote/' + $rootScope.supplierId)
+        .success(function(response){
+            $scope.supplierNote = response.suppliers;
+            $scope.note = $scope.supplierNote.note;
+        }).error(function(error){
+            console.log("ERROR: ", error);
+        }).finally(function(){
+            $rootScope.loading--;
+        });
+    };
+
+    
 })
+

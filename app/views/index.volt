@@ -6,8 +6,10 @@
         {{ stylesheet_link('bootstrap/css/bootstrap.min.css') }}
         {{ stylesheet_link('smart-admin/css/smartadmin-production.min.css') }}
         {{ stylesheet_link('js/lib/angular-bootstrap3-datepicker/ng-bs3-datepicker.css') }}
+        {{ stylesheet_link('js/lib/ng-dialog/ngDialog.css') }}
         {{ stylesheet_link('js/lib/angucomplete/angucomplete-alt.css') }}
         {{ stylesheet_link('js/lib/angular-chart/angular-chart.css') }}
+        {{ stylesheet_link('bower_components/nsPopover/src/nsPopover.css') }}
         {{ stylesheet_link('css/app.min.css') }}
 
 
@@ -42,6 +44,9 @@
         {{ javascript_include('js/lib/moment-with-locales.min.js') }}
         {{ javascript_include('js/lib/angular-bootstrap3-datepicker/ng-bs3-datepicker.min.js') }}
         {{ javascript_include('js/lib/angucomplete/angucomplete-alt.min.js') }}
+
+        {{ javascript_include('js/lib/ng-dialog/ngDialog.min.js') }}
+        {{ javascript_include('bower_components/nsPopover/src/nsPopover.js') }}
 
         {{ javascript_include('js/app.js') }}
         {{ javascript_include('js/controllers/dashboard.js') }}

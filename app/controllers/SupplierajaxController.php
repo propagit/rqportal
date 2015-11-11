@@ -97,5 +97,21 @@ class SupplierajaxController extends ControllerAjax
         $this->view->supplier = $supplier->toArray();
     }
 
+    public function updatenoteAction($id)
+    {
+        $request = $this->request->getJsonRawBody();
+        $supplier = Supplier::findFirst($id);
+        $supplier->note = $request->note;
+        $supplier->save();
+        $this->view->supplier = $supplier->toArray();
+    }
+
+    public function getnoteAction($id)
+    {
+        $supplier = Supplier::findFirst($id);
+        $result = $supplier;
+        $this->view->suppliers = $result;
+    }
+
 }
 
