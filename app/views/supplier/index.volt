@@ -65,7 +65,7 @@
                             <span ng-show="supplier.note != null && supplier.note != ''"><a ns-popover ns-popover-template="loadnote" ns-popover-trigger="click" ns-popover-placement="bottom" ng-click="getSupplierNote(supplier.id)" style="color: #a90329;"><i class="fa fa-comment"></i></a></span>
 
                             <span ng-show="supplier.note == null || supplier.note == ''">
-                            <a ns-popover ns-popover-template="loadnote" ns-popover-trigger="click" ns-popover-placement="bottom" ng-click="getSupplierNote(supplier.id)" style="color: #CCC;"><i class="fa fa-comment-o"></i></a>
+                            <a ns-popover ns-popover-template="loadnote" ns-popover-trigger="click" ns-popover-placement="bottom" ng-click="getSupplierNote(supplier.id)" style="color: #697386;"><i class="fa fa-comment-o"></i></a>
                             </span>
 
                             </td>
