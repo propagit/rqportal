@@ -84,7 +84,7 @@ class BillingController extends ControllerBase
                 }
                 $invoice->save();
             } catch(Exception $e) {
-                $this->flash->error($e->getMessage());
+                $this->flash->error('Error: ' . $e->getMessage());
             }
         }
 
