@@ -80,7 +80,7 @@ class BillingController extends ControllerBase
                                 $this->flash->error($supplier->getMessages());
                             }
 						}
-                    $this->flash->error($invoice->eway_trxn_msg);
+                    $this->flash->error('Error: ' . $invoice->eway_trxn_msg);
                 }
                 $invoice->save();
             } catch(Exception $e) {
