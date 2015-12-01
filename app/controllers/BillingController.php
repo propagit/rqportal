@@ -38,7 +38,7 @@ class BillingController extends ControllerBase
         if (!$invoice) { return; }
         $supplier = Supplier::findFirstByUserId($invoice->user_id);
         if (!$supplier) { return; }
-
+        $success = true;
         if (!$supplier->eway_customer_id)
         {
             $this->flash->error('Supplier has no credit card information');
@@ -67,24 +67,28 @@ class BillingController extends ControllerBase
 					# payment failed de activate this account
 					# $supplier = Supplier::findFirst($invoice->user_id); // this gets by primary key and hence the id - kept here for future reference.
 						#$supplier = Supplier::findFirstByUserId($invoice->user_id);
-						if ($supplier->user_id)
-						{
-							$user = User::findFirst($supplier->user_id);
-							$user->status = User::INACTIVED;
-                            if ($user->save() == false) {
-                                $this->flash->error($user->getMessages());
-                            }
-							
-							$supplier->status = Supplier::INACTIVED;
-							if ($supplier->save() == false) {
-                                $this->flash->error($supplier->getMessages());
-                            }
-						}
+					$success = false;
                     $this->flash->error('Error: ' . $invoice->eway_trxn_msg);
                 }
                 $invoice->save();
             } catch(Exception $e) {
                 $this->flash->error('Error: ' . $e->getMessage());
+                $success = false;
+            }
+            if (!$success) {
+                if ($supplier->user_id)
+                {
+                    $user = User::findFirst($supplier->user_id);
+                    $user->status = User::INACTIVED;
+                    if ($user->save() == false) {
+                        $this->flash->error($user->getMessages());
+                    }
+                    
+                    $supplier->status = Supplier::INACTIVED;
+                    if ($supplier->save() == false) {
+                        $this->flash->error($supplier->getMessages());
+                    }
+                }
             }
         }
 
