@@ -71,10 +71,14 @@ class BillingController extends ControllerBase
 						{
 							$user = User::findFirst($supplier->user_id);
 							$user->status = User::INACTIVED;
-							$user->save();
+                            if ($user->save() == false) {
+                                $this->flash->error($user->getMessages());
+                            }
 							
 							$supplier->status = Supplier::INACTIVED;
-							$supplier->save();
+							if ($supplier->save() == false) {
+                                $this->flash->error($supplier->getMessages());
+                            }
 						}
                     $this->flash->error($invoice->eway_trxn_msg);
                 }
