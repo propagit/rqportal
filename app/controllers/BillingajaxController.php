@@ -61,8 +61,8 @@ class BillingajaxController extends ControllerAjax
             $conditions,
             "bind" => $parameters,
             "order" => "id DESC",
-            "limit" => 10, //$per_page,
-            "offset" => 1, //$offset
+            "limit" => $per_page,
+            "offset" => $offset
         ));
         $results = array();
         foreach($invoices as $invoice)
@@ -70,7 +70,7 @@ class BillingajaxController extends ControllerAjax
             $results[] = $invoice->toArray();
         }
         $this->view->invoices = $results;
-        print_r($results); die();
+        print_r(count($results)); die();
     }
 
     public function getSuppliersAction()
