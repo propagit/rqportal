@@ -63,6 +63,7 @@ angular.module('controllers.billing', [])
         }, function(response) {
             console.log(response.statusText);
         });
+        $rootScope.loading--;
 
         // $http.post(Config.BASE_URL + 'billingajax/searchInvoices', {page: $scope.page})
         // .success(function(response){
