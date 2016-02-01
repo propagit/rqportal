@@ -146,10 +146,7 @@ class Invoice extends \Phalcon\Mvc\Model
             }
         }
         $invoice['free'] = $free;
-        if ($invoice['id'] != 531) {
-            $invoice['removals'] = $removals;
-        }
-        // $invoice['removals'] = count($removals);
+        $invoice['removals'] = count($removals);
         $invoice['storages'] = $storages;
         $invoice['lines'] = json_decode($invoice['lines']);
         return $invoice;
