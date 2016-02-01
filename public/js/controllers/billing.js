@@ -63,10 +63,11 @@ angular.module('controllers.billing', [])
             for(var i=0; i < response.data.invoices.length; i++) {
                 $scope.invoices.push(response.data.invoices[i]);
             }
+            $rootScope.loading--;
         }, function(response) {
             console.log(response.statusText);
+            $rootScope.loading--;
         });
-        $rootScope.loading--;
     };
 
     $scope.loadMore = function() {
