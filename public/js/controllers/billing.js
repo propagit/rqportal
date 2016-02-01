@@ -58,17 +58,23 @@ angular.module('controllers.billing', [])
     $scope.invoices = [];
     searchInvoices();
     function searchInvoices() {
-        $http.post(Config.BASE_URL + 'billingajax/searchInvoices', {page: $scope.page})
-        .success(function(response){
+        $http.post(Config.BASE_URL + 'billingajax/searchInvoices', {page: $scope.page}).then(function(response){
             console.log(response);
-            for(var i=0; i < response.invoices.length; i++) {
-                $scope.invoices.push(response.invoices[i]);
-            }
-        }).error(function(error){
-            console.log("ERROR: ", error);
-        }).finally(function(){
-            $rootScope.loading--;
+        }, function(response) {
+            console.log(response.statusText);
         });
+
+        // $http.post(Config.BASE_URL + 'billingajax/searchInvoices', {page: $scope.page})
+        // .success(function(response){
+        //     console.log(response);
+        //     for(var i=0; i < response.invoices.length; i++) {
+        //         $scope.invoices.push(response.invoices[i]);
+        //     }
+        // }).error(function(error){
+        //     console.log("ERROR: ", error);
+        // }).finally(function(){
+        //     $rootScope.loading--;
+        // });
     };
 
     $scope.loadMore = function() {
