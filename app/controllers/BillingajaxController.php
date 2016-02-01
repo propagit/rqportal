@@ -67,8 +67,9 @@ class BillingajaxController extends ControllerAjax
         $results = array();
         foreach($invoices as $invoice)
         {
-            $results[] = $invoice->toArray();
-            print_r($invoice->id);
+            $i = $invoice->toArray();
+            $results[] = $i;
+            print_r($i['id']);
             echo '---<br />';
 
         }
