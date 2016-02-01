@@ -70,7 +70,6 @@ class BillingajaxController extends ControllerAjax
             $results[] = $invoice->toArray();
         }
         $this->view->invoices = $results;
-        print_r(count($results)); die();
     }
 
     public function getSuppliersAction()
