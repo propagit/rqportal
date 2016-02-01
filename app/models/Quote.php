@@ -84,7 +84,7 @@ class Quote extends \Phalcon\Mvc\Model
                 return $removal->toArray();
             }
         }
-        return false;
+        return null;
     }
 
     public function getStorage()
