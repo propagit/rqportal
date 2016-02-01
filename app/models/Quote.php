@@ -80,7 +80,9 @@ class Quote extends \Phalcon\Mvc\Model
     {
         if ($this->job_type == Quote::REMOVAL) {
             $removal = Removal::findFirst($this->job_id);
-            return $removal->toArray();
+            if ($removal) {
+                return $removal->toArray();
+            }
         }
         return false;
     }
