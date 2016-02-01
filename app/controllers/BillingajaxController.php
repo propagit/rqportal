@@ -57,13 +57,17 @@ class BillingajaxController extends ControllerAjax
         $page = 2;
         if (isset($request->page)) { $page = $request->page; }
         $offset = ($page - 1) * $per_page;
-        $invoices = Invoice::find(array(
-            $conditions,
-            "bind" => $parameters,
-            "order" => "id DESC",
-            "limit" => $per_page,
-            "offset" => $offset
-        ));
+
+        $phql = "SELECT * FROM Invoice WHERE $conditions ORDER BY id DESC LIMIT $per_page OFFSET $offset";
+        $invoices = $this->modelsManager->executeQuery($phql, $parameters);
+
+        // $invoices = Invoice::find(array(
+        //     $conditions,
+        //     "bind" => $parameters,
+        //     "order" => "id DESC",
+        //     "limit" => $per_page,
+        //     "offset" => $offset
+        // ));
         $results = array();
         foreach($invoices as $invoice)
         {
