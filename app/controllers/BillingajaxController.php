@@ -64,12 +64,12 @@ class BillingajaxController extends ControllerAjax
             "limit" => 10, //$per_page,
             "offset" => 1, //$offset
         ));
-        print_r($invoices); die();
         $results = array();
         foreach($invoices as $invoice)
         {
             $results[] = $invoice->toArray();
         }
+        print_r($results); die();
         $this->view->invoices = $results;
     }
 
