@@ -53,7 +53,7 @@ class BillingajaxController extends ControllerAjax
             $parameters['user_id'] = $this->user->id;
         }
 
-        $per_page = 50;
+        $per_page = 10;
         $page = 1;
         if (isset($request->page)) { $page = $request->page; }
         $offset = ($page - 1) * $per_page;
@@ -62,7 +62,7 @@ class BillingajaxController extends ControllerAjax
             "bind" => $parameters,
             "order" => "id DESC",
             "limit" => $per_page,
-            "offset" => 10 //$offset
+            "offset" => 5 //$offset
         ));
         $results = array();
         foreach($invoices as $invoice)
