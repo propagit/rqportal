@@ -47,7 +47,7 @@ class BillingajaxController extends ControllerAjax
 
         $conditions = "1=1";
         $parameters = array();
-        if (isset($this->user) && $this->user->level == User::SUPPLIER)
+        if ($this->user->level == User::SUPPLIER)
         {
             $conditions .= " AND user_id = :user_id:";
             $parameters['user_id'] = $this->user->id;
@@ -57,23 +57,17 @@ class BillingajaxController extends ControllerAjax
         $page = 1;
         if (isset($request->page)) { $page = $request->page; }
         $offset = ($page - 1) * $per_page;
-
-        $phql = "SELECT * FROM Invoice WHERE $conditions ORDER BY id DESC LIMIT $per_page OFFSET $offset";
-        $invoices = $this->modelsManager->executeQuery($phql, $parameters);
-
-        // $invoices = Invoice::find(array(
-        //     $conditions,
-        //     "bind" => $parameters,
-        //     "order" => "id DESC",
-        //     "limit" => $per_page,
-        //     "offset" => $offset
-        // ));
+        $invoices = Invoice::find(array(
+            $conditions,
+            "bind" => $parameters,
+            "order" => "id DESC",
+            "limit" => $per_page,
+            "offset" => $offset
+        ));
         $results = array();
         foreach($invoices as $invoice)
         {
-            $i = $invoice->toArray();
-            $results[] = $i;
-
+            $results[] = $invoice->toArray();
         }
         $this->view->invoices = $results;
     }
