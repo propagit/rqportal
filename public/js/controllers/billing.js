@@ -60,16 +60,9 @@ angular.module('controllers.billing', [])
     function searchInvoices() {
         console.log($scope.page);
         $http.post(Config.BASE_URL + 'billingajax/searchInvoices', {page: $scope.page}).then(function(response){
-            console.log(response);
-
-            if (!response.data) {
-                searchInvoices();
-            } else {
-                for(var i=0; i < response.data.invoices.length; i++) {
-                    $scope.invoices.push(response.data.invoices[i]);
-                }
+            for(var i=0; i < response.data.invoices.length; i++) {
+                $scope.invoices.push(response.data.invoices[i]);
             }
-
         }, function(response) {
             console.log(response.statusText);
         });
