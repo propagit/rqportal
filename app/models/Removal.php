@@ -85,8 +85,8 @@ class Removal extends \Phalcon\Mvc\Model
 	const TWO_PLUS = '2+';
     const UNDER_THREE = '<3';
     const THREE_PLUS = '3+';
-	
-	
+
+
 	/**
      *
      * @var string
@@ -95,26 +95,26 @@ class Removal extends \Phalcon\Mvc\Model
 
     const INT_YES = 'yes';
 	const INT_NO = 'no';
-	
-	
+
+
 	/**
      *
      * @var string
      */
     public $from_country;
-	
+
 	/**
      *
      * @var string
      */
     public $to_country;
-	
+
 	/**
      *
      * @var integer
      */
     public $from_country_id;
-	
+
 	/**
      *
      * @var integer
@@ -132,19 +132,19 @@ class Removal extends \Phalcon\Mvc\Model
      * @var string
      */
     public $notes;
-	
+
 	 /**
      *
      * @var integer
      */
     public $is_duplicate;
-	
+
 	 /**
      *
      * @var integer
      */
     public $parent_id;
-	
+
 
     /**
      *
@@ -189,9 +189,9 @@ class Removal extends \Phalcon\Mvc\Model
     {
         $removal = parent::toArray();
         // $removal['moving_date'] = strtotime($removal['moving_date']);
-        $removal['from_marker'] = $this->drawFromMarker();
-        $removal['to_marker'] = $this->drawToMarker();
-        $removal['path'] = $this->drawPath();
+        // $removal['from_marker'] = $this->drawFromMarker();
+        // $removal['to_marker'] = $this->drawToMarker();
+        // $removal['path'] = $this->drawPath();
         return $removal;
     }
 
@@ -265,7 +265,7 @@ class Removal extends \Phalcon\Mvc\Model
             Removal::TWO_PLUS => '2+ Bedrooms'
         );
     }
-	
+
 	public static function listInternationalOptions()
 	{
 		return array(
