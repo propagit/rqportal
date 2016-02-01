@@ -37,6 +37,6 @@ class ControllerAjax extends Controller
         $this->response->setContent($data);
 
 
-        //return $this->response->send();
+        return $this->response->send();
     }
 }
