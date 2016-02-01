@@ -62,7 +62,7 @@ class BillingajaxController extends ControllerAjax
             "bind" => $parameters,
             "order" => "id DESC",
             "limit" => $per_page,
-            "offset" => 1 //$offset
+            "offset" => 2 //$offset
         ));
         $results = array();
         foreach($invoices as $invoice)
