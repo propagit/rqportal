@@ -54,7 +54,7 @@ class BillingajaxController extends ControllerAjax
         }
 
         $per_page = 50;
-        $page = 2;
+        $page = 1;
         if (isset($request->page)) { $page = $request->page; }
         $offset = ($page - 1) * $per_page;
 
