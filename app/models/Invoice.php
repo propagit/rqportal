@@ -123,11 +123,14 @@ class Invoice extends \Phalcon\Mvc\Model
             if ($quote->job_type == 'removal')
             {
                 $removal = $quote->getRemoval();
-                // $removal['status'] = $quote->status;
-                // $removal['free'] = $quote->free;
-                // $removal['created_on'] = strtotime($quote->created_on) * 1000;
-                // $removal['moving_date'] = strtotime($removal['moving_date']) * 1000;
-                // $removals[] = $removal;
+                if ($removal) {
+                    $removal['status'] = $quote->status;
+                    $removal['free'] = $quote->free;
+                    $removal['created_on'] = strtotime($quote->created_on) * 1000;
+                    $removal['moving_date'] = strtotime($removal['moving_date']) * 1000;
+                    $removals[] = $removal;
+                }
+
             }
             else
             {
