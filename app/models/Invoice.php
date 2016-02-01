@@ -118,33 +118,33 @@ class Invoice extends \Phalcon\Mvc\Model
         $storages = array();
         $quotes = Quote::find("invoice_id = $this->id");
         $free = 0;
-        // foreach($quotes as $quote)
-        // {
-        //     if ($quote->job_type == 'removal')
-        //     {
-        //         $removal = $quote->getRemoval();
-        //         $removal['status'] = $quote->status;
-        //         $removal['free'] = $quote->free;
-        //         $removal['created_on'] = strtotime($quote->created_on) * 1000;
-        //         $removal['moving_date'] = strtotime($removal['moving_date']) * 1000;
-        //         $removals[] = $removal;
-        //     }
-        //     else
-        //     {
-        //         $storage = $quote->getStorage();
-        //         $storage['status'] = $quote->status;
-        //         $storage['free'] = $quote->free;
-        //         $storage['created_on'] = strtotime($quote->created_on) * 1000;
-        //         $storages[] = $storage;
-        //     }
-        //     if ($quote->free)
-        //     {
-        //         $free++;
-        //     }
-        // }
-        // $invoice['free'] = $free;
-        // $invoice['removals'] = $removals;
-        // $invoice['storages'] = $storages;
+        foreach($quotes as $quote)
+        {
+            if ($quote->job_type == 'removal')
+            {
+                $removal = $quote->getRemoval();
+                $removal['status'] = $quote->status;
+                $removal['free'] = $quote->free;
+                $removal['created_on'] = strtotime($quote->created_on) * 1000;
+                $removal['moving_date'] = strtotime($removal['moving_date']) * 1000;
+                $removals[] = $removal;
+            }
+            else
+            {
+                $storage = $quote->getStorage();
+                $storage['status'] = $quote->status;
+                $storage['free'] = $quote->free;
+                $storage['created_on'] = strtotime($quote->created_on) * 1000;
+                $storages[] = $storage;
+            }
+            if ($quote->free)
+            {
+                $free++;
+            }
+        }
+        $invoice['free'] = $free;
+        $invoice['removals'] = $removals;
+        $invoice['storages'] = $storages;
         // $invoice['lines'] = json_decode($invoice['lines']);
         return $invoice;
     }
