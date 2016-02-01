@@ -69,8 +69,8 @@ class BillingajaxController extends ControllerAjax
         {
             $i = $invoice->toArray();
             $results[] = $i;
-            print_r($i['id']);
-            echo '---<br />';
+            print_r($i);
+            echo "\n";
 
         }
         $this->view->invoices = $results;
