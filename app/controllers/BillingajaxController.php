@@ -47,7 +47,7 @@ class BillingajaxController extends ControllerAjax
 
         $conditions = "1=1";
         $parameters = array();
-        if ($this->user->level == User::SUPPLIER)
+        if (isset($this->user) && $this->user->level == User::SUPPLIER)
         {
             $conditions .= " AND user_id = :user_id:";
             $parameters['user_id'] = $this->user->id;
