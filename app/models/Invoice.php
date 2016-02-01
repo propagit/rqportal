@@ -124,10 +124,10 @@ class Invoice extends \Phalcon\Mvc\Model
             {
                 $removal = $quote->getRemoval();
                 if ($removal) {
-                    // $removal['status'] = $quote->status;
-                    // $removal['free'] = $quote->free;
-                    // $removal['created_on'] = strtotime($quote->created_on) * 1000;
-                    // $removal['moving_date'] = strtotime($removal['moving_date']) * 1000;
+                    $removal['status'] = $quote->status;
+                    $removal['free'] = $quote->free;
+                    $removal['created_on'] = strtotime($quote->created_on) * 1000;
+                    $removal['moving_date'] = strtotime($removal['moving_date']) * 1000;
                     $removals[] = $removal;
                 }
 
@@ -146,7 +146,7 @@ class Invoice extends \Phalcon\Mvc\Model
             }
         }
         $invoice['free'] = $free;
-        $invoice['removals'] = $removals; //count($removals);
+        $invoice['removals'] = count($removals);
         $invoice['storages'] = $storages;
         $invoice['lines'] = json_decode($invoice['lines']);
         return $invoice;
