@@ -54,7 +54,9 @@ class BillingajaxController extends ControllerAjax
         }
 
         $per_page = 50;
-        $offset = ($request->page - 1) * $per_page;
+        $page = 1;
+        if (isset($request->page)) { $page = $request->page; }
+        $offset = ($page - 1) * $per_page;
         $invoices = Invoice::find(array(
             $conditions,
             "bind" => $parameters,
