@@ -131,6 +131,10 @@ class ProfileForm extends Form
         ));
         $this->add($email);
 
+        $email_quote_cc = new Text('email_quote_cc');
+        $email_quote_cc->setLabel('CC Quote to Emails');
+        $this->add($email_quote_cc);
+
         $website = new Text('website');
         $website->setLabel('Website');
         $website->setFilters(array('striptags', 'string'));
