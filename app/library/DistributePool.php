@@ -457,6 +457,10 @@ class DistributePool extends Injectable
                 if ($quote->save()) {
 
                     # Send new quote notification to supplier
+                    $cc = array();
+                    if ($supplier->email_quote_cc) {
+                        $cc = explode(',', $supplier->email_quote_cc);
+                    }
                     $this->mail->send(
                         array($supplier->email => $supplier->name),
                         'New Removalist Job',
@@ -465,7 +469,8 @@ class DistributePool extends Injectable
                             'removal' => $removal,
                             'from' => $from,
                             'to' => $to
-                        )
+                        ),
+                        $cc
                     );
 
                     $count++;
@@ -559,6 +564,10 @@ class DistributePool extends Injectable
                 $quote->created_on = new Phalcon\Db\RawValue('now()');
                 if ($quote->save()) {
 
+                    $cc = array();
+                    if ($supplier->email_quote_cc) {
+                        $cc = explode(',', $supplier->email_quote_cc);
+                    }
 
                     # Send new quote notification to supplier
                     $this->mail->send(
@@ -568,7 +577,8 @@ class DistributePool extends Injectable
                         array(
                             'storage' => $storage,
                             'pickup' => $pickup
-                        )
+                        ),
+                        $cc
                     );
                     $count++;
                     echo 'Storage quote sent to ' . $user_id . PHP_EOL;

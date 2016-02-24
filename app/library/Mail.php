@@ -40,7 +40,7 @@ class Mail extends Component
      * @param string $name
      * @param array $params
      */
-    public function send($to, $subject, $name, $params)
+    public function send($to, $subject, $name, $params, $cc = array())
     {
         # Settings
         $mailSettings = $this->config->mail;
@@ -51,6 +51,7 @@ class Mail extends Component
         $message = Swift_Message::newInstance()
             ->setSubject($subject)
             ->setTo($to)
+            ->setCc($cc)
             ->setFrom(array(
                 $mailSettings->fromEmail => $mailSettings->fromName
             ))
