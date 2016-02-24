@@ -117,6 +117,12 @@ class Supplier extends \Phalcon\Mvc\Model
      *
      * @var string
      */
+    public $email_quote_cc;
+
+    /**
+     *
+     * @var string
+     */
     public $website;
 
     /**
@@ -179,6 +185,7 @@ class Supplier extends \Phalcon\Mvc\Model
             'postcode' => 'postcode',
             'phone' => 'phone',
             'email' => 'email',
+            'email_quote_cc' => 'email_quote_cc',
             'website' => 'website',
             'about' => 'about',
             'created_on' => 'created_on',
