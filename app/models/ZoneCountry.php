@@ -108,9 +108,22 @@ class ZoneCountry extends BaseModel
     {
         $local = ZoneLocal::findFirst("id = " . $this->local_id);
 
+        /* Old code
 		$query = $this->modelsManager->createQuery("SELECT p.postcode FROM Postcodes p WHERE postcode_dist($local->postcode, p.postcode) <= $this->distance");
 		$result = $query->execute();
-		
+        */
+       $phql = "SELECT P.postcode,
+                    3959 * 2 * ASIN(SQRT( POWER(SIN((:latitude: - P.lat) * pi()/180/2), 2) + COS(:latitude: * pi()/180) * COS(P.lat * pi()/180) * POWER(SIN((:longitude: - P.lon) * pi()/180/2), 2) )) AS distance FROM Postcodes P
+                    WHERE P.lat BETWEEN (:latitude: - (:miles:/69)) AND (:latitude: + (:miles:/69))
+                AND P.lon BETWEEN (:longitude: - :miles:/ABS(COS(RADIANS(:latitude:)) * 69)) AND (:longitude: + :miles:/ABS(COS(RADIANS(:latitude:)) * 69))
+                HAVING distance < :miles:";
+        $result = $this->modelsManager->executeQuery($phql, array(
+            "latitude" => $local->latitude,
+            "longitude" => $local->longitude,
+            "miles" => $this->distance / 1.609344
+        ));
+
+
         $pool = array();
 		foreach($result as $postcode){
 			$pool[] = strlen($postcode->postcode) < 4 ? '0' . $postcode->postcode : $postcode->postcode;

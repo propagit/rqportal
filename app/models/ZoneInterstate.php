@@ -183,29 +183,38 @@ class ZoneInterstate extends BaseModel
 			Code in the comments are from Old Phalcon 1.3 kept for ref on why this is failing
 		*/
 	    # Pool 1
-        #$result = $this->db->query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode1, p.postcode) <= $this->distance1");
-		$query = $this->modelsManager->createQuery("SELECT p.postcode FROM Postcodes p WHERE postcode_dist($this->postcode1, p.postcode) <= $this->distance1");
-		$result = $query->execute();
-		
+        $phql = "SELECT P.postcode,
+                    3959 * 2 * ASIN(SQRT( POWER(SIN((:latitude: - P.lat) * pi()/180/2), 2) + COS(:latitude: * pi()/180) * COS(P.lat * pi()/180) * POWER(SIN((:longitude: - P.lon) * pi()/180/2), 2) )) AS distance FROM Postcodes P
+                    WHERE P.lat BETWEEN (:latitude: - (:miles:/69)) AND (:latitude: + (:miles:/69))
+                AND P.lon BETWEEN (:longitude: - :miles:/ABS(COS(RADIANS(:latitude:)) * 69)) AND (:longitude: + :miles:/ABS(COS(RADIANS(:latitude:)) * 69))
+                HAVING distance < :miles:";
+        $result = $this->modelsManager->executeQuery($phql, array(
+            "latitude" => $this->latitude1,
+            "longitude" => $this->longitude1,
+            "miles" => $this->distance1 / 1.609344
+        ));
+
+		/*$query = $this->modelsManager->createQuery("SELECT p.postcode FROM Postcodes p WHERE postcode_dist($this->postcode1, p.postcode) <= $this->distance1");
+		$result = $query->execute();*/
+
         $pool1 = array();
-        /* 
-		$result->setFetchMode(Phalcon\Db::FETCH_OBJ);
-        while($postcode = $result->fetch()) {
-            $pool1[] = $postcode->postcode;
-        }*/
         foreach($result as $postcode) {
             $pool1[] = strlen($postcode->postcode) < 4 ? '0' . $postcode->postcode : $postcode->postcode;
         }
         $this->pool1 = json_encode($pool1);
 
         # Pool 2
-        #$result = $this->db->query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode2, p.postcode) <= $this->distance2");
-		$query = $this->modelsManager->createQuery("SELECT p.postcode FROM Postcodes p WHERE postcode_dist($this->postcode2, p.postcode) <= $this->distance2");
-		$result = $query->execute();
-		
+		/*$query = $this->modelsManager->createQuery("SELECT p.postcode FROM Postcodes p WHERE postcode_dist($this->postcode2, p.postcode) <= $this->distance2");
+		$result = $query->execute();*/
+        $result = $this->modelsManager->executeQuery($phql, array(
+            "latitude" => $this->latitude2,
+            "longitude" => $this->longitude2,
+            "miles" => $this->distance2 / 1.609344
+        ));
+
         $pool2 = array();
 		foreach($result as $postcode){
-			$pool2[] = strlen($postcode->postcode) < 4 ? '0' . $postcode->postcode : $postcode->postcode;	
+			$pool2[] = strlen($postcode->postcode) < 4 ? '0' . $postcode->postcode : $postcode->postcode;
 		}
         $this->pool2 = json_encode($pool2);
 
