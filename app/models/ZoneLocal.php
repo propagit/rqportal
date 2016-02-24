@@ -104,14 +104,30 @@ class ZoneLocal extends BaseModel
 
     public function generatePool()
     {
-        #$result = $this->db->query("SELECT p.postcode FROM postcodes p WHERE postcode_dist($this->postcode, p.postcode) <= $this->distance");
+        $distance = 33; // Default 150km
+        $miles = $distance / 1.609344;
+
+        $phql = "SELECT P.postcode,
+                    3959 * 2 * ASIN(SQRT( POWER(SIN((:latitude: - P.lat) * pi()/180/2), 2) + COS(:latitude: * pi()/180) * COS(P.lat * pi()/180) * POWER(SIN((:longitude: - P.lon) * pi()/180/2), 2) )) AS distance FROM Postcodes P
+                    WHERE P.lat BETWEEN (:latitude: - (:miles:/69)) AND (:latitude: + (:miles:/69))
+                AND P.lon BETWEEN (:longitude: - :miles:/ABS(COS(RADIANS(:latitude:)) * 69)) AND (:longitude: + :miles:/ABS(COS(RADIANS(:latitude:)) * 69))
+                HAVING distance < :miles:";
+        $query = $this->modelsManager->executeQuery($phql, array(
+            "latitude" => $this->latitude,
+            "longitude" => $this->longitude,
+            "miles" => $miles
+        ));
+
+        /* Old code
 		$query = $this->modelsManager->createQuery("SELECT p.postcode FROM Postcodes p WHERE postcode_dist($this->postcode, p.postcode) <= $this->distance");
 		$result = $query->execute();
-		
+        */
+
         $pool = array();
 		foreach($result as $postcode){
 			$pool[] = strlen($postcode->postcode) < 4 ? '0' . $postcode->postcode : $postcode->postcode;
 		}
+        return $pool;
         $this->pool = json_encode($pool);
         $this->save();
         return count($pool);

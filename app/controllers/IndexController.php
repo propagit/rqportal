@@ -7,5 +7,12 @@ class IndexController extends ControllerBase
     {
         return $this->forward('dashboard');
     }
+
+    public function testAction()
+    {
+        $zone = ZoneLocal::findFirst(317);
+        $pool = $zone->generatePool();
+        print_r($pool); die();
+    }
 }
 
