@@ -104,9 +104,6 @@ class ZoneLocal extends BaseModel
 
     public function generatePool()
     {
-        $distance = 33; // Default 150km
-        $miles = $distance / 1.609344;
-
         $phql = "SELECT P.postcode,
                     3959 * 2 * ASIN(SQRT( POWER(SIN((:latitude: - P.lat) * pi()/180/2), 2) + COS(:latitude: * pi()/180) * COS(P.lat * pi()/180) * POWER(SIN((:longitude: - P.lon) * pi()/180/2), 2) )) AS distance FROM Postcodes P
                     WHERE P.lat BETWEEN (:latitude: - (:miles:/69)) AND (:latitude: + (:miles:/69))
@@ -115,7 +112,7 @@ class ZoneLocal extends BaseModel
         $result = $this->modelsManager->executeQuery($phql, array(
             "latitude" => $this->latitude,
             "longitude" => $this->longitude,
-            "miles" => $miles
+            "miles" => $this->distance / 1.609344
         ));
 
         /* Old code
@@ -127,7 +124,7 @@ class ZoneLocal extends BaseModel
 		foreach($result as $postcode){
 			$pool[] = strlen($postcode->postcode) < 4 ? '0' . $postcode->postcode : $postcode->postcode;
 		}
-        return $pool;
+        # return $pool; # Debug
         $this->pool = json_encode($pool);
         $this->save();
         return count($pool);
