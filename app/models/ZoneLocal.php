@@ -112,7 +112,7 @@ class ZoneLocal extends BaseModel
                     WHERE P.lat BETWEEN (:latitude: - (:miles:/69)) AND (:latitude: + (:miles:/69))
                 AND P.lon BETWEEN (:longitude: - :miles:/ABS(COS(RADIANS(:latitude:)) * 69)) AND (:longitude: + :miles:/ABS(COS(RADIANS(:latitude:)) * 69))
                 HAVING distance < :miles:";
-        $query = $this->modelsManager->executeQuery($phql, array(
+        $result = $this->modelsManager->executeQuery($phql, array(
             "latitude" => $this->latitude,
             "longitude" => $this->longitude,
             "miles" => $miles
