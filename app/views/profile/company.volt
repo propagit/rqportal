@@ -44,7 +44,7 @@
                 <div class="col-lg-10">
                     {{ element.render(['class': 'form-control']) }}
                     {% if element.getName() == 'email_quote_cc' %}
-                    <span id="helpBlock" class="help-block">You can include as many emails as you want. Use comma (,) to separate email addresses.</span>
+                    <span id="helpBlock" class="help-block">You can include as many emails as you want. Use comma (,) to separate the email addresses.</span>
                     {% endif %}
                 </div>
             </div>
