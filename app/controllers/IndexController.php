@@ -17,19 +17,18 @@ class IndexController extends ControllerBase
         $removal = Removal::findFirst(21061);
         $from = Postcodes::findFirstByPostcode($removal->from_postcode);
         $to = Postcodes::findFirstByPostcode($removal->to_postcode);
-        $cc = array_map('trim', explode(',', 'namnd86@gmail.com, daniel@propagate.com.au,namndvn@yahoo.com.au'));
-        print_r($cc); die();
+        $emails = array_map('trim', explode(',', 'namnd86@gmail.com, daniel@propagate.com.au,namndvn@yahoo.com.au'));
+        $emails[] = "nam@propagate.com.au";
 
         $this->mail->send(
-            array("nam@propagate.com.au" => "Nam Nguyen"),
+            $emails,
             'New Removalist Job',
             'new_removal',
             array(
                 'removal' => $removal,
                 'from' => $from,
                 'to' => $to
-            ),
-            $cc
+            )
         );
     }
 }
