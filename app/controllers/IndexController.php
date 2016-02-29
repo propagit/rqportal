@@ -18,6 +18,7 @@ class IndexController extends ControllerBase
         $from = Postcodes::findFirstByPostcode($removal->from_postcode);
         $to = Postcodes::findFirstByPostcode($removal->to_postcode);
         $cc = array_map('trim', explode(',', 'namnd86@gmail.com, daniel@propagate.com.au,namndvn@yahoo.com.au'));
+        print_r($cc); die();
 
         $this->mail->send(
             array("nam@propagate.com.au" => "Nam Nguyen"),
