@@ -457,20 +457,22 @@ class DistributePool extends Injectable
                 if ($quote->save()) {
 
                     # Send new quote notification to supplier
-                    $cc = array();
+                    $emails = array();
                     if ($supplier->email_quote_cc) {
-                        $cc = explode(',', $supplier->email_quote_cc);
+                        $emails = array_map('trim', explode(',', $supplier->email_quote_cc));
                     }
+                    $emails[] = $supplier->email;
+
+
                     $this->mail->send(
-                        array($supplier->email => $supplier->name),
+                        $emails,
                         'New Removalist Job',
                         'new_removal',
                         array(
                             'removal' => $removal,
                             'from' => $from,
                             'to' => $to
-                        ),
-                        $cc
+                        )
                     );
 
                     $count++;
@@ -564,21 +566,22 @@ class DistributePool extends Injectable
                 $quote->created_on = new Phalcon\Db\RawValue('now()');
                 if ($quote->save()) {
 
-                    $cc = array();
-                    if ($supplier->email_quote_cc) {
-                        $cc = explode(',', $supplier->email_quote_cc);
-                    }
-
                     # Send new quote notification to supplier
+                    $emails = array();
+                    if ($supplier->email_quote_cc) {
+                        $emails = array_map('trim', explode(',', $supplier->email_quote_cc));
+                    }
+                    $emails[] = $supplier->email;
+
+
                     $this->mail->send(
-                        array($supplier->email => $supplier->name),
+                        $emails,
                         'New Removalist Job',
                         'new_storage',
                         array(
                             'storage' => $storage,
                             'pickup' => $pickup
-                        ),
-                        $cc
+                        )
                     );
                     $count++;
                     echo 'Storage quote sent to ' . $user_id . PHP_EOL;
