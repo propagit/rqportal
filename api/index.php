@@ -71,15 +71,6 @@ $di->set('mail', function(){
 # Create and bind the DI to the application
 $app = new \Phalcon\Mvc\Micro($di);
 
-$app->get('/test', function() use($app, $config){
-    $a = $app->mail->send(
-        array('nam@propagate.com.au' => 'Nam'),
-        'Member Application - Rejected',
-        'reject',
-        array('name' => 'Nam')
-    );
-    print_r($a); die();
-});
 
 // define the routes here
 # Add new supplier
@@ -139,8 +130,26 @@ $app->post('/supplier', function() use($app, $config){
     ));
 
     if ($status->success() == true) {
-        # Add to queue
-        $job_id = $app->queue->put(array('new_applicant' => $status->getModel()->id));
+        $app->mail->send(
+            // array('sales@removalistquote.com.au' => 'Team'), # hard code for now
+            array('nam@propagate.com.au' => 'Team'), # hard code for now
+            'New Member Sign Up',
+            'new_applicant',
+            array(
+                'name' => $request->name,
+                'business' => $request->business,
+                'company' => $request->company,
+                'abn_acn' => $request->abn_acn,
+                'address' => $request->address,
+                'suburb' => $request->suburb,
+                'state' => $request->state,
+                'postcode' => $request->postcode,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'website' => $request->website,
+                'about' => $request->about
+            )
+        );
 
         $response->setStatusCode(201, "Created");
         $response->setJsonContent(array('status' => 'OK'));
