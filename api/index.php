@@ -17,6 +17,8 @@ $di = new \Phalcon\DI\FactoryDefault();
 
 $config = include __DIR__ . '/../app/config/config.php';
 
+$di->set('config', $config);
+
 # Set up the database service
 $di->set('db', function() use($config) {
     return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
