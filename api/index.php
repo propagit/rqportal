@@ -36,6 +36,32 @@ $di->set('queue', function() use($config) {
     ));
 });
 
+$di->set('view', function () use ($config) {
+
+    $view = new \Phalcon\Mvc\View();
+
+    $view->setViewsDir($config->application->viewsDir);
+
+    $view->registerEngines(array(
+        '.volt' => function ($view, $di) use ($config) {
+
+            $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
+
+            $volt->setOptions(array(
+                'compiledPath' => $config->application->cacheDir,
+                'compiledSeparator' => '_',
+                'compileAlways' => true
+            ));
+
+            $compiler = $volt->getCompiler();
+
+            return $volt;
+        }
+    ));
+
+    return $view;
+}, true);
+
 $di->set('mail', function(){
     return new Mail();
 });
