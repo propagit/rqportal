@@ -131,8 +131,7 @@ $app->post('/supplier', function() use($app, $config){
 
     if ($status->success() == true) {
         $app->mail->send(
-            // array('sales@removalistquote.com.au' => 'Team'), # hard code for now
-            array('nam@propagate.com.au' => 'Team'), # hard code for now
+            array('sales@removalistquote.com.au' => 'Team'), # hard code for now
             'New Member Sign Up',
             'new_applicant',
             array(
