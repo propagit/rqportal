@@ -26,8 +26,8 @@ class ApplicantajaxController extends ControllerAjax
         {
             if ($this->user->status == User::APPROVED)
             {
-                # Add to the Queue
-                $job_id = $this->queue->put(array('local' => $zone->id));
+                # Generate postcode pool
+                $zone->generatePool();
             }
 
             $this->view->zone = $zone->toArray();
@@ -81,8 +81,8 @@ class ApplicantajaxController extends ControllerAjax
         {
             if ($this->user->status == User::APPROVED)
             {
-                # Add to the Queue
-                $job_id = $this->queue->put(array('country' => $zone_country->id));
+                # Generate postcode pool
+                $zone_country->generatePool();
             }
             $this->view->zone = $zone_country->toArray();
             $this->response->setStatusCode(200, 'OK');
@@ -136,8 +136,8 @@ class ApplicantajaxController extends ControllerAjax
 
             if ($this->user->status == User::APPROVED)
             {
-                # Add to the Queue
-                $job_id = $this->queue->put(array('interstate' => $zone->id));
+                # Generate postcode pool
+                $zone->generatePool();
             }
             $this->response->setStatusCode(200, 'OK');
             $this->view->zone = $zone->toArray();
@@ -241,8 +241,28 @@ class ApplicantajaxController extends ControllerAjax
                     'level' => $this->user->level
                 ));
 
-                # Add to the Queue
-                $job_id = $this->queue->put(array('location' => $this->user->id));
+                # Populate all zones for this user
+                $zone_local = ZoneLocal::find("user_id = " . $this->user->id);
+                if (count($zone_local) > 0) {
+                    foreach($zone_local as $zone) {
+                        $zone->generatePool();
+                    }
+                }
+
+                $zone_country = ZoneCountry::find("user_id = " . $this->user->id);
+                if (count($zone_country) > 0) {
+                    foreach($zone_country as $zone) {
+                        $zone->generatePool();
+                    }
+                }
+
+                $zone_interstate = ZoneInterstate::find("user_id = " . $this->user->id);
+                if (count($zone_interstate) > 0) {
+                    foreach($zone_interstate as $zone) {
+                        $zone->generatePool();
+                    }
+                }
+
 
                 $this->response->setStatusCode(200, 'OK');
             } else {

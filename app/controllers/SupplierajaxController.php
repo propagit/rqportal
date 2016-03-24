@@ -46,7 +46,14 @@ class SupplierajaxController extends ControllerAjax
         $supplier = Supplier::findFirst($id);
         $supplier->status = Supplier::REJECTED;
         $supplier->save();
-        $job_id = $this->queue->put(array('reject' => $id));
+
+        $this->mail->send(
+            array($supplier->email => $supplier->name),
+            'Member Application - Rejected',
+            'reject',
+            array('name' => $supplier->name)
+        );
+
         $this->view->supplier = $supplier->toArray();
     }
 

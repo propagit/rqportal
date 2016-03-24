@@ -8,7 +8,7 @@ class SupplierController extends ControllerBase
         parent::initialize();
         $this->tag->setTitle('Supplier');
         $this->view->parent = 'supplier';
-		
+
 		$auth = $this->session->get('auth');
         if (!$auth) {
             $this->response->redirect('login');
@@ -40,8 +40,15 @@ class SupplierController extends ControllerBase
                 #var_dump($message);
             }
         } else {
-            # Add to the Queue
-            $job_id = $this->queue->put(array('activation' => $supplierId));
+            $this->mail->send(
+                array($supplier->email => $supplier->name),
+                    'Account Activation',
+                    'activation',
+                    array('name' => $supplier->name,
+                        'activationUrl' =>
+                        '/applicant/register/' . $supplier->id . '/' . $supplier->activation_key)
+            );
+
         }
         return $this->response->redirect('supplier');
     }
@@ -91,7 +98,7 @@ class SupplierController extends ControllerBase
             $zone->generatePool();
         }
 	}
-	
+
 
 
 

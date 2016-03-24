@@ -9,7 +9,7 @@ class ResetController extends \Phalcon\Mvc\Controller
 		#$this->view->setVar('user', NULL);
         if ($this->request->isPost()) {
             $username = $this->request->getPost('username');
-			
+
             $user = User::findFirst(array(
                 "username = :username: AND status = :status: AND level = :level:",
                 'bind' => array(
@@ -24,8 +24,20 @@ class ResetController extends \Phalcon\Mvc\Controller
                 $user->reset_key = md5(Helper::random_string());
 				#$this->view->setVar('user', $user);
                 if ($user->save()) {
-                    # Add to the Queue
-                    $job_id = $this->queue->put(array('reset_instruction' => $user->id));
+                    $supplier = Supplier::findFirstByUserId($user_id);
+                    if (!$supplier) {
+                        $this->flash->error('Supplier not found');
+                    } else {
+                        $this->mail->send(
+                            array($supplier->email => $supplier->name),
+                            'Reset Your Password',
+                            'reset_password',
+                            array(
+                                'name' => $supplier->name,
+                                'resetUrl' => '/reset/confirm/' . $user->id . '/' .  $user->reset_key
+                            )
+                        );
+                    }
                 } else {
                     $this->flash->error('There was system error');
                 }

@@ -165,10 +165,16 @@ class BillingajaxController extends ControllerAjax
         }
         else
         {
-            $this->queue->put(array('email_invoice' => array(
-                'id' => $request->id,
-                'email' => $request->email
-            )));
+            $invoice = Invoice::findFirst($request->id);
+            $this->mail->send(
+                array($request->email => $invoice->supplier->name),
+                    'Invoice From Removalist Quote',
+                    'invoice',
+                    array(
+                        'name' => $invoice->supplier->name,
+                        'attachment' => __DIR__ . '/../../public/files/invoice' . $invoice->id . '.pdf'
+                    )
+            );
         }
         if (count($errors) > 0)
         {
