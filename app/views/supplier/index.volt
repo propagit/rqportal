@@ -31,7 +31,7 @@
                             <th class="hasinput" colspan="5">
                                 <input type="text" ng-model="keyword" class="form-control" placeholder="Keyword" />
                             </th>
-                            <th colspan="4">
+                            <th colspan="3">
                                 <?php echo $this->tag->selectStatic(array(
                                     'status', Supplier::getStatus(),
                                     'useEmpty'  => true,
@@ -50,7 +50,7 @@
                             <th data-hide="phone,tablet">Email</th>
                             <th data-hide="phone,tablet">Status</th>
                             <th data-hide="phone,tablet">Free</th>
-                            <th width="175">Action</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
