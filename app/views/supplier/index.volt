@@ -31,7 +31,7 @@
                             <th class="hasinput" colspan="5">
                                 <input type="text" ng-model="keyword" class="form-control" placeholder="Keyword" />
                             </th>
-                            <th colspan="3">
+                            <th colspan="4">
                                 <?php echo $this->tag->selectStatic(array(
                                     'status', Supplier::getStatus(),
                                     'useEmpty'  => true,
@@ -40,7 +40,6 @@
                                     'ng-model' => 'filter_status'
                                 )); ?>
                             </th>
-                            <th></th>
                         </tr>
                         <tr>
                             <th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>Name</th>
@@ -51,7 +50,7 @@
                             <th data-hide="phone,tablet">Email</th>
                             <th data-hide="phone,tablet">Status</th>
                             <th data-hide="phone,tablet">Free</th>
-                            <th width="165">Action</th>
+                            <th width="175">Action</th>
                         </tr>
                     </thead>
                     <tbody>
