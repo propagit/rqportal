@@ -23,7 +23,7 @@
         <div>
 
             <!-- widget content -->
-            <div class="widget-body no-padding">            
+            <div class="widget-body no-padding">
 
                 <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
                     <thead>
@@ -40,6 +40,7 @@
                                     'ng-model' => 'filter_status'
                                 )); ?>
                             </th>
+                            <th></th>
                         </tr>
                         <tr>
                             <th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>Name</th>
@@ -50,7 +51,7 @@
                             <th data-hide="phone,tablet">Email</th>
                             <th data-hide="phone,tablet">Status</th>
                             <th data-hide="phone,tablet">Free</th>
-                            <th>Action</th>
+                            <th width="165">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,7 +62,7 @@
                             <!-- <a ns-popover ns-popover-template="popover" ns-popover-trigger="click" ns-popover-placement="bottom" ng-click="setSupplierId(supplier.id)">
                             <i class="fa fa-pencil"></i></a> -->
 
-                            &nbsp; 
+                            &nbsp;
                             <span ng-show="supplier.note != null && supplier.note != ''"><a ns-popover ns-popover-template="loadnote" ns-popover-trigger="click" ns-popover-placement="bottom" ng-click="getSupplierNote(supplier.id)" style="color: #a90329;"><i class="fa fa-comment"></i></a></span>
 
                             <span ng-show="supplier.note == null || supplier.note == ''">
