@@ -31,7 +31,7 @@ define('APP_PATH', realpath(dirname(__FILE__)));
 /**
  * Include composer autoloader
  */
-include APP_PATH . "/../../vendor/autoload.php";
+include APP_PATH . "/../vendor/autoload.php";
 
 // Load the configuration file
 $config = include APP_PATH . '/config/config.php';
