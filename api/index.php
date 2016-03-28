@@ -260,7 +260,7 @@ $app->post('/quote/removal', function() use($app, $config) {
         $parent_id = $duplicate->id;
     }
 
-    $phql = "INSERT INTO Removal (customer_name, customer_email, customer_phone, from_postcode, from_lat, from_lon, to_postcode, to_lat, to_lon, moving_date, moving_type, bedrooms, packing, notes, is_international,from_country,to_country, from_country_id, to_country_id, is_duplicate, parent_id, duplicate_status, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :from_postcode:, :from_lat:, :from_lon:, :to_postcode:, :to_lat:, :to_lon:, :moving_date:, :moving_type:, :bedrooms:, :packing:, :notes:,:is_international:,:from_country:,:to_country:, :from_country_id:, :to_country_id:, :is_duplicate:, :parent_id:, :duplicate_status:, :created_on:)";
+    $phql = "INSERT INTO Removal (customer_name, customer_email, customer_phone, from_postcode, from_lat, from_lon, to_postcode, to_lat, to_lon, moving_date, moving_type, bedrooms, packing, notes, is_international,from_country,to_country, from_country_id, to_country_id, is_duplicate, parent_id, duplicate_status, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :from_postcode:, :from_lat:, :from_lon:, :to_postcode:, :to_lat:, :to_lon:, :moving_date:, :moving_type:, :bedrooms:, :packing:, :notes:,:is_international:,:from_country:,:to_country:, :from_country_id:, :to_country_id:, :is_duplicate:, :parent_id:, :duplicate_status:, :created_on:, :auto_distributed:)";
 
     $status = $app->modelsManager->executeQuery($phql, array(
         'customer_name' => $quote->customer_name,
@@ -285,14 +285,14 @@ $app->post('/quote/removal', function() use($app, $config) {
         'is_duplicate' => $is_duplicate,
         'parent_id' => $parent_id,
         'duplicate_status' => 0,
-        'created_on' => new Phalcon\Db\RawValue('now()')
+        'created_on' => new Phalcon\Db\RawValue('now()'),
+        'auto_distributed' => 0
     ));
 
     if(!$is_duplicate){
         if ($status->success() == true) {
             # Add to queue
-            $job_id = $app->queue->put(array('removal' => $status->getModel()->id));
-
+            #$job_id = $app->queue->put(array('removal' => $status->getModel()->id));
             $response->setStatusCode(201, "Created");
             $response->setJsonContent(array('status' => 'OK', 'data' => $job_id));
         } else {
@@ -456,7 +456,7 @@ $app->post('/quote/international', function() use($app, $config) {
     ))->getFirst();
 
 
-    $phql = "INSERT INTO Removal (customer_name, customer_email, customer_phone, from_postcode, from_lat, from_lon, to_postcode, to_lat, to_lon, moving_date, moving_type, bedrooms, packing, notes, is_international,from_country,to_country, from_country_id, to_country_id, is_duplicate, parent_id, duplicate_status, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :from_postcode:, :from_lat:, :from_lon:, :to_postcode:, :to_lat:, :to_lon:, :moving_date:, :moving_type:, :bedrooms:, :packing:, :notes:,:is_international:,:from_country:,:to_country:, :from_country_id:, :to_country_id:, :is_duplicate:, :parent_id:, :duplicate_status:, :created_on:)";
+    $phql = "INSERT INTO Removal (customer_name, customer_email, customer_phone, from_postcode, from_lat, from_lon, to_postcode, to_lat, to_lon, moving_date, moving_type, bedrooms, packing, notes, is_international,from_country,to_country, from_country_id, to_country_id, is_duplicate, parent_id, duplicate_status, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :from_postcode:, :from_lat:, :from_lon:, :to_postcode:, :to_lat:, :to_lon:, :moving_date:, :moving_type:, :bedrooms:, :packing:, :notes:,:is_international:,:from_country:,:to_country:, :from_country_id:, :to_country_id:, :is_duplicate:, :parent_id:, :duplicate_status:, :created_on:, :auto_distributed:)";
     $status = $app->modelsManager->executeQuery($phql, array(
         'customer_name' => $quote->customer_name,
         'customer_email' => $quote->customer_email,
@@ -480,13 +480,13 @@ $app->post('/quote/international', function() use($app, $config) {
         'is_duplicate' => 0,
         'parent_id' => 0,
         'duplicate_status' => 0,
-        'created_on' => new Phalcon\Db\RawValue('now()')
+        'created_on' => new Phalcon\Db\RawValue('now()'),
+        'auto_distributed' => 0
     ));
 
     if ($status->success() == true) {
         # Add to queue
-        $job_id = $app->queue->put(array('removal' => $status->getModel()->id));
-
+        #$job_id = $app->queue->put(array('removal' => $status->getModel()->id));
         $response->setStatusCode(201, "Created");
         $response->setJsonContent(array('status' => 'OK', 'data' => $job_id));
     } else {
