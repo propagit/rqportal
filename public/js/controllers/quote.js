@@ -10,7 +10,7 @@ angular.module('controllers.quote', [])
         allocated: null,
     };
 
-    if ($scope.query == 'un-allocated')
+    if ($scope.query == 'un-allocated') {
         $scope.params.allocated = 'not_allocated';
     }
 
