@@ -69,6 +69,12 @@ class Storage extends \Phalcon\Mvc\Model
      */
     public $created_on;
 
+     /**
+     *
+     * @var integer
+     */
+    public $auto_distributed;
+
     /**
      * Independent Column Mapping.
      */
@@ -85,7 +91,8 @@ class Storage extends \Phalcon\Mvc\Model
             'containers' => 'containers',
             'period' => 'period',
             'notes' => 'notes',
-            'created_on' => 'created_on'
+            'created_on' => 'created_on',
+            'auto_distributed' => 'auto_distributed'
         );
     }
 

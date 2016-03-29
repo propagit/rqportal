@@ -291,8 +291,6 @@ $app->post('/quote/removal', function() use($app, $config) {
 
     if(!$is_duplicate){
         if ($status->success() == true) {
-            # Add to queue
-            #$job_id = $app->queue->put(array('removal' => $status->getModel()->id));
             $response->setStatusCode(201, "Created");
             $response->setJsonContent(array('status' => 'OK', 'data' => $job_id));
         } else {
@@ -350,7 +348,7 @@ $app->post('/quote/storage', function() use($app, $config) {
         'suburb' => $pickup->suburb
     ))->getFirst();
 
-    $phql = "INSERT INTO Storage (customer_name, customer_email, customer_phone, pickup_postcode, pickup_lat, pickup_lon, containers, period, notes, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :pickup_postcode:, :pickup_lat:, :pickup_lon:, :containers:, :period:, :notes:, :created_on:)";
+    $phql = "INSERT INTO Storage (customer_name, customer_email, customer_phone, pickup_postcode, pickup_lat, pickup_lon, containers, period, notes, created_on, auto_distributed) VALUES (:customer_name:, :customer_email:, :customer_phone:, :pickup_postcode:, :pickup_lat:, :pickup_lon:, :containers:, :period:, :notes:, :created_on:, :auto_distributed:)";
 
     $status = $app->modelsManager->executeQuery($phql, array(
         'customer_name' => $quote->customer_name,
@@ -362,13 +360,11 @@ $app->post('/quote/storage', function() use($app, $config) {
         'containers' => $quote->containers,
         'period' => $quote->period,
         'notes' => $quote->notes,
-        'created_on' => new Phalcon\Db\RawValue('now()')
+        'created_on' => new Phalcon\Db\RawValue('now()'),
+        'auto_distributed' => 0
     ));
 
     if ($status->success() == true) {
-        # Add to queue
-        $job_id = $app->queue->put(array('storage' => $status->getModel()->id));
-
         $response->setStatusCode(201, "Created");
         $response->setJsonContent(array('status' => 'OK', 'data' => $job_id));
     } else {
@@ -485,8 +481,6 @@ $app->post('/quote/international', function() use($app, $config) {
     ));
 
     if ($status->success() == true) {
-        # Add to queue
-        #$job_id = $app->queue->put(array('removal' => $status->getModel()->id));
         $response->setStatusCode(201, "Created");
         $response->setJsonContent(array('status' => 'OK', 'data' => $job_id));
     } else {

@@ -15,6 +15,108 @@ class QuoteTask extends \Phalcon\CLI\Task
                 $this->_distributeRemoval($removal);
             }
         }
+
+        $storages = Storage::findByAutoDistributed(0);
+        if (count($storages) > 0) {
+            foreach($storages as $storage) {
+                $this->_distributeStorage($storage);
+            }
+        }
+    }
+
+    private function _distributeStorage($storage) {
+        $pickup = Postcodes::findFirstByPostcode($storage->pickup_postcode);
+
+        # Check suppliers who are able to provide this storage
+        $users = array();
+
+        # Local Zone
+        $suppliers = ZoneLocal::find("pool LIKE '%$storage->pickup_postcode%'");
+        foreach($suppliers as $supplier) {
+            $users[] = $supplier->user_id;
+        }
+
+        # Get quote of the day for each user
+        $users_with_quote = array();
+
+        $today = date('Y-m-d');
+        foreach($users as $user_id) {
+            $today_quotes = Quote::find("user_id = $user_id
+                    AND created_on LIKE '$today%'");
+
+            $users_with_quote[$user_id] = count($today_quotes);
+        }
+        # Sort by today quote in ascending order
+        asort($users_with_quote);
+
+
+        $count = 0;
+        $supplier_per_quote = Setting::findFirstByName(Setting::SUPPLIER_PER_QUOTE);
+        foreach($users_with_quote as $user_id => $quote_number) {
+
+            # Check if this supplier already received this quote
+            $quote = Quote::findFirst(array(
+                "job_id = :job_id: AND user_id = :user_id:",
+                "bind" => array(
+                    "job_id" => $storage->id,
+                    "user_id" => $user_id
+                )
+            ));
+
+            $supplier = Supplier::findFirstByUserId($user_id);
+            if ($supplier->status == Supplier::APPROVED &&
+                    $count < $supplier_per_quote->value && !$quote) {
+                $quote = new Quote();
+                $quote->job_type = Quote::STORAGE;
+                $quote->job_id = $storage->id;
+                $quote->user_id = $user_id;
+                $quote->status = 0;
+                $quote->free = ($supplier->free) ? 1 : 0;
+                $quote->created_on = new Phalcon\Db\RawValue('now()');
+                if ($quote->save()) {
+
+                    # Send new quote notification to supplier
+                    $emails = array();
+                    if ($supplier->email_quote_cc) {
+                        $emails = array_map('trim', explode(',', $supplier->email_quote_cc));
+                    }
+                    $emails[] = $supplier->email;
+
+
+                    $this->mail->send(
+                        $emails,
+                        'New Removalist Job',
+                        'new_storage',
+                        array(
+                            'storage' => $storage,
+                            'pickup' => $pickup
+                        )
+                    );
+                    $count++;
+                    echo 'Storage quote sent to ' . $user_id . PHP_EOL;
+                } else {
+                    var_dump($quote->getMessages());
+                }
+            }
+        }
+
+        if ($count == 0) { # The quote has not been sent to any supplier
+            $quote = new Quote();
+            $quote->job_type = Quote::STORAGE;
+            $quote->job_id = $storage->id;
+            $quote->user_id = 0;
+            $quote->status = 0;
+            $quote->free = 0;
+            $quote->created_on = new Phalcon\Db\RawValue('now()');
+            if ($quote->save()) {
+                $count++;
+                echo 'Storage quote created but not allocated' . PHP_EOL;
+            } else {
+                var_dump($quote->getMessages());
+            }
+        }
+        $storage->auto_distributed = 1;
+        $storage->save();
     }
 
     private function _distributeRemoval($removal) {
@@ -146,7 +248,7 @@ class QuoteTask extends \Phalcon\CLI\Task
             $quote->created_on = new Phalcon\Db\RawValue('now()');
             if ($quote->save()) {
                 $count++;
-                echo 'Removal quote created but not allocated';
+                echo 'Removal quote created but not allocated' . PHP_EOL;
             } else {
                 var_dump($quote->getMessages());
             }
