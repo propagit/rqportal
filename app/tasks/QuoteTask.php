@@ -151,5 +151,7 @@ class QuoteTask extends \Phalcon\CLI\Task
                 var_dump($quote->getMessages());
             }
         }
+        $removal->auto_distributed = 1;
+        $removal->save();
     }
 }
