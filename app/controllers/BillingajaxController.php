@@ -120,8 +120,11 @@ class BillingajaxController extends ControllerAjax
 
     public function createInvoiceAction($user_id)
     {
-        $this->queue->put(array('create_invoice' => $user_id));
-        $this->response->setStatusCode(200, 'OK');
+        $user = User::findFirst($user_id);
+        if ($user) {
+            $user->createInvoice();
+            $this->response->setStatusCode(200, 'OK');
+        }
     }
 
     public function createManualInvoiceAction()

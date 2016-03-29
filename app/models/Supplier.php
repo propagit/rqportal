@@ -229,6 +229,18 @@ class Supplier extends \Phalcon\Mvc\Model
         return true;
     }
 
+    public function afterSave()
+    {
+        if ($this->status == Supplier::INACTIVED && $this->user_id) {
+            $user = User::findFirst($this->user_id) {
+                if ($user) {
+                    $user->status = User::INACTIVED;
+                    $user->save();
+                }
+            }
+        }
+    }
+
     public static function getStatus()
     {
         return array(

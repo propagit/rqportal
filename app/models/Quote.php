@@ -146,9 +146,8 @@ class Quote extends \Phalcon\Mvc\Model
             $invoice_threshold = Setting::findFirstByName(Setting::INVOICE_THRESHOLD);
             if ($outstanding_quotes * floatval($price_per_quote->value) >= floatval($invoice_threshold->value))
             {
-                $this->getDI()->getQueue()->put(array(
-                    'create_invoice' => $this->user_id
-                ));
+                $user = User::findFirst($this->user_id);
+                $user->createInvoice();
             }
         }
         return true;

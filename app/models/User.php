@@ -91,4 +91,115 @@ class User extends Model
         ));
         return count($quotes);
     }
+
+    public function createInvoice()
+    {
+        $invoices = Invoice::find(array(
+            "user_id = :user_id: AND status = :status:",
+            "bind" => array(
+                "user_id" => $this->id,
+                "status" => Invoice::UNPAID
+            )
+        ));
+        if (count($invoices) > 0) {
+            return;
+        }
+
+        $quotes = Quote::find(array(
+            "user_id = :user_id: AND invoice_id is NULL",
+            "bind" => array(
+                "user_id" => $this->id
+            )
+        ));
+        if (!$quotes || count($quotes) == 0) {
+            return;
+        }
+
+        $price_per_quote = Setting::findFirstByName(Setting::PRICE_PER_QUOTE);
+
+        $invoice = new Invoice();
+        $invoice->user_id = $this->id;
+        $invoice->price_per_quote = $price_per_quote->value;
+        $invoice->amount = count($quotes) * floatval($price_per_quote->value);
+        $invoice->status = Invoice::UNPAID;
+        $invoice->created_on = date('Y-m-d H:i:s');
+        $invoice->due_date = date('Y-m-d H:i:s');
+        if ($invoice->save()) {
+            foreach($quotes as $quote) {
+                $quote->invoice_id = $invoice->id;
+                $quote->save();
+
+                if ($quote->free) {
+                    $invoice->amount = $invoice->amount - floatval($price_per_quote->value);
+                }
+            }
+            $invoice->save();
+
+            # Auto process payment
+            $supplier = Supplier::findFirstByUserId($this->id);
+            if (!$supplier) {
+                return;
+            }
+            if (!$supplier->eway_customer_id) {
+                $supplier->status = Supplier::INACTIVED;
+                $supplier->save();
+            }
+            if ($supplier->status == Supplier::INACTIVED) {
+                return;
+            }
+
+            try {
+                $client = new SoapClient($this->config->eway->endpoint, array('trace' => 1));
+                $header = new SoapHeader($this->config->eway->namespace, 'eWAYHeader', $this->config->eway->headers);
+                $client->__setSoapHeaders(array($header));
+                $eway_invoice = array(
+                    'managedCustomerID' => $supplier->eway_customer_id,
+                    'amount' => $invoice->amount * 100,
+                    'invoiceReference' => $invoice->id,
+                    'invoiceDescription' => 'RemovalistQuote'
+                );
+                $result = $client->ProcessPayment($eway_invoice);
+                $invoice->eway_trxn_status = $result->ewayResponse->ewayTrxnStatus;
+                $invoice->eway_trxn_msg = $result->ewayResponse->ewayTrxnError;
+                $invoice->eway_trxn_number = $result->ewayResponse->ewayTrxnNumber;
+                $invoice->save();
+                if ($invoice->eway_trxn_status == 'True') {
+                    $invoice->status = Invoice::PAID;
+                    $invoice->paid_on = date('Y-m-d H:i:s');
+                    $invoice->save();
+                    // echo 'Payment transaction approved';
+
+                    # Generate PDF
+                    $html = $this->view->getRender('billing', 'invoice_pdf', array(
+                        'invoice' => $invoice->toArray(),
+                        'baseUrl' => $this->config->application->publicUrl
+                    ));
+                    $pdf = new mPDF();
+                    $stylesheet = file_get_contents(__DIR__ . '/../../public/css/app.min.css');
+                    $pdf->WriteHTML($stylesheet,1);
+                    $pdf->WriteHTML($html, 2);
+                    $pdf->Output(__DIR__ . '/../../public/files/invoice' . $invoice->id . '.pdf', "F");
+
+                    # Send email to supplier
+                    $this->mail->send(
+                        array($supplier->email => $supplier->name),
+                        'Invoice From Removalist Quote',
+                        'invoice',
+                        array(
+                            'name' => $supplier->name,
+                            'attachment' => __DIR__ . '/../../public/files/invoice' . $invoice->id . '.pdf'
+                        )
+                    );
+
+                } else {
+                    # payment failed de activate this account
+                    $supplier->status = Supplier::INACTIVED;
+                    $supplier->save();
+                    // echo $invoice->eway_trxn_msg;
+                }
+            } catch(Exception $e) {
+                echo $e->getMessage();
+            }
+        }
+    }
 }
