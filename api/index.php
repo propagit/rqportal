@@ -260,7 +260,7 @@ $app->post('/quote/removal', function() use($app, $config) {
         $parent_id = $duplicate->id;
     }
 
-    $phql = "INSERT INTO Removal (customer_name, customer_email, customer_phone, from_postcode, from_lat, from_lon, to_postcode, to_lat, to_lon, moving_date, moving_type, bedrooms, packing, notes, is_international,from_country,to_country, from_country_id, to_country_id, is_duplicate, parent_id, duplicate_status, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :from_postcode:, :from_lat:, :from_lon:, :to_postcode:, :to_lat:, :to_lon:, :moving_date:, :moving_type:, :bedrooms:, :packing:, :notes:,:is_international:,:from_country:,:to_country:, :from_country_id:, :to_country_id:, :is_duplicate:, :parent_id:, :duplicate_status:, :created_on:, :auto_distributed:)";
+    $phql = "INSERT INTO Removal (customer_name, customer_email, customer_phone, from_postcode, from_lat, from_lon, to_postcode, to_lat, to_lon, moving_date, moving_type, bedrooms, packing, notes, is_international,from_country,to_country, from_country_id, to_country_id, is_duplicate, parent_id, duplicate_status, created_on, auto_distributed) VALUES (:customer_name:, :customer_email:, :customer_phone:, :from_postcode:, :from_lat:, :from_lon:, :to_postcode:, :to_lat:, :to_lon:, :moving_date:, :moving_type:, :bedrooms:, :packing:, :notes:,:is_international:,:from_country:,:to_country:, :from_country_id:, :to_country_id:, :is_duplicate:, :parent_id:, :duplicate_status:, :created_on:, :auto_distributed:)";
 
     $status = $app->modelsManager->executeQuery($phql, array(
         'customer_name' => $quote->customer_name,
@@ -456,7 +456,7 @@ $app->post('/quote/international', function() use($app, $config) {
     ))->getFirst();
 
 
-    $phql = "INSERT INTO Removal (customer_name, customer_email, customer_phone, from_postcode, from_lat, from_lon, to_postcode, to_lat, to_lon, moving_date, moving_type, bedrooms, packing, notes, is_international,from_country,to_country, from_country_id, to_country_id, is_duplicate, parent_id, duplicate_status, created_on) VALUES (:customer_name:, :customer_email:, :customer_phone:, :from_postcode:, :from_lat:, :from_lon:, :to_postcode:, :to_lat:, :to_lon:, :moving_date:, :moving_type:, :bedrooms:, :packing:, :notes:,:is_international:,:from_country:,:to_country:, :from_country_id:, :to_country_id:, :is_duplicate:, :parent_id:, :duplicate_status:, :created_on:, :auto_distributed:)";
+    $phql = "INSERT INTO Removal (customer_name, customer_email, customer_phone, from_postcode, from_lat, from_lon, to_postcode, to_lat, to_lon, moving_date, moving_type, bedrooms, packing, notes, is_international,from_country,to_country, from_country_id, to_country_id, is_duplicate, parent_id, duplicate_status, created_on, auto_distributed) VALUES (:customer_name:, :customer_email:, :customer_phone:, :from_postcode:, :from_lat:, :from_lon:, :to_postcode:, :to_lat:, :to_lon:, :moving_date:, :moving_type:, :bedrooms:, :packing:, :notes:,:is_international:,:from_country:,:to_country:, :from_country_id:, :to_country_id:, :is_duplicate:, :parent_id:, :duplicate_status:, :created_on:, :auto_distributed:)";
     $status = $app->modelsManager->executeQuery($phql, array(
         'customer_name' => $quote->customer_name,
         'customer_email' => $quote->customer_email,
