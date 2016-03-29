@@ -5,17 +5,13 @@ angular.module('controllers.quote', [])
     $scope.removals = [];
     $scope.storages = [];
 
-    if ($scope.query != 'un-allocated')
-    {
-        $scope.params = {
-            from_date: moment().format("YYYY-MM-DD"),
-        };
-    }
-    else
-    {
-        $scope.params = {
-            allocated: 'not_allocated'
-        };
+    $scope.params = {
+        from_date: moment().format("YYYY-MM-DD"),
+        allocated: null,
+    };
+
+    if ($scope.query == 'un-allocated')
+        $scope.params.allocated = 'not_allocated';
     }
 
     angular.element(document).ready(function () {
@@ -229,7 +225,7 @@ angular.module('controllers.quote', [])
 
         return Math.min(latZoom, lngZoom, ZOOM_MAX);
     };
-	
-	
+
+
 
 })
