@@ -206,7 +206,7 @@ class User extends Model
 
     public function testConfig()
     {
-        return DI::getDefault()->getConfig();
+        return DI::getDefault()->getConfig()->eway;
     }
 
     public function processInvoice($invoice_id) {
