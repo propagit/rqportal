@@ -3,10 +3,10 @@
 class BillingController extends ControllerBase
 {
 
-    public function manualProcessAction()
+    public function emailAction()
     {
-        $user = User::findFirst(85);
-        $r = $user->emailInvoice(754);
+        $invoice = Invoice::findFirst(754);
+        $invoice->emailToSupplier();
     }
 
     public function invoiceAction()

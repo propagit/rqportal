@@ -1,6 +1,5 @@
 <?php
 
-use Phalcon\DI;
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Validator\Uniqueness;
 
@@ -135,107 +134,7 @@ class User extends Model
                 }
             }
             $invoice->save();
-
-            return $this->processInvoice($invoice->id);
+            $invoice->process();
         }
-    }
-
-    public function processInvoice($invoice_id) {
-        $invoice = Invoice::findFirst($invoice_id);
-        if (!$invoice) {
-            return array(
-                'success' => false,
-                'msg' => 'Invoice not found'
-            );
-        }
-        $supplier = Supplier::findFirstByUserId($this->id);
-        if (!$supplier) {
-            return array(
-                'success' => false,
-                'msg' => 'Supplier profile not exists'
-            );
-        }
-        if (!$supplier->eway_customer_id) {
-            $supplier->status = Supplier::INACTIVED;
-            $supplier->save();
-            return array(
-                'success' => false,
-                'msg' => 'Supplier does not have eway customer id'
-            );
-        }
-        if ($supplier->status == Supplier::INACTIVED) {
-            return array(
-                'success' => false,
-                'msg' => 'Supplier is inactive'
-            );
-        }
-
-        try {
-            $client = new SoapClient(DI::getDefault()->getConfig()->eway->endpoint, array('trace' => 1));
-            $header = new SoapHeader(DI::getDefault()->getConfig()->eway->namespace, 'eWAYHeader', DI::getDefault()->getConfig()->eway->headers);
-            $client->__setSoapHeaders(array($header));
-            $eway_invoice = array(
-                'managedCustomerID' => $supplier->eway_customer_id,
-                'amount' => $invoice->amount * 100,
-                'invoiceReference' => $invoice->id,
-                'invoiceDescription' => 'RemovalistQuote'
-            );
-            $result = $client->ProcessPayment($eway_invoice);
-            $invoice->eway_trxn_status = $result->ewayResponse->ewayTrxnStatus;
-            $invoice->eway_trxn_msg = $result->ewayResponse->ewayTrxnError;
-            $invoice->eway_trxn_number = $result->ewayResponse->ewayTrxnNumber;
-            $invoice->save();
-            if ($invoice->eway_trxn_status == 'True') {
-                $invoice->status = Invoice::PAID;
-                $invoice->paid_on = date('Y-m-d H:i:s');
-                $invoice->save();
-                return array(
-                    'success' => true,
-                    'msg' => $invoice->eway_trxn_number
-                );
-            } else {
-                # payment failed de activate this account
-                $supplier->status = Supplier::INACTIVED;
-                $supplier->save();
-                $this->emailInvoice($invoice_id);
-                return array(
-                    'success' => true,
-                    'msg' => $invoice->eway_trxn_msg
-                );
-            }
-        } catch(Exception $e) {
-            return array(
-                'success' => true,
-                'msg' => $e->getMessage()
-            );
-        }
-    }
-
-    public function emailInvoice($invoice_id) {
-        $invoice = Invoice::findFirst($invoice_id);
-        $supplier = Supplier::findFirstByUserId($this->id);
-        if (!$invoice || !$supplier) { return; }
-
-        # Generate PDF
-        $html = DI::getDefault()->getView()->getRender('billing', 'invoice_pdf', array(
-            'invoice' => $invoice->toArray(),
-            'baseUrl' => DI::getDefault()->getConfig()->application->publicUrl
-        ));
-        $pdf = new mPDF();
-        $stylesheet = file_get_contents(__DIR__ . '/../../public/css/app.min.css');
-        $pdf->WriteHTML($stylesheet,1);
-        $pdf->WriteHTML($html, 2);
-        $pdf->Output(__DIR__ . '/../../public/files/invoice' . $invoice->id . '.pdf', "F");
-
-        # Send email to supplier
-        DI::getDefault()->getMail()->send(
-            array($supplier->email => $supplier->name),
-            'Invoice From Removalist Quote',
-            'invoice',
-            array(
-                'name' => $supplier->name,
-                'attachment' => __DIR__ . '/../../public/files/invoice' . $invoice->id . '.pdf'
-            )
-        );
     }
 }
