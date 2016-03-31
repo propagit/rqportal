@@ -1,5 +1,6 @@
 <?php
 
+use Phalcon\DI;
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Validator\Uniqueness;
 
