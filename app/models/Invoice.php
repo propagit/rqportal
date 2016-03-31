@@ -222,7 +222,7 @@ class Invoice extends \Phalcon\Mvc\Model
             }
         } catch(Exception $e) {
             return array(
-                'success' => true,
+                'success' => false,
                 'msg' => $e->getMessage()
             );
         }
