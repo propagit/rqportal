@@ -202,4 +202,74 @@ class User extends Model
             }
         }
     }
+
+    public function processInvoice($invoice_id) {
+        $invoice = Invoice::findFirst($invoice_id);
+        if (!$invoice) {
+            return json_encode(array(
+                'success' => false,
+                'msg' => 'Invoice not found'
+            ));
+        }
+        $supplier = Supplier::findFirstByUserId($this->id);
+        if (!$supplier) {
+            return json_encode(array(
+                'success' => false,
+                'msg' => 'Supplier profile not exists'
+            ));
+        }
+        if (!$supplier->eway_customer_id) {
+            $supplier->status = Supplier::INACTIVED;
+            $supplier->save();
+            return json_encode(array(
+                'success' => false,
+                'msg' => 'Supplier does not have eway customer id'
+            ));
+        }
+        if ($supplier->status == Supplier::INACTIVED) {
+            return json_encode(array(
+                'success' => false,
+                'msg' => 'Supplier is inactive'
+            ));
+        }
+
+        try {
+            $client = new SoapClient($this->config->eway->endpoint, array('trace' => 1));
+            $header = new SoapHeader($this->config->eway->namespace, 'eWAYHeader', $this->config->eway->headers);
+            $client->__setSoapHeaders(array($header));
+            $eway_invoice = array(
+                'managedCustomerID' => $supplier->eway_customer_id,
+                'amount' => $invoice->amount * 100,
+                'invoiceReference' => $invoice->id,
+                'invoiceDescription' => 'RemovalistQuote'
+            );
+            $result = $client->ProcessPayment($eway_invoice);
+            $invoice->eway_trxn_status = $result->ewayResponse->ewayTrxnStatus;
+            $invoice->eway_trxn_msg = $result->ewayResponse->ewayTrxnError;
+            $invoice->eway_trxn_number = $result->ewayResponse->ewayTrxnNumber;
+            $invoice->save();
+            if ($invoice->eway_trxn_status == 'True') {
+                $invoice->status = Invoice::PAID;
+                $invoice->paid_on = date('Y-m-d H:i:s');
+                $invoice->save();
+                return json_encode(array(
+                    'success' => true,
+                    'msg' => $invoice->eway_trxn_number
+                ));
+            } else {
+                # payment failed de activate this account
+                $supplier->status = Supplier::INACTIVED;
+                $supplier->save();
+                return json_encode(array(
+                    'success' => true,
+                    'msg' => $invoice->eway_trxn_msg
+                ));
+            }
+        } catch(Exception $e) {
+            return json_encode(array(
+                'success' => true,
+                'msg' => $e->getMessage()
+            ));
+        }
+    }
 }

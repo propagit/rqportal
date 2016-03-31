@@ -3,6 +3,13 @@
 class BillingController extends ControllerBase
 {
 
+    public function processAction()
+    {
+        $user = User::findFirst(85);
+        $r = $user->processInvoice(754);
+        print_r($r); die();
+    }
+
     public function invoiceAction()
     {
         $this->tag->setTitle('Search Invoices');
@@ -83,7 +90,7 @@ class BillingController extends ControllerBase
                     if ($user->save() == false) {
                         $this->flash->error($user->getMessages());
                     }
-                    
+
                     $supplier->status = Supplier::INACTIVED;
                     if ($supplier->save() == false) {
                         $this->flash->error($supplier->getMessages());
@@ -107,7 +114,7 @@ class BillingController extends ControllerBase
         if (file_exists($file)){
 			 unlink($file);
 		}
-	
+
             $this->view->disable();
             $data['invoice'] = Invoice::findFirst($id)->toArray();
             $html = $this->view->getRender('billing', 'invoice_pdf', $data);
