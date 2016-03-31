@@ -3,7 +3,7 @@
 class BillingController extends ControllerBase
 {
 
-    public function processAction()
+    public function manualProcessAction()
     {
         $user = User::findFirst(85);
         $r = $user->processInvoice(754);
