@@ -181,12 +181,6 @@ class Invoice extends \Phalcon\Mvc\Model
                 'msg' => 'Supplier does not have eway customer id'
             );
         }
-        if ($supplier->status == Supplier::INACTIVED) {
-            return array(
-                'success' => false,
-                'msg' => 'Supplier is inactive'
-            );
-        }
         try {
             $client = new SoapClient(DI::getDefault()->getConfig()->eway->endpoint, array('trace' => 1));
             $header = new SoapHeader(DI::getDefault()->getConfig()->eway->namespace, 'eWAYHeader', DI::getDefault()->getConfig()->eway->headers);
