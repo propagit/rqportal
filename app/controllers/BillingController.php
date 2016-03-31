@@ -3,12 +3,6 @@
 class BillingController extends ControllerBase
 {
 
-    public function emailAction()
-    {
-        $invoice = Invoice::findFirst(754);
-        $invoice->emailToSupplier();
-    }
-
     public function invoiceAction()
     {
         $this->tag->setTitle('Search Invoices');
