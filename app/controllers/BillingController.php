@@ -9,12 +9,6 @@ class BillingController extends ControllerBase
         $r = $user->emailInvoice(754);
     }
 
-    public function testAction() {
-        $user = User::findFirst(85);
-        $test = $user->testConfig();
-        print_r($test); die();
-    }
-
     public function invoiceAction()
     {
         $this->tag->setTitle('Search Invoices');

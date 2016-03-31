@@ -161,8 +161,7 @@ class User extends Model
 
         # Send email to supplier
         DI::getDefault()->getMail()->send(
-            // array($supplier->email => $supplier->name),
-            array('nam@propagate.com.au' => 'Nam Nguyen'),
+            array($supplier->email => $supplier->name),
             'Invoice From Removalist Quote',
             'invoice',
             array(
