@@ -6,8 +6,7 @@ class BillingController extends ControllerBase
     public function manualProcessAction()
     {
         $user = User::findFirst(85);
-        $r = $user->processInvoice(754);
-        print_r($r); die();
+        $r = $user->emailInvoice(754);
     }
 
     public function testAction() {
