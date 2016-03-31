@@ -203,6 +203,11 @@ class User extends Model
         }
     }
 
+    public function testConfig()
+    {
+        return DI::getDefault()->getConfig();
+    }
+
     public function processInvoice($invoice_id) {
         $invoice = Invoice::findFirst($invoice_id);
         if (!$invoice) {
