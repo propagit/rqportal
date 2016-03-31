@@ -216,7 +216,7 @@ class Invoice extends \Phalcon\Mvc\Model
                 $supplier->status = Supplier::INACTIVED;
                 $supplier->save();
                 return array(
-                    'success' => true,
+                    'success' => false,
                     'msg' => $this->eway_trxn_msg
                 );
             }
