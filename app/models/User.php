@@ -136,70 +136,9 @@ class User extends Model
             }
             $invoice->save();
 
-            # Auto process payment
-            $supplier = Supplier::findFirstByUserId($this->id);
-            if (!$supplier) {
-                return;
-            }
-            if (!$supplier->eway_customer_id) {
-                $supplier->status = Supplier::INACTIVED;
-                $supplier->save();
-            }
-            if ($supplier->status == Supplier::INACTIVED) {
-                return;
-            }
-
-            try {
-                $client = new SoapClient($this->config->eway->endpoint, array('trace' => 1));
-                $header = new SoapHeader($this->config->eway->namespace, 'eWAYHeader', $this->config->eway->headers);
-                $client->__setSoapHeaders(array($header));
-                $eway_invoice = array(
-                    'managedCustomerID' => $supplier->eway_customer_id,
-                    'amount' => $invoice->amount * 100,
-                    'invoiceReference' => $invoice->id,
-                    'invoiceDescription' => 'RemovalistQuote'
-                );
-                $result = $client->ProcessPayment($eway_invoice);
-                $invoice->eway_trxn_status = $result->ewayResponse->ewayTrxnStatus;
-                $invoice->eway_trxn_msg = $result->ewayResponse->ewayTrxnError;
-                $invoice->eway_trxn_number = $result->ewayResponse->ewayTrxnNumber;
-                $invoice->save();
-                if ($invoice->eway_trxn_status == 'True') {
-                    $invoice->status = Invoice::PAID;
-                    $invoice->paid_on = date('Y-m-d H:i:s');
-                    $invoice->save();
-                    // echo 'Payment transaction approved';
-
-                    # Generate PDF
-                    $html = $this->view->getRender('billing', 'invoice_pdf', array(
-                        'invoice' => $invoice->toArray(),
-                        'baseUrl' => $this->config->application->publicUrl
-                    ));
-                    $pdf = new mPDF();
-                    $stylesheet = file_get_contents(__DIR__ . '/../../public/css/app.min.css');
-                    $pdf->WriteHTML($stylesheet,1);
-                    $pdf->WriteHTML($html, 2);
-                    $pdf->Output(__DIR__ . '/../../public/files/invoice' . $invoice->id . '.pdf', "F");
-
-                    # Send email to supplier
-                    $this->mail->send(
-                        array($supplier->email => $supplier->name),
-                        'Invoice From Removalist Quote',
-                        'invoice',
-                        array(
-                            'name' => $supplier->name,
-                            'attachment' => __DIR__ . '/../../public/files/invoice' . $invoice->id . '.pdf'
-                        )
-                    );
-
-                } else {
-                    # payment failed de activate this account
-                    $supplier->status = Supplier::INACTIVED;
-                    $supplier->save();
-                    // echo $invoice->eway_trxn_msg;
-                }
-            } catch(Exception $e) {
-                echo $e->getMessage();
+            $result = $this->processInvoice($invoice->id);
+            if ($result['success']) {
+                $this->emailInvoice($invoice->id);
             }
         }
     }
@@ -236,31 +175,31 @@ class User extends Model
     public function processInvoice($invoice_id) {
         $invoice = Invoice::findFirst($invoice_id);
         if (!$invoice) {
-            return json_encode(array(
+            return array(
                 'success' => false,
                 'msg' => 'Invoice not found'
-            ));
+            );
         }
         $supplier = Supplier::findFirstByUserId($this->id);
         if (!$supplier) {
-            return json_encode(array(
+            return array(
                 'success' => false,
                 'msg' => 'Supplier profile not exists'
-            ));
+            );
         }
         if (!$supplier->eway_customer_id) {
             $supplier->status = Supplier::INACTIVED;
             $supplier->save();
-            return json_encode(array(
+            return array(
                 'success' => false,
                 'msg' => 'Supplier does not have eway customer id'
-            ));
+            );
         }
         if ($supplier->status == Supplier::INACTIVED) {
-            return json_encode(array(
+            return array(
                 'success' => false,
                 'msg' => 'Supplier is inactive'
-            ));
+            );
         }
 
         try {
@@ -282,24 +221,24 @@ class User extends Model
                 $invoice->status = Invoice::PAID;
                 $invoice->paid_on = date('Y-m-d H:i:s');
                 $invoice->save();
-                return json_encode(array(
+                return array(
                     'success' => true,
                     'msg' => $invoice->eway_trxn_number
-                ));
+                );
             } else {
                 # payment failed de activate this account
                 $supplier->status = Supplier::INACTIVED;
                 $supplier->save();
-                return json_encode(array(
+                return array(
                     'success' => true,
                     'msg' => $invoice->eway_trxn_msg
-                ));
+                );
             }
         } catch(Exception $e) {
-            return json_encode(array(
+            return array(
                 'success' => true,
                 'msg' => $e->getMessage()
-            ));
+            );
         }
     }
 }
