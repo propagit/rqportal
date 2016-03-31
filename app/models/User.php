@@ -206,7 +206,7 @@ class User extends Model
 
     public function testConfig()
     {
-        return DI::getDefault()->getConfig()->eway;
+        return DI::getDefault()->getConfig()->eway->endpoint;
     }
 
     public function processInvoice($invoice_id) {
@@ -240,8 +240,8 @@ class User extends Model
         }
 
         try {
-            $client = new SoapClient($this->config->eway->endpoint, array('trace' => 1));
-            $header = new SoapHeader($this->config->eway->namespace, 'eWAYHeader', $this->config->eway->headers);
+            $client = new SoapClient(DI::getDefault()->getConfig()->eway->endpoint, array('trace' => 1));
+            $header = new SoapHeader(DI::getDefault()->getConfig()->eway->namespace, 'eWAYHeader', DI::getDefault()->getConfig()->eway->headers);
             $client->__setSoapHeaders(array($header));
             $eway_invoice = array(
                 'managedCustomerID' => $supplier->eway_customer_id,
