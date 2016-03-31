@@ -1,5 +1,7 @@
 <?php
 
+use Phalcon\DI;
+
 class Invoice extends \Phalcon\Mvc\Model
 {
 
