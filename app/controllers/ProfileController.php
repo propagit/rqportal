@@ -142,7 +142,7 @@ class ProfileController extends ControllerBase
                 'Country' => 'au',
                 'Company' => $this->supplier->company,
                 'JobDesc' => '',
-                //'URL' => $this->supplier->website,
+                'URL' => $this->supplier->website,
                 'Comments' => $this->supplier->about,
                 'CCNameOnCard' => $this->request->getPost('firstname') . ' ' . $this->request->getPost('lastname'),
                 'CCNumber' => $this->request->getPost('ccnumber'),
