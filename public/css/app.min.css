@@ -164,6 +164,14 @@ hr {
 .header-search #search-invoice_dropdown {
   margin-top: -2px; }
 
+.process-btn {
+  width: 100%;
+  background: transparent;
+  border: none; }
+  .process-btn:hover {
+    background: #3276b1;
+    color: white; }
+
 .form-block div {
   margin-bottom: 10px; }
   .form-block div label {

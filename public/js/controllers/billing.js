@@ -1,6 +1,6 @@
 angular.module('controllers.billing', [])
 
-.controller('BillingInvoiceCtrl', function($rootScope, $scope, $http, Config, $modal){
+.controller('BillingInvoiceCtrl', function($rootScope, $scope, $http, Config, $modal,$location){
 
     $scope.current_invoice = {};
 
@@ -12,6 +12,12 @@ angular.module('controllers.billing', [])
     {
         $scope.filter_status = 0;
     }
+    $scope.$location = $location;
+    $scope.isDisabled = false;
+    $scope.processInv = function(invoice_id){
+        window.location = '/billing/process/'+invoice_id;
+        $scope.isDisabled = true;
+    };
     $scope.filterInvoice = function(invoice) {
         var c1 = true;
         var c2 = true;

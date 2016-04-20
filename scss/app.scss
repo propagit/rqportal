@@ -206,6 +206,16 @@ hr {
         margin-top: -2px;
     }
 }
+
+.process-btn{
+    width: 100%;
+    background: transparent;
+    border: none;
+    &:hover{
+        background: #3276b1;
+        color: white;
+    }
+}
 .form-block {
     div {
         margin-bottom: 10px;

@@ -88,7 +88,8 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <a href="{{ baseUrl }}billing/process/[[ invoice.id ]]">Process</a>
+                                                    <!--<a href="{{ baseUrl }}billing/process/[[ invoice.id ]]">Process</a>--><button ng-disabled="isDisabled" ng-click="processInv(invoice.id)" class="process-btn">Process</button>
+
                                                 </li>
                                             </ul>
                                         </div>
