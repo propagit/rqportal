@@ -137,6 +137,7 @@
                                             <th>To</th>
                                             <th class="text-center">Bedrooms</th>
                                             <th>Moving Date</th>
+                                            <th ng-show="!current_quote.status">Sent On</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -147,6 +148,9 @@
                                             <td>[[ quote.removal.is_international == 'no' ? quote.removal.to_postcode : quote.removal.to_country]]</td>
                                             <td align="center">[[ quote.removal.bedrooms ]]</td>
                                             <td>[[ quote.removal.moving_date | date: 'dd MMM yyyy' ]]</td>
+                                            <td ng-show="!current_quote.status">
+                                                [[ quote.created_on ]]
+                                            </td>
                                             <td align="right">
                                                 <a ng-if="current_quote.id != quote.id" class="btn btn-xs btn-danger" ng-click="removalDetails(quote)"><i class="fa fa-search"></i></a>
                                             </td>
@@ -166,6 +170,7 @@
                                             <th>Pick Up</th>
                                             <th align="center">Bedrooms</th>
                                             <th>Period</th>
+                                            <th ng-show="!current_quote.status">Sent On</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -175,6 +180,9 @@
                                             <td>[[ quote.storage.pickup_postcode ]]</td>
                                             <td>[[ quote.storage.containers ]]</td>
                                             <td>[[ quote.storage.period ]]</td>
+                                            <td ng-show="!current_quote.status">
+                                                [[ quote.created_on ]]
+                                            </td>
                                             <td align="right">
                                                 <a ng-if="current_quote.id != quote.id" class="btn btn-xs btn-danger" ng-click="storageDetails(quote)"><i class="fa fa-search"></i></a>
                                             </td>
