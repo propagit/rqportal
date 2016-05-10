@@ -81,6 +81,7 @@ class QuoteTask extends \Phalcon\CLI\Task
                         $emails = array_map('trim', explode(',', $supplier->email_quote_cc));
                     }
                     $emails[] = $supplier->email;
+                    $emails = array_filter($emails);
 
 
                     $this->mail->send(
@@ -217,7 +218,7 @@ class QuoteTask extends \Phalcon\CLI\Task
                         $emails = array_map('trim', explode(',', $supplier->email_quote_cc));
                     }
                     $emails[] = $supplier->email;
-
+                    $emails = array_filter($emails);
 
                     $this->mail->send(
                         $emails,
