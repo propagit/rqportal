@@ -80,6 +80,21 @@ class SupplierController extends ControllerBase
 	#To manually test the distribute quote function
 	function testAction()
 	{
+        $a = $this->mail->send(
+            'nam@propagate.com.au',
+            'New Removalist Job',
+            'new_removal',
+            array(
+                'removal' => $removal,
+                'from' => $from,
+                'to' => $to
+            )
+        );
+
+        print_r($a); die();
+
+
+        return;
         # Send new quote notification to supplier
         $supplier = Supplier::findFirst(164);
         $emails = array();
