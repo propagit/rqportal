@@ -85,7 +85,7 @@ class SupplierController extends ControllerBase
         $emails[] = 'halohola@icloud.com';
         $emails[] = 'namnd86@gmail.com';
         $a = $this->mail->send(
-            'nam@propagate.com.au',
+            $emails,
             'New Removalist Job',
             'new_removal',
             array(
