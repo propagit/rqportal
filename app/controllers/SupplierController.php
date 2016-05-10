@@ -80,6 +80,10 @@ class SupplierController extends ControllerBase
 	#To manually test the distribute quote function
 	function testAction()
 	{
+        $emails = array();
+        $emails[] = 'nam@propagate.com.au';
+        $emails[] = 'halohola@icloud.com';
+        $emails[] = 'namnd86@gmail.com';
         $a = $this->mail->send(
             'nam@propagate.com.au',
             'New Removalist Job',
