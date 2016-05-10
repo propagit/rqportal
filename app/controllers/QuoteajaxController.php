@@ -180,6 +180,50 @@ class QuoteajaxController extends ControllerAjax
                     foreach($new_quote->getMessages() as $message) {
                         $errors[] = (string) $message;
                     }
+                } else {
+                    # Send new quote notification to supplier
+                    $emails = array();
+                    if ($supplier->email_quote_cc) {
+                        $emails = array_map('trim', explode(',', $supplier->email_quote_cc));
+                    }
+                    $emails = array_filter($emails);
+
+                    if ($new_quote->job_type == 'removal') {
+                        $removal = Removal::findFirst($new_quote->job_id);
+                        if ($removal->is_international == 'no') {
+                            $from = Postcodes::findFirstByPostcode($removal->from_postcode);
+                            $to = Postcodes::findFirstByPostcode($removal->to_postcode);
+                        } else {
+                            $from = $removal->from_country;
+                            $to = $removal->to_country;
+                        }
+                        $this->mail->send(
+                            $supplier->email,
+                            'New Removalist Job',
+                            'new_removal',
+                            array(
+                                'removal' => $removal,
+                                'from' => $from,
+                                'to' => $to
+                            ),
+                            $emails
+                        );
+                    }
+                    if ($new_quote->job_type == 'storage') {
+                        $storage = Storage::findFirst($new_quote->job_id);
+                        $pickup = Postcodes::findFirstByPostcode($storage->pickup_postcode);
+                        $this->mail->send(
+                            $supplier->email,
+                            'New Removalist Job',
+                            'new_storage',
+                            array(
+                                'storage' => $storage,
+                                'pickup' => $pickup
+                            ),
+                            $emails
+                        );
+                    }
+
                 }
             }
         }
@@ -212,7 +256,7 @@ class QuoteajaxController extends ControllerAjax
             $storage->delete();
         }
     }
-	
+
 	public function getDuplicateRemovalQuotesAction()
 	{
 		$conditions = "is_duplicate = :is_duplicate: AND duplicate_status = :duplicate_status: GROUP BY parent_id";
@@ -224,19 +268,19 @@ class QuoteajaxController extends ControllerAjax
 								  $conditions,
 								  "bind" => $parameters
 							  ))->toArray();
-		
+
 		// build removal such that the list is in this format
 		// Parent row - Distributed or not
 		//	- child row
 		//	- child row
-		
+
 		$duplicates = array();
 		$duplicate_removal_count = 0;
 		foreach($removals as $key => $removal){
 			# get parent
 			$parent_id = $removal['parent_id'];
 			$parent = Removal::findFirst(array('id = ' . $parent_id))->toArray();
-			
+
 			# check if parent has been distributed
 			$conditions = "job_id = :job_id: AND user_id != 0";
             $parameters = array(
@@ -246,9 +290,9 @@ class QuoteajaxController extends ControllerAjax
 								  $conditions,
 								  "bind" => $parameters
 							  ))->toArray();
-							  
-			
-			if($suppliers){	
+
+
+			if($suppliers){
 				# get duplicates
 				$conditions = "is_duplicate = :is_duplicate: AND duplicate_status = :duplicate_status: AND parent_id = :parent_id:";
 				$parameters = array(
@@ -260,26 +304,26 @@ class QuoteajaxController extends ControllerAjax
 								$conditions,
 								"bind" => $parameters
 							))->toArray();
-							
+
 				foreach($childrens as $children_key => $children){
-					$childrens[$children_key]['suppliers'] = array();	
+					$childrens[$children_key]['suppliers'] = array();
 				}
-								
+
 				$duplicates[$key] = $parent;
 				$duplicates[$key]['duplicates'] = $childrens;
-				
-				
+
+
 				foreach($suppliers as $suplier){
-					$duplicates[$key]['suppliers'][] = Supplier::findFirst(array('user_id = ' . $suplier['user_id']));	
+					$duplicates[$key]['suppliers'][] = Supplier::findFirst(array('user_id = ' . $suplier['user_id']));
 				}
 				#$duplicates[$key]['suppliers'] = $suppliers;
-				
+
 				# count removal duplicates
 				$duplicate_removal_count += count($childrens);
 			}
-			
-			
-			
+
+
+
 		}
 		$q['removal'] = $duplicates;
 		$q['storage'] = array();
@@ -287,28 +331,28 @@ class QuoteajaxController extends ControllerAjax
 		$results[] = $q;
         $this->view->results = $results;
 	}
-	
+
 	public function deleteDuplicateRemovalQuoteAction($id)
 	{
 		$duplicate = Removal::findFirst($id);
 		if($duplicate){
-			$duplicate->duplicate_status = -1;	
+			$duplicate->duplicate_status = -1;
 		}
 		$duplicate->save();
 		$this->view->results = $duplicate;
-       
+
 	}
-	
+
 	public function reSendDuplicateRemovalQuoteAction($id)
 	{
 		$duplicate = Removal::findFirst($id);
 		if($duplicate){
 			$duplicate->duplicate_status = 1;
-			$parent_id = $duplicate->parent_id;	
+			$parent_id = $duplicate->parent_id;
 			$job_id = $duplicate->id;
 		}
 		$duplicate->save();
-		
+
 		$errors = array();
 		if($parent_id){
 			# insert quote
@@ -337,7 +381,7 @@ class QuoteajaxController extends ControllerAjax
 					}
 				}
 			}
-						  
+
 		}
 		$this->view->results = $out;
 		if (count($errors) > 0)
@@ -351,7 +395,7 @@ class QuoteajaxController extends ControllerAjax
             $this->view->message = 'Successfully Re Distributed';
         }
 	}
-	
+
 	public function addSupplierToDuplicateAction()
     {
         $request = $this->request->getJsonRawBody();
@@ -383,9 +427,9 @@ class QuoteajaxController extends ControllerAjax
 		else
 		{
 			$removal->duplicate_status = 1;
-			$removal->save();	
+			$removal->save();
 		}
-        
+
 
         if (count($errors) > 0)
         {
