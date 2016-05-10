@@ -80,18 +80,18 @@ class QuoteTask extends \Phalcon\CLI\Task
                     if ($supplier->email_quote_cc) {
                         $emails = array_map('trim', explode(',', $supplier->email_quote_cc));
                     }
-                    $emails[] = $supplier->email;
                     $emails = array_filter($emails);
 
 
                     $this->mail->send(
-                        $emails,
+                        $supplier->email,
                         'New Removalist Job',
                         'new_storage',
                         array(
                             'storage' => $storage,
                             'pickup' => $pickup
-                        )
+                        ),
+                        $emails
                     );
                     $count++;
                     echo 'Storage quote sent to ' . $user_id . PHP_EOL;
@@ -217,18 +217,18 @@ class QuoteTask extends \Phalcon\CLI\Task
                     if ($supplier->email_quote_cc) {
                         $emails = array_map('trim', explode(',', $supplier->email_quote_cc));
                     }
-                    $emails[] = $supplier->email;
                     $emails = array_filter($emails);
 
                     $this->mail->send(
-                        $emails,
+                        $supplier->email,
                         'New Removalist Job',
                         'new_removal',
                         array(
                             'removal' => $removal,
                             'from' => $from,
                             'to' => $to
-                        )
+                        ),
+                        $emails
                     );
 
                     $count++;
