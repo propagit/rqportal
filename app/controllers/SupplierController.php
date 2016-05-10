@@ -87,6 +87,7 @@ class SupplierController extends ControllerBase
             $emails = array_map('trim', explode(',', $supplier->email_quote_cc));
         }
         $emails[] = $supplier->email;
+        $emails = array_filter($emails);
         print_r($emails); die();
 
 		/*$job_id_from = 5525;
