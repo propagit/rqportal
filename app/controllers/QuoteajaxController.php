@@ -259,7 +259,7 @@ class QuoteajaxController extends ControllerAjax
 
 	public function getDuplicateRemovalQuotesAction()
 	{
-		$conditions = "is_duplicate = :is_duplicate: AND duplicate_status = :duplicate_status: GROUP BY parent_id";
+		$conditions = "is_duplicate = :is_duplicate: AND duplicate_status = :duplicate_status: GROUP BY parent_id ORDER BY created_on DESC";
 		$parameters = array(
 			'is_duplicate' => 1,
 			'duplicate_status' => 0
