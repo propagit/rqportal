@@ -12,14 +12,18 @@ class QuoteTask extends \Phalcon\CLI\Task
         $removals = Removal::findByAutoDistributed(0);
         if (count($removals) > 0) {
             foreach($removals as $removal) {
-                $this->_distributeRemoval($removal);
+                if (!$removal->is_duplicate) {
+                    $this->_distributeRemoval($removal);
+                }
             }
         }
 
         $storages = Storage::findByAutoDistributed(0);
         if (count($storages) > 0) {
             foreach($storages as $storage) {
-                $this->_distributeStorage($storage);
+                if (!$storage->is_duplicate) {
+                    $this->_distributeStorage($storage);
+                }
             }
         }
     }
