@@ -170,7 +170,7 @@ $app->get('/postcode/{keyword}', function($keyword) use($app) {
     if (strlen($keyword) < 3) { return; }
     $phql = "SELECT * FROM Postcodes WHERE postcode LIKE :keyword: OR suburb LIKE :keyword:";
     $postcodes = $app->modelsManager->executeQuery($phql, array(
-        'keyword' => '%' . $keyword . '%'
+        'keyword' => '%' . urldecode($keyword) . '%'
     ));
 
     $data = array();
