@@ -184,7 +184,7 @@ $app->get('/inventory', function() use($app) {
     $response->setHeader('Access-Control-Allow-Origin', '*');
     $response->setJsonContent(array('inventory' => $data));
     return $response;
-})
+});
 
 # Get the postcode
 $app->get('/postcode/{keyword}', function($keyword) use($app) {
