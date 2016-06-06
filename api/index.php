@@ -165,6 +165,27 @@ $app->post('/supplier', function() use($app, $config){
 
 });
 
+# Get the inventory
+$app->get('/inventory', function() use($app) {
+    $phql = "SELECT * FROM InventoryCategory";
+    $categories = $app->modelsManager->executeQuery($phql);
+    $data = array();
+    foreach($categories as $category) {
+        $phql = "SELECT * FROM InventoryItem WHERE category_id = :category_id:";
+        $items = $app->modelsManager->executeQuery($phql, array(
+            "category_id" => $category->id
+        ));
+        $category = $category->toArray();
+        $category['items'] = $items->toArray();
+        $data[] = $category;
+    }
+
+    $response = new Phalcon\Http\Response();
+    $response->setHeader('Access-Control-Allow-Origin', '*');
+    $response->setJsonContent(array('inventory' => $data));
+    return $response;
+})
+
 # Get the postcode
 $app->get('/postcode/{keyword}', function($keyword) use($app) {
     if (strlen($keyword) < 3) { return; }
