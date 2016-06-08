@@ -310,6 +310,8 @@ $app->post('/quote/removal', function() use($app, $config) {
         'auto_distributed' => 0
     ));
 
+    $removal_id = $status->getModel()->id;
+
     if (isset($quote->categories) && count($quote->categories) > 0) {
         foreach($quote->categories as $category) {
             $items = array();
@@ -322,7 +324,7 @@ $app->post('/quote/removal', function() use($app, $config) {
             }
             $phql = "INSERT INTO RemovalInventory (removal_id, name, items) VALUES (:removal_id:, :name:, :items:)";
             $app->modelsManager->executeQuery($phql, array(
-                'removal_id' => $status->id,
+                'removal_id' => $removal_id,
                 'name' => $category->name,
                 'items' => json_encode($items)
             ));
@@ -344,7 +346,7 @@ $app->post('/quote/removal', function() use($app, $config) {
         }
     }else{
         $response->setStatusCode(201, "Created");
-        $response->setJsonContent(array('status' => 'OK', 'data' => $status));
+        $response->setJsonContent(array('status' => 'OK', 'data' => $removal_id));
     }
 
     return $response;
