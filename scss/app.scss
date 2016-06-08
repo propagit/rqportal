@@ -18,6 +18,9 @@
 /* Fix bootstrap modal backdrop */
 .modal-backdrop {
     bottom: 0;
+    &.in {
+        height: 100%;
+    }
 }
 .lh-28 {
     line-height: 28px;

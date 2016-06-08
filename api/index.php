@@ -310,6 +310,23 @@ $app->post('/quote/removal', function() use($app, $config) {
         'auto_distributed' => 0
     ));
 
+    foreach($quote->categories as $category) {
+        $items = array();
+        foreach($category->items as $chunk) {
+            foreach($chunk as $item) {
+                if ($item && $item->quantity > 0) {
+                    $items[] = $item;
+                }
+            }
+        }
+        $phql = "INSERT INTO RemovalInventory (removal_id, name, items) VALUES (:removal_id:, :name:, :items:)";
+        $app->modelsManager->executeQuery($phql, array(
+            'removal_id' => $status->id,
+            'name' => $category->name,
+            'items' => json_encode($items);
+        ));
+    }
+
     if(!$is_duplicate){
         if ($status->success() == true) {
             $response->setStatusCode(201, "Created");
