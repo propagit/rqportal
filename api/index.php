@@ -317,17 +317,19 @@ $app->post('/quote/removal', function() use($app, $config) {
             $items = array();
             foreach($category->items as $chunk) {
                 foreach($chunk as $item) {
-                    if ($item && $item->quantity > 0) {
+                    if ($item && isset($item->quantity) && $item->quantity > 0) {
                         $items[] = $item;
                     }
                 }
             }
-            $phql = "INSERT INTO RemovalInventory (removal_id, name, items) VALUES (:removal_id:, :name:, :items:)";
-            $app->modelsManager->executeQuery($phql, array(
-                'removal_id' => $removal_id,
-                'name' => $category->name,
-                'items' => json_encode($items)
-            ));
+            if (count($items) > 0) {
+                $phql = "INSERT INTO RemovalInventory (removal_id, name, items) VALUES (:removal_id:, :name:, :items:)";
+                $app->modelsManager->executeQuery($phql, array(
+                    'removal_id' => $removal_id,
+                    'name' => $category->name,
+                    'items' => json_encode($items)
+                ));
+            }
         }
     }
     
