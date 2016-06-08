@@ -29,7 +29,7 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
                 <td>{{ removal.customer_email }}</td>
             </tr>
             <tr>
-                <td colspan="3"><br /><br /></td>
+                <td colspan="3"><br /></td>
             </tr>            
             <tr>
                 <td colspan="3"><b>Contact Details</b></td>
@@ -80,9 +80,10 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
             TOTAL m3: <b style="font-size: 28px;">{{ total_cubic }}</b>
             </p>
 
-            <p>Notes:<br>
+            <p><b>Notes:</b><br>
             {{ removal.notes }}
             </p><br>
+            <img src="{{ map_url }}" />
         </td>
         <td width="20" bgcolor="#FFFFFF">&nbsp;</td>
     </tr>
