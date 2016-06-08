@@ -172,6 +172,19 @@ class QuoteTask extends \Phalcon\CLI\Task
             }
         }
 
+        $categories = RemovalInventory::findByRemovalId($removal->id);
+        $total_cubic = 0;
+        if ($categories && count($categories) > 0) {
+            foreach($categories as $category) {
+                $items = json_decode($category->items);
+                foreach($items as $item) {
+                    $total_cubic += $item->quantity * $item->cubic;
+                }
+            }
+        }
+        
+
+
         # Get quote of the day for each user
         $users_with_quote = array();
 
@@ -230,7 +243,8 @@ class QuoteTask extends \Phalcon\CLI\Task
                         array(
                             'removal' => $removal,
                             'from' => $from,
-                            'to' => $to
+                            'to' => $to,
+                            'total_cubic' => $total_cubic
                         ),
                         $emails
                     );

@@ -11,6 +11,9 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
             <table border="0" cellpadding="0" cellspacing="0"
 style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; line-height: 23px">
             <tr>
+                <td colspan="3"><b>Contact Details</b></td>
+            </tr>
+            <tr>
                 <td>Contact Name:</td>
                 <td width="20"></td>
                 <td>{{ removal.customer_name }}</td>
@@ -25,6 +28,12 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
                 <td width="20"></td>
                 <td>{{ removal.customer_email }}</td>
             </tr>
+            <tr>
+                <td colspan="3"><br /><br /></td>
+            </tr>            
+            <tr>
+                <td colspan="3"><b>Contact Details</b></td>
+            </tr>            
             <tr>
                 <td>Pick Up:</td>
                 <td width="20"></td>
@@ -63,6 +72,12 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
                 <td>{{ removal.packing }}</td>
             </tr>
             </table>
+            </p>
+
+            <p><b>Inventory List:</b><br />
+            <a href="{{ publicUrl }}inventory/detail/{{ removal.id }}">View full inventory list</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            TOTAL m3: <b style="font-size: 28px;">{{ total_cubic }}</b>
             </p>
 
             <p>Notes:<br>
