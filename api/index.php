@@ -333,7 +333,7 @@ $app->post('/quote/removal', function() use($app, $config) {
     if(!$is_duplicate){
         if ($status->success() == true) {
             $response->setStatusCode(201, "Created");
-            $response->setJsonContent(array('status' => 'OK', 'data' => $job_id));
+            $response->setJsonContent(array('status' => 'OK', 'data' => ''));
         } else {
             $response->setStatusCode(409, "Conflict");
             $errors = array();
@@ -344,7 +344,7 @@ $app->post('/quote/removal', function() use($app, $config) {
         }
     }else{
         $response->setStatusCode(201, "Created");
-        $response->setJsonContent(array('status' => 'OK', 'data' => ''));
+        $response->setJsonContent(array('status' => 'OK', 'data' => $status));
     }
 
     return $response;
