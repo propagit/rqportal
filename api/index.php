@@ -324,7 +324,7 @@ $app->post('/quote/removal', function() use($app, $config) {
             $app->modelsManager->executeQuery($phql, array(
                 'removal_id' => $status->id,
                 'name' => $category->name,
-                'items' => json_encode($items);
+                'items' => json_encode($items)
             ));
         }
     }
