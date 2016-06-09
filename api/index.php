@@ -332,7 +332,7 @@ $app->post('/quote/removal', function() use($app, $config) {
             }
         }
     }
-    
+
 
     if(!$is_duplicate){
         if ($status->success() == true) {
@@ -524,6 +524,29 @@ $app->post('/quote/international', function() use($app, $config) {
         'created_on' => new Phalcon\Db\RawValue('now()'),
         'auto_distributed' => 0
     ));
+
+    $removal_id = $status->getModel()->id;
+
+    if (isset($quote->categories) && count($quote->categories) > 0) {
+        foreach($quote->categories as $category) {
+            $items = array();
+            foreach($category->items as $chunk) {
+                foreach($chunk as $item) {
+                    if ($item && isset($item->quantity) && $item->quantity > 0) {
+                        $items[] = $item;
+                    }
+                }
+            }
+            if (count($items) > 0) {
+                $phql = "INSERT INTO RemovalInventory (removal_id, name, items) VALUES (:removal_id:, :name:, :items:)";
+                $app->modelsManager->executeQuery($phql, array(
+                    'removal_id' => $removal_id,
+                    'name' => $category->name,
+                    'items' => json_encode($items)
+                ));
+            }
+        }
+    }
 
     if ($status->success() == true) {
         $response->setStatusCode(201, "Created");
