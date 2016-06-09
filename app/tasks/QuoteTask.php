@@ -287,10 +287,16 @@ class QuoteTask extends \Phalcon\CLI\Task
     }
 
     function getBoundsZoomLevel($from_lat, $from_lon, $to_lat, $to_lon, $width, $height) {
+        $ne_lat = max($from_lat, $to_lat);
+        $ne_lon = max($from_lon, $to_lon);
+
+        $sw_lat = min($from_lat, $to_lat);
+        $sw_lon = min($from_lon, $to_lon);
+
         $global_width = 256;
         $zoom_max = 21;
-        $latFraction = ($this->latRad($to_lat) - $this->latRad($from_lat)) / M_PI;
-        $lonDiff = $to_lon - $from_lon;
+        $latFraction = ($this->latRad($ne_lat) - $this->latRad($sw_lat)) / M_PI;
+        $lonDiff = $ne_lon - $sw_lon;
         $lonFraction = (($lonDiff < 0) ? ($lonDiff + 360) : $lonDiff) / 360;
         $latZoom = $this->zoom($height, $global_width, $latFraction);
         $lonZoom = $this->zoom($width, $global_width, $lonFraction);

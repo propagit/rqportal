@@ -17,10 +17,10 @@ class InventoryController extends \Phalcon\Mvc\Controller
     }
 
     public function mapAction() {
-        $from_lat = -38.665564;
-        $from_lon = 146.436128;
-        $to_lat = -27.17079;
-        $to_lon = 152.954767;
+        $from_lat = -37.772229;
+        $from_lon = 144.886116;
+        $to_lat = -37.814563;
+        $to_lon = 144.970267;
         $width = 650;
         $height = 500;
         $cen_lat = ($from_lat + $to_lat)/2;
@@ -30,17 +30,24 @@ class InventoryController extends \Phalcon\Mvc\Controller
 
         $url = "https://maps.googleapis.com/maps/api/staticmap?center=$cen_lat,$cen_lon&zoom=$zoom&size=" . $width . "x" . $height . "&markers=$from_lat,$from_lon&markers=$to_lat,$to_lon&path=color:0x0000ff|weight:5|$from_lat,$from_lon|$to_lat,$to_lon&key=AIzaSyDX3uDXdUb5i86vMGTW8hZPH01Zb0E86WI";
         echo $url;
+        // echo $zoom;
         die();
 
     }
 
-    
+
 
     function getBoundsZoomLevel($from_lat, $from_lon, $to_lat, $to_lon, $width, $height) {
+        $ne_lat = max($from_lat, $to_lat);
+        $ne_lon = max($from_lon, $to_lon);
+
+        $sw_lat = min($from_lat, $to_lat);
+        $sw_lon = min($from_lon, $to_lon);
+
         $global_width = 256;
         $zoom_max = 21;
-        $latFraction = ($this->latRad($to_lat) - $this->latRad($from_lat)) / M_PI;
-        $lonDiff = $to_lon - $from_lon;
+        $latFraction = ($this->latRad($ne_lat) - $this->latRad($sw_lat)) / M_PI;
+        $lonDiff = $ne_lon - $sw_lon;
         $lonFraction = (($lonDiff < 0) ? ($lonDiff + 360) : $lonDiff) / 360;
         $latZoom = $this->zoom($height, $global_width, $latFraction);
         $lonZoom = $this->zoom($width, $global_width, $lonFraction);
