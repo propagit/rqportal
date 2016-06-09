@@ -290,7 +290,7 @@
                                 <div class="row lh-28">
                                     <div class="col-lg-5-4">Invetory</div>
                                     <div class="col-lg-10">
-                                        <a class="text" href="{{ baseUrl }}inventory/detail/[[ curren_quote.job_id]]" target="_blank">View details</a>
+                                        <a class="text" href="{{ baseUrl }}inventory/detail/[[ current_quote.removal.id]]" target="_blank">View details</a>
                                     </div>
                                 </div>
                             </div>
