@@ -5,6 +5,7 @@ class InventoryController extends \Phalcon\Mvc\Controller
 
     public function detailAction($removal_id)
     {
+        $this->tag->setTitle('Inventory List');
         $categories = RemovalInventory::findByRemovalId($removal_id);
         $data = array();
         $total_cubic = 0;
