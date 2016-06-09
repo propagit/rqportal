@@ -26,7 +26,7 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
             <tr>
                 <td>Email:</td>
                 <td width="20"></td>
-                <td>{{ removal.customer_email }}</td>
+                <td><a href="mailto:{{ removal.customer_email }}" style="color:#9c1d28; text-decoration:none;">{{ removal.customer_email }}</a></td>
             </tr>
             <tr>
                 <td colspan="3"><br /></td>
@@ -76,7 +76,7 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
 
             <p><b>Inventory List:</b><br />
             {% if total_cubic > 0 %}
-            <a href="{{ publicUrl }}inventory/detail/{{ removal.id }}">View full inventory list</a>
+            <a href="{{ publicUrl }}inventory/detail/{{ removal.id }}" style="color:#9c1d28; text-decoration:none;">View full inventory list</a>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             TOTAL m3: <b style="font-size: 28px;">{{ total_cubic }}</b>
             {% else %}
