@@ -287,6 +287,12 @@
                                     <div class="col-lg-5-4">Notes</div>
                                     <div class="col-lg-10"><b>[[ current_quote.removal.notes ]]</b></div>
                                 </div>
+                                <div class="row lh-28">
+                                    <div class="col-lg-5-4">Invetory</div>
+                                    <div class="col-lg-10">
+                                        <a href="{{ baseUrl }}inventory/detail/[[ curren_quote.removal.id]]" target="_blank">View details</a>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Storage details -->
