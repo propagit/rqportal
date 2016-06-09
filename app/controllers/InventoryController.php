@@ -7,11 +7,16 @@ class InventoryController extends \Phalcon\Mvc\Controller
     {
         $categories = RemovalInventory::findByRemovalId($removal_id);
         $data = array();
+        $total_cubic = 0;
         foreach($categories as $category) {
             $c = $category->toArray();
             $c['items'] = json_decode($c['items']);
+            foreach($c['items'] as $item) {
+                $total_cubic += $item->quantity * $item->cubic;
+            }
             $data[] = $c;
         }
+        $this->view->total_cubic = $total_cubic;
         $this->view->categories = $data;
 
     }

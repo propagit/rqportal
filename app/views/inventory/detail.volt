@@ -1,5 +1,6 @@
 <div style="margin:20px">
 <img src="/img/logo.png" width="110" alt="Removalist Quote" style="float:left;">
+<h2 style="float:right; margin: 10px;">Total <b>{{ total_cubic }}</b><sup>m3</sup></h2>
 <h2 style="float:left; margin:10px 0 0 20px;">Inventory List</h2>
 <table class="table">
 {% for category in categories %}
@@ -15,7 +16,7 @@
         <td>{{ item.cubic }} <sup>m3</sup></td>
         <td>{{ item.quantity }}</td>
     </tr>
-    {% endfor %} 
+    {% endfor %}
 </tbody>
 {% endfor %}
 </table>
