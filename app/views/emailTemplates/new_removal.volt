@@ -30,10 +30,10 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
             </tr>
             <tr>
                 <td colspan="3"><br /></td>
-            </tr>            
+            </tr>
             <tr>
                 <td colspan="3"><b>Contact Details</b></td>
-            </tr>            
+            </tr>
             <tr>
                 <td>Pick Up:</td>
                 <td width="20"></td>
@@ -75,9 +75,13 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
             </p>
 
             <p><b>Inventory List:</b><br />
+            {% if total_cubic > 0 %}
             <a href="{{ publicUrl }}inventory/detail/{{ removal.id }}">View full inventory list</a>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             TOTAL m3: <b style="font-size: 28px;">{{ total_cubic }}</b>
+            {% else %}
+            No inventory list provided
+            {% endif %}
             </p>
 
             <p><b>Notes:</b><br>
