@@ -32,7 +32,7 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
                 <td colspan="3"><br /></td>
             </tr>
             <tr>
-                <td colspan="3"><b>Contact Details</b></td>
+                <td colspan="3"><b>Job Details</b></td>
             </tr>
             <tr>
                 <td>Pick Up:</td>
