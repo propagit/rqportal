@@ -52,7 +52,8 @@ style="font-family:Helvetica, Arial, sans-serif; color:#4c4f53; font-size:16px; 
                 {% if removal.is_international == 'yes' %}
                 	{{ removal.to_country }}
                 {% else %}
-               		{{ to.state}} {{ removal.to_postcode }} ({{ to.suburb }})
+               		{{ to.state}} {{ removal.to_postcode }} ({{ to.suburb }}) </br>
+                    <a href="https://www.google.com.au/maps/dir/{{ removal.from_postcode }}/{{ removal.to_postcode }}">See Directions</a>
                 {% endif %}
                 </td>
             </tr>
