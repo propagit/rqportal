@@ -409,9 +409,11 @@ $app->post('/quote/storage', function() use($app, $config) {
         'auto_distributed' => 0
     ));
 
+    $storage_id = $status->getModel()->id;
+
     if ($status->success() == true) {
         $response->setStatusCode(201, "Created");
-        $response->setJsonContent(array('status' => 'OK', 'data' => $job_id));
+        $response->setJsonContent(array('status' => 'OK', 'data' => $storage_id));
     } else {
         $response->setStatusCode(409, "Conflict");
         $errors = array();
