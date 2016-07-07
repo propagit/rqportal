@@ -552,7 +552,7 @@ $app->post('/quote/international', function() use($app, $config) {
 
     if ($status->success() == true) {
         $response->setStatusCode(201, "Created");
-        $response->setJsonContent(array('status' => 'OK', 'data' => $job_id));
+        $response->setJsonContent(array('status' => 'OK', 'data' => $removal_id));
     } else {
         $response->setStatusCode(409, "Conflict");
         $errors = array();
