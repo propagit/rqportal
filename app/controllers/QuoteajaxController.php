@@ -191,8 +191,25 @@ class QuoteajaxController extends ControllerAjax
                     if ($new_quote->job_type == 'removal') {
                         $removal = Removal::findFirst($new_quote->job_id);
                         if ($removal->is_international == 'no') {
-                            $from = Postcodes::findFirstByPostcode($removal->from_postcode);
-                            $to = Postcodes::findFirstByPostcode($removal->to_postcode);
+                            // $from = Postcodes::findFirstByPostcode($removal->from_postcode);
+                            // $to = Postcodes::findFirstByPostcode($removal->to_postcode);
+                            $from = Postcodes::findFirst(array(
+                                "postcode = :postcode: AND lat = :lat: AND lon = :lon:",
+                                "bind" => array(
+                                    "postcode" => $removal->from_postcode,
+                                    "lat" => $removal->from_lat,
+                                    "lon" => $removal->from_lon
+                                )
+                            ));
+                            $to = Postcodes::findFirst(array(
+                                "postcode = :postcode: AND lat = :lat: AND lon = :lon:",
+                                "bind" => array(
+                                    "postcode" => $removal->to_postcode,
+                                    "lat" => $removal->to_lat,
+                                    "lon" => $removal->to_lon
+                                )
+                            ));
+
                         } else {
                             $from = $removal->from_country;
                             $to = $removal->to_country;

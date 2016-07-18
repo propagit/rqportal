@@ -126,8 +126,24 @@ class QuoteTask extends \Phalcon\CLI\Task
 
     private function _distributeRemoval($removal) {
         if($removal->is_international == 'no'){
-            $from = Postcodes::findFirstByPostcode($removal->from_postcode);
-            $to = Postcodes::findFirstByPostcode($removal->to_postcode);
+            // $from = Postcodes::findFirstByPostcode($removal->from_postcode);
+            // $to = Postcodes::findFirstByPostcode($removal->to_postcode);
+            $from = Postcodes::findFirst(array(
+                "postcode = :postcode: AND lat = :lat: AND lon = :lon:",
+                "bind" => array(
+                    "postcode" => $removal->from_postcode,
+                    "lat" => $removal->from_lat,
+                    "lon" => $removal->from_lon
+                )
+            ));
+            $to = Postcodes::findFirst(array(
+                "postcode = :postcode: AND lat = :lat: AND lon = :lon:",
+                "bind" => array(
+                    "postcode" => $removal->to_postcode,
+                    "lat" => $removal->to_lat,
+                    "lon" => $removal->to_lon
+                )
+            ));
 
             # Check suppliers who are able to provide this removal
             $users = array();
