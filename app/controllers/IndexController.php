@@ -7,5 +7,13 @@ class IndexController extends ControllerBase
     {
         return $this->forward('dashboard');
     }
+
+    public function generateAction()
+    {
+        $local = ZoneLocal::find();
+        foreach($local as $zone) {
+            $zone->generatePool();
+        }
+    }
 }
 
