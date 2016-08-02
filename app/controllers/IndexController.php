@@ -10,8 +10,13 @@ class IndexController extends ControllerBase
 
     public function generateAction()
     {
-        $local = ZoneLocal::find();
-        foreach($local as $zone) {
+        $zones = ZoneCountry::find();
+        foreach($zones as $zone) {
+            $zone->generatePool();
+        }
+
+        $zones = ZoneInterstate::find();
+        foreach($zones as $zone) {
             $zone->generatePool();
         }
     }
