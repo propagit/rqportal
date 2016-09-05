@@ -38,6 +38,7 @@ angular.module('controllers.supplier', [])
     $rootScope.loading++;
     $http.post(Config.BASE_URL + 'supplierajax/getAll')
     .success(function(response){
+        console.log(response);
         $scope.suppliers = response.suppliers;
     }).error(function(error){
         console.log("ERROR: ", error);
