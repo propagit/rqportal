@@ -16,7 +16,6 @@ class SupplierajaxController extends ControllerAjax
         // $this->view->test = 'test'; return;
         $result = array();
         foreach($suppliers as $supplier) {
-            $this->view->a = $supplier->toArray(); return;
             $result[] = $supplier->toArray();
         }
         $this->view->suppliers = $result;
