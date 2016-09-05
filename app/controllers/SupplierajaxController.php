@@ -5,10 +5,9 @@ class SupplierajaxController extends ControllerAjax
 
     public function getAllAction()
     {
-        $this->view->test = 'test';
-        return;
         $request = $this->request->getJsonRawBody();
         $conditions = ""; #"status >= 0";
+        $this->view->test = 'test'; return;
         if (isset($request->status))
         {
             $conditions = "status = '$request->status'";
