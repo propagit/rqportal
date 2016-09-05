@@ -13,7 +13,7 @@ class SupplierajaxController extends ControllerAjax
         }
 
         $suppliers = Supplier::find($conditions);
-        $this->view->test = count($suppliers);
+        $this->view->test = 'test';
         $result = array();
         foreach($suppliers as $supplier) {
             $result[] = $supplier->toArray();
