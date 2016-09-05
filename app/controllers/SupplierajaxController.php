@@ -7,11 +7,11 @@ class SupplierajaxController extends ControllerAjax
     {
         $request = $this->request->getJsonRawBody();
         $conditions = ""; #"status >= 0";
-        $this->view->test = 'test'; return;
         if (isset($request->status))
         {
             $conditions = "status = '$request->status'";
         }
+        $this->view->test = 'test'; return;
 
         $suppliers = Supplier::find($conditions);
         $result = array();
