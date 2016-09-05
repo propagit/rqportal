@@ -5,6 +5,8 @@ class SupplierajaxController extends ControllerAjax
 
     public function getAllAction()
     {
+        $this->view->test = 'test';
+        return;
         $request = $this->request->getJsonRawBody();
         $conditions = ""; #"status >= 0";
         if (isset($request->status))
@@ -13,7 +15,6 @@ class SupplierajaxController extends ControllerAjax
         }
 
         $suppliers = Supplier::find($conditions);
-        $this->view->test = 'test';
         $result = array();
         foreach($suppliers as $supplier) {
             $result[] = $supplier->toArray();
