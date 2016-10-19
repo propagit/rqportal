@@ -14,7 +14,7 @@ class LoginController extends \Phalcon\Mvc\Controller
             $password = $this->request->getPost('password');
 
             $user = User::findFirst(array(
-                "username = :username: AND password = :password: AND status = 1",
+                "username = :username: AND password = :password: AND status >= 0",
                 'bind' => array('username' => $username, 'password' => md5($password))
             ));
             // var_dump($user);
