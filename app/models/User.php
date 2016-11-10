@@ -101,9 +101,9 @@ class User extends Model
                 "status" => Invoice::UNPAID
             )
         ));
-        if (count($invoices) > 0) {
-            return;
-        }
+        // if (count($invoices) > 0) {
+        //     return;
+        // }
 
         $quotes = Quote::find(array(
             "user_id = :user_id: AND invoice_id is NULL",
